@@ -1,0 +1,66 @@
+body {
+  padding: 10px;
+  display: flex;
+  min-width: 190px;
+  background-color: #202123;
+  align-items: center;
+}
+
+.toggle_input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+.toggle_label {
+  background: #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 20px;
+  position: relative;
+  transition: 0.3s;
+  width: 43px;
+}
+
+.toggle_label:after {
+  background: #fff;
+  border-radius: 100%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  content: "";
+  height: 20px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: 0.3s;
+  width: 20px;
+  z-index: 2;
+}
+
+.toggle_input:checked + .toggle_label {
+  background-color: #4BD865;
+}
+
+.toggle_input:checked + .toggle_label:after {
+  left: 23px;
+}
+
+.toggle_button {
+  height: 20px;
+  margin: 5px;
+  position: relative;
+  width: 43px;
+}
+
+.message {
+  color: #DADADA;
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 5px;
+}
