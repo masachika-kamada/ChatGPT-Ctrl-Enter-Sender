@@ -10,7 +10,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       chrome.scripting.executeScript({
         target: { tabId: tabId },
         files: ["script.js"],
-        runAt: "document_idle"
       });
     } else {
       chrome.action.disable(tabId);
