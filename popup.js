@@ -1,23 +1,27 @@
-let isEnabledCheckbox = document.getElementById("isEnabled");
+let isEnabled = false;
+const toggleButton = document.querySelector("#isEnabled");
 
-chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-  if (tabs[0] && tabs[0].url) {
-    chrome.storage.sync.get(tabs[0].url, function (data) {
-      isEnabledCheckbox.checked = data[tabs[0].url];
-    });
-  }
+chrome.storage.sync.get("isEnabled", (data) => {
+  isEnabled = data.isEnabled;
+  toggleButton.checked = isEnabled;
+  updateIcon();
 });
 
-isEnabledCheckbox.addEventListener("change", function () {
-  let isEnabled = isEnabledCheckbox.checked;
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    if (tabs[0] && tabs[0].url) {
-      chrome.storage.sync.set({ [tabs[0].url]: isEnabled });
-      chrome.runtime.sendMessage({ isEnabled: isEnabled });
+toggleButton.addEventListener("change", () => {
+  isEnabled = toggleButton.checked;
+  chrome.storage.sync.set({ isEnabled });
+  updateIcon();
+});
+
+function updateIcon() {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const url = tabs[0].url;
+    if (url.startsWith("https://chat.openai.com/chat") ||
+        url.startsWith("https://poe.com") ||
+        url.startsWith("https://www.phind.com")) {
+      chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
+    } else {
+      chrome.action.setIcon({ path: "icon/na.png" });
     }
   });
-});
-
-// ポップアップ内に表示されるトグルボタンを切り替えることで、上記の機能を有効または無効にする
-// トグルボタンを使用して拡張機能を有効にした場合、アイコンを"enabled.png"に設定
-// トグルボタンを使用して拡張機能を無効にした場合、アイコンを"disabled.png"に設定
+}

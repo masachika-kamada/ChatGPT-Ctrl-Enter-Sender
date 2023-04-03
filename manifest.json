@@ -4,7 +4,11 @@
     "version": "1.0.0",
     "description": "Send messages quickly and easily with the Ctrl+Enter shortcut on multiple sites, including ChatGPT. Prevent the inconvenience of unintended message sending caused by using the Enter key. This extension also reassigns the Enter key to a new line, making chat input more intuitive and efficient.",
     "author": "Kamada Masachika",
-    "permissions": ["storage", "activeTab"],
+    "permissions": [
+      "storage",
+      "activeTab",
+      "scripting"
+    ],
     "background": {
       "service_worker": "background.js",
       "type": "module"
@@ -15,11 +19,11 @@
         "js": ["script.js"]
       },
       {
-        "matches": ["https://poe.com*"],
+        "matches": ["https://poe.com/*"],
         "js": ["script.js"]
       },
       {
-        "matches": ["https://www.phind.com*"],
+        "matches": ["https://www.phind.com/*"],
         "js": ["script.js"]
       }
     ],
@@ -29,9 +33,9 @@
       "128": "icon/icon128.png"
     },
     "host_permissions": [
-        "https://chat.openai.com/chat*", 
-        "https://poe.com*", 
-        "https://www.phind.com*"
+        "https://chat.openai.com/chat*",
+        "https://poe.com/*",
+        "https://www.phind.com/*"
     ],
     "action": {
       "default_popup": "popup.html",
@@ -42,4 +46,3 @@
       }
     }
   }
-  
