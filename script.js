@@ -21,7 +21,7 @@ function disableSendingWithCtrlEnter() {
 }
 
 chrome.storage.sync.get("isEnabled", (data) => {
-  const isEnabled = data.isEnabled;
+  const isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
   if (isEnabled) {
     enableSendingWithCtrlEnter();
   }
