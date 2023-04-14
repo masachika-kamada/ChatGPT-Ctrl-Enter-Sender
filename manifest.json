@@ -14,7 +14,7 @@
     },
     "content_scripts": [
       {
-        "matches": ["https://chat.openai.com/chat*"],
+        "matches": ["https://chat.openai.com/*"],
         "js": ["script.js"]
       },
       {
@@ -32,7 +32,7 @@
       "128": "icon/icon128.png"
     },
     "host_permissions": [
-        "https://chat.openai.com/chat*",
+        "https://chat.openai.com/*",
         "https://poe.com/*",
         "https://www.phind.com/*"
     ],

@@ -16,7 +16,7 @@ https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklm
 アイコンをクリックすれば、トグルボタンで簡単に拡張機能のオン/オフを切り替えられます。
 
 以下のページで、この拡張機能を使用することができます。
-* https://chat.openai.com/chat
+* https://chat.openai.com/
 * https://poe.com/
 * https://www.phind.com/
 
