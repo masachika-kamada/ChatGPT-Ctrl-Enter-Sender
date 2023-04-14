@@ -1,12 +1,11 @@
 {
     "manifest_version": 3,
     "name": "ChatGPT Ctrl+Enter Sender",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "ChatGPTでのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぎます。Enterキーで改行できるため直感的に操作可能です。",
     "author": "Kamada Masachika",
     "permissions": [
-      "storage",
-      "activeTab"
+      "storage"
     ],
     "background": {
       "service_worker": "background.js",
