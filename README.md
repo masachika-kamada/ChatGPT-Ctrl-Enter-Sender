@@ -1,26 +1,28 @@
 # ChatGPT Ctrl+Enter Sender
 
-## 概要
+English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 
-* ChatGPT でのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぐ
-* 「Enter」で直感的に改行できる
+## Overview
 
-## chrome ウェブストアページ
+* Assigns "Ctrl+Enter" for message sending in ChatGPT to prevent accidental sending
+* Intuitively use "Enter" for line breaks
+
+## Chrome Web Store page
 
 https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch
 
-## 機能
+## Features
 
-**ChatGPT Ctrl+Enter Sender** は、ChatGPT などのサイトでメッセージを「Ctrl+Enter」で送信できるようにします。<br>
-本来送信に使用されていた Enter で改行できるようになるため、誤って Enter を押してメッセージを送信することがなくなります。<br>
-アイコンをクリックすれば、トグルボタンで簡単に拡張機能のオン/オフを切り替えられます。
+**ChatGPT Ctrl+Enter Sender** allows you to send messages in ChatGPT and other sites using "Ctrl+Enter".<br>
+With this extension, you can use "Enter" for line breaks instead of accidentally sending messages by pressing "Enter" to send.<br>
+You can easily toggle the extension on and off with a toggle button by clicking the icon.
 
-以下のページで、この拡張機能を使用することができます。
+You can use this extension on the following pages:
 * https://chat.openai.com/
 * https://poe.com/
 * https://www.phind.com/
 
-## デモ動画
+## Demo Video
 
 https://user-images.githubusercontent.com/63488322/231231536-0a45f182-eb20-4872-b469-ef0095342011.mp4
 
