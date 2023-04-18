@@ -27,6 +27,6 @@
 
 <https://user-images.githubusercontent.com/63488322/231231536-0a45f182-eb20-4872-b469-ef0095342011.mp4>
 
-## 贡献 :smile
+## 贡献 :smile:
 
 * [momosuke](https://github.com/ry0y4n)
