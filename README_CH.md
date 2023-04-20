@@ -30,3 +30,4 @@
 ## 贡献 :smile:
 
 * [momosuke](https://github.com/ry0y4n)
+* [Yusuke Sakai](https://github.com/ore88ore)

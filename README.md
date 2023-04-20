@@ -29,3 +29,4 @@ https://user-images.githubusercontent.com/63488322/231231536-0a45f182-eb20-4872-
 ## Contribute :smile:
 
 * [momosuke](https://github.com/ry0y4n)
+* [Yusuke Sakai](https://github.com/ore88ore)
