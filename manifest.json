@@ -23,6 +23,10 @@
       {
         "matches": ["https://www.phind.com/*"],
         "js": ["script.js"]
+      },
+      {
+        "matches": ["https://bard.google.com/*"],
+        "js": ["script.js"]
       }
     ],
     "icons": {
@@ -33,7 +37,8 @@
     "host_permissions": [
         "https://chat.openai.com/*",
         "https://poe.com/*",
-        "https://www.phind.com/*"
+        "https://www.phind.com/*",
+        "https://bard.google.com/*"
     ],
     "action": {
       "default_popup": "popup.html",
