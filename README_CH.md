@@ -19,9 +19,12 @@
 
 您可以在以下页面上使用此扩展：
 
-* <https://chat.openai.com/>
-* <https://poe.com/>
-* <https://www.phind.com/>
+* <https://chat.openai.com>
+* <https://poe.com>
+* <https://www.phind.com>
+* <https://bard.google.com>
+* <https://www.chatpdf.com>
+* <https://www.perplexity.ai>
 
 ## 演示视频
 

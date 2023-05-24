@@ -18,9 +18,13 @@ With this extension, you can use "Enter" for line breaks instead of accidentally
 You can easily toggle the extension on and off with a toggle button by clicking the icon.
 
 You can use this extension on the following pages:
-* https://chat.openai.com/
-* https://poe.com/
-* https://www.phind.com/
+
+* <https://chat.openai.com>
+* <https://poe.com>
+* <https://www.phind.com>
+* <https://bard.google.com>
+* <https://www.chatpdf.com>
+* <https://www.perplexity.ai>
 
 ## Demo Video
 
