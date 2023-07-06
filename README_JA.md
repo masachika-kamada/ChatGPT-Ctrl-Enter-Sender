@@ -9,7 +9,7 @@
 
 ## chrome ウェブストアページ
 
-https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch
+<https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch>
 
 ## 機能
 
@@ -28,7 +28,15 @@ https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklm
 
 ## デモ動画
 
-https://user-images.githubusercontent.com/63488322/231231536-0a45f182-eb20-4872-b469-ef0095342011.mp4
+<https://user-images.githubusercontent.com/63488322/231231536-0a45f182-eb20-4872-b469-ef0095342011.mp4>
+
+## 使用上のヒント
+
+以下の拡張機能を使用している際、機能が正常に動作しない可能性が確認されております。<br>
+問題が発生した場合は、一時的にこれらの拡張機能を無効化し、問題が解消するかご確認ください。
+
+* [WebChatGPT](https://chrome.google.com/webstore/detail/webchatgpt-chatgpt-with-i/lpfemeioodjbpieminkklglpmhlngfcn)
+* [TalkBerry](https://chrome.google.com/webstore/detail/talkberry-talk-to-chatgpt/facjhgcdnbfghhbnmfjgkncnbimfdakb)
 
 ## Contribute :smile:
 

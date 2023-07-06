@@ -30,6 +30,14 @@
 
 <https://user-images.githubusercontent.com/63488322/231231536-0a45f182-eb20-4872-b469-ef0095342011.mp4>
 
+## 使用提示
+
+我们注意到，当同时使用以下扩展时，本扩展可能无法如预期般正常工作。<br>
+如果您遇到任何问题，我们建议您暂时禁用这些扩展，看看问题是否得到解决。
+
+* [WebChatGPT](https://chrome.google.com/webstore/detail/webchatgpt-chatgpt-with-i/lpfemeioodjbpieminkklglpmhlngfcn)
+* [TalkBerry](https://chrome.google.com/webstore/detail/talkberry-talk-to-chatgpt/facjhgcdnbfghhbnmfjgkncnbimfdakb)
+
 ## 贡献 :smile:
 
 * [momosuke](https://github.com/ry0y4n)
