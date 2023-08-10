@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an enhancement for ExifFrame
+about: Suggest an enhancement for ChatGPT-Ctrl-Enter-Sender
 title: 'Feature Request: '
 labels: enhancement
 assignees: ''

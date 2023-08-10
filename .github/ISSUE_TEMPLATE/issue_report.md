@@ -1,6 +1,6 @@
 ---
 name: Issue report
-about: Create a report to help us improve ExifFrame
+about: Create a report to help us improve ChatGPT-Ctrl-Enter-Sender
 title: ''
 labels: ''
 assignees: ''
