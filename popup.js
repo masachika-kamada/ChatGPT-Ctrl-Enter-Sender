@@ -8,9 +8,9 @@ chrome.storage.sync.get("isEnabled", (data) => {
   updateIcon();
 });
 
-toggleButton.addEventListener("change", () => {
+toggleButton.addEventListener("change", async () => {
   isEnabled = toggleButton.checked;
-  chrome.storage.sync.set({ isEnabled });
+  await browser.storage.sync.set({ isEnabled });
   updateIcon();
 });
 
