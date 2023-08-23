@@ -2,6 +2,7 @@ let isEnabled = false;
 const toggleButton = document.querySelector("#isEnabled");
 
 chrome.storage.sync.get("isEnabled", (data) => {
+  data = data ?? {};
   isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
   toggleButton.checked = isEnabled;
   updateIcon();
