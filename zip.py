@@ -25,6 +25,8 @@ def create_zip(source_dir, target_zip, include_items):
             else:
                 shutil.copy2(s, d)
 
+    if os.path.exists(target_zip):
+        os.remove(target_zip)
     with zipfile.ZipFile(target_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
         zipdir(temp_dir, zipf)
 

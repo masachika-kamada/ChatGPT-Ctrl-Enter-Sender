@@ -22,9 +22,9 @@ function updateIcon() {
         url.startsWith("https://bard.google.com") ||
         url.startsWith("https://www.chatpdf.com") ||
         url.startsWith("https://www.perplexity.ai")) {
-      chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
+      chrome.browserAction.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
     } else {
-      chrome.action.setIcon({ path: "icon/na.png" });
+      chrome.browserAction.setIcon({ path: "icon/na.png" });
     }
   });
 }
