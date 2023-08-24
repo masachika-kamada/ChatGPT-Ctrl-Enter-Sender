@@ -7,9 +7,9 @@
 * 为 ChatGPT 分配“Ctrl+Enter”以发送消息，防止误发
 * 可直观地通过“Enter”换行
 
-## Chrome 网上应用店页面
+## Firefox Add-ons
 
-<https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch>
+<https://addons.mozilla.org/zh-CN/firefox/addon/chatgpt-ctrl-enter-sender/>
 
 ## 功能
 
@@ -42,3 +42,4 @@
 
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
+* [Aniny](https://github.com/Aniny21)
