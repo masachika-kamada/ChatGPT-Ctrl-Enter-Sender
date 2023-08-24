@@ -7,9 +7,9 @@
 * ChatGPT でのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぐ
 * 「Enter」で直感的に改行できる
 
-## chrome ウェブストアページ
+## Firefox Add-ons
 
-<https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch>
+<https://addons.mozilla.org/ja/firefox/addon/chatgpt-ctrl-enter-sender/>
 
 ## 機能
 
@@ -42,3 +42,4 @@
 
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
+* [Aniny](https://github.com/Aniny21)

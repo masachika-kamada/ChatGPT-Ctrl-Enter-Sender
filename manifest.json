@@ -1,62 +1,65 @@
 {
-    "manifest_version": 3,
-    "name": "__MSG_appName__",
-    "version": "1.1.1",
-    "description": "__MSG_appDesc__",
-    "default_locale": "en",
-    "author": "Kamada Masachika",
-    "permissions": [
-      "storage"
-    ],
-    "background": {
-      "service_worker": "background.js",
-      "type": "module"
+  "manifest_version": 2,
+  "name": "__MSG_appName__",
+  "version": "1.0.0",
+  "description": "__MSG_appDesc__",
+  "default_locale": "en",
+  "author": "Kamada Masachika",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "chatgpt-ctrl-enter-sender@chatgpt-extension.io",
+      "strict_min_version": "57.0"
+    }
+  },
+  "permissions": [
+    "storage",
+    "https://chat.openai.com/*",
+    "https://poe.com/*",
+    "https://www.phind.com/*",
+    "https://bard.google.com/*",
+    "https://www.chatpdf.com/*",
+    "https://www.perplexity.ai/*"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chat.openai.com/*"],
+      "js": ["script.js"]
     },
-    "content_scripts": [
-      {
-        "matches": ["https://chat.openai.com/*"],
-        "js": ["script.js"]
-      },
-      {
-        "matches": ["https://poe.com/*"],
-        "js": ["script.js"]
-      },
-      {
-        "matches": ["https://www.phind.com/*"],
-        "js": ["script.js"]
-      },
-      {
-        "matches": ["https://bard.google.com/*"],
-        "js": ["script.js"]
-      },
-      {
-        "matches": ["https://www.chatpdf.com/*"],
-        "js": ["script.js"]
-      },
-      {
-        "matches": ["https://www.perplexity.ai/*"],
-        "js": ["script.js"]
-      }
-    ],
-    "icons": {
+    {
+      "matches": ["https://poe.com/*"],
+      "js": ["script.js"]
+    },
+    {
+      "matches": ["https://www.phind.com/*"],
+      "js": ["script.js"]
+    },
+    {
+      "matches": ["https://bard.google.com/*"],
+      "js": ["script.js"]
+    },
+    {
+      "matches": ["https://www.chatpdf.com/*"],
+      "js": ["script.js"]
+    },
+    {
+      "matches": ["https://www.perplexity.ai/*"],
+      "js": ["script.js"]
+    }
+  ],
+  "icons": {
+    "16": "icon/icon16.png",
+    "48": "icon/icon48.png",
+    "128": "icon/icon128.png"
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
       "16": "icon/icon16.png",
       "48": "icon/icon48.png",
       "128": "icon/icon128.png"
-    },
-    "host_permissions": [
-        "https://chat.openai.com/*",
-        "https://poe.com/*",
-        "https://www.phind.com/*",
-        "https://bard.google.com/*",
-        "https://www.chatpdf.com/*",
-        "https://www.perplexity.ai/*"
-    ],
-    "action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "16": "icon/icon16.png",
-        "48": "icon/icon48.png",
-        "128": "icon/icon128.png"
-      }
     }
   }
+}

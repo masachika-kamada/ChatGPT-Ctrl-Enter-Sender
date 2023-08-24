@@ -2,14 +2,15 @@ let isEnabled = false;
 const toggleButton = document.querySelector("#isEnabled");
 
 chrome.storage.sync.get("isEnabled", (data) => {
+  data = data ?? {};
   isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
   toggleButton.checked = isEnabled;
   updateIcon();
 });
 
-toggleButton.addEventListener("change", () => {
+toggleButton.addEventListener("change", async () => {
   isEnabled = toggleButton.checked;
-  chrome.storage.sync.set({ isEnabled });
+  await browser.storage.sync.set({ isEnabled });
   updateIcon();
 });
 
@@ -22,9 +23,9 @@ function updateIcon() {
         url.startsWith("https://bard.google.com") ||
         url.startsWith("https://www.chatpdf.com") ||
         url.startsWith("https://www.perplexity.ai")) {
-      chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
+      chrome.browserAction.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
     } else {
-      chrome.action.setIcon({ path: "icon/na.png" });
+      chrome.browserAction.setIcon({ path: "icon/na.png" });
     }
   });
 }
