@@ -7,9 +7,14 @@
 * ChatGPT でのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぐ
 * 「Enter」で直感的に改行できる
 
-## chrome ウェブストアページ
+## 対応ブラウザ
 
-<https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch>
+### Chromium ベースのブラウザ (例: Chrome, Edge, Brave など)
+[Chrome ウェブストアで利用可能](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
+
+### Firefox
+[Firefox アドオンページ](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
+
 
 ## 機能
 
@@ -42,3 +47,4 @@
 
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
+* [Aniny](https://github.com/Aniny21)

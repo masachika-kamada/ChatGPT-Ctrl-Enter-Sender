@@ -7,9 +7,13 @@ English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 * Assigns "Ctrl+Enter" for message sending in ChatGPT to prevent accidental sending
 * Intuitively use "Enter" for line breaks
 
-## Chrome Web Store page
+## Browser Support
 
-<https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch>
+### Chromium-based Browsers (e.g. Chrome, Edge, Brave, etc.)
+[Available on Chrome Web Store](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
+
+### Firefox
+[Firefox Add-on page](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
 
 ## Features
 
@@ -42,3 +46,4 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
+* [Aniny](https://github.com/Aniny21)
