@@ -3,12 +3,30 @@
 // });
 
 function handleCtrlEnter(event) {
-  if (
-    event.target.tagName === "TEXTAREA" &&
-    event.code == "Enter" &&
-    !(event.ctrlKey || event.metaKey)
-  ) {
-    event.stopPropagation();
+  if (event.target.id === "prompt-textarea") {
+    if (
+      event.target.tagName === "TEXTAREA" &&
+      event.code == "Enter" &&
+      !(event.ctrlKey || event.metaKey)
+    ) {
+      event.stopPropagation();
+    }
+  } else {
+    if (event.target === document.querySelectorAll("textarea")[0]) {
+      if (event.ctrlKey && event.code == "Enter") {
+        event.stopPropagation();
+
+        const newEvent = new KeyboardEvent("keydown", {
+          bubbles: true,
+          cancelable: true,
+          key: "Enter",
+          code: "Enter",
+          ctrlKey: false,
+          metaKey: true
+        });
+        event.target.dispatchEvent(newEvent);
+      }
+    }
   }
 }
 
