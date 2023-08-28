@@ -14,8 +14,6 @@ function handleCtrlEnter(event) {
   } else {
     if (event.target === document.querySelectorAll("textarea")[0]) {
       if (event.ctrlKey && event.code == "Enter") {
-        event.stopPropagation();
-
         const newEvent = new KeyboardEvent("keydown", {
           bubbles: true,
           cancelable: true,
