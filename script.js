@@ -3,7 +3,7 @@
 // });
 
 function handleCtrlEnter(event) {
-  const url = window.location.href
+  const url = window.location.href;
   if (!url.startsWith("https://chat.openai.com") || event.target.id === "prompt-textarea") {
     if (
       event.target.tagName === "TEXTAREA" &&
@@ -13,18 +13,16 @@ function handleCtrlEnter(event) {
       event.stopPropagation();
     }
   } else {
-    if (event.target === document.querySelectorAll("textarea")[0]) {
-      if (event.ctrlKey && event.code == "Enter") {
-        const newEvent = new KeyboardEvent("keydown", {
-          bubbles: true,
-          cancelable: true,
-          key: "Enter",
-          code: "Enter",
-          ctrlKey: false,
-          metaKey: true
-        });
-        event.target.dispatchEvent(newEvent);
-      }
+    if (event.ctrlKey && event.code == "Enter") {
+      const newEvent = new KeyboardEvent("keydown", {
+        bubbles: true,
+        cancelable: true,
+        key: "Enter",
+        code: "Enter",
+        ctrlKey: false,
+        metaKey: true
+      });
+      event.target.dispatchEvent(newEvent);
     }
   }
 }
