@@ -3,7 +3,8 @@
 // });
 
 function handleCtrlEnter(event) {
-  if (event.target.id === "prompt-textarea") {
+  const url = window.location.href
+  if (!url.startsWith("https://chat.openai.com") || event.target.id === "prompt-textarea") {
     if (
       event.target.tagName === "TEXTAREA" &&
       event.code == "Enter" &&
