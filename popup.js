@@ -23,8 +23,6 @@ function updateIcon() {
         url.startsWith("https://www.chatpdf.com") ||
         url.startsWith("https://www.perplexity.ai")) {
       chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
-    } else {
-      chrome.action.setIcon({ path: "icon/na.png" });
     }
   });
 }

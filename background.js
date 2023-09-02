@@ -14,7 +14,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         }
     } else {
       chrome.action.disable(tabId);
-      chrome.action.setIcon({ path: "icon/na.png" });
     }
   });
 });
