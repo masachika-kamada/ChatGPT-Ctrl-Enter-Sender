@@ -1,7 +1,3 @@
-// document.addEventListener("click", (event) => {
-//   console.log("target element:", event.target);
-// });
-
 function isPromptTextAreaFunc(target, url) {
   if (url.startsWith("https://chat.openai.com")) {
     return target.tagName === "TEXTAREA" && target.id === "prompt-textarea";
@@ -13,7 +9,7 @@ function isPromptTextAreaFunc(target, url) {
   } else if (url.startsWith("https://bard.google.com")) {
     return target.getAttribute("aria-label") === "Input for prompt text";
   }
-  
+
   return target.tagName === "TEXTAREA";
 }
 
@@ -27,7 +23,6 @@ function handleCtrlEnter(event) {
 
   const isOnlyEnter =
     event.code == "Enter" && !(event.ctrlKey || event.metaKey);
-  console.log("isOnlyEnter:", isOnlyEnter);
 
   const isCtrlEnter = event.ctrlKey && event.code == "Enter";
 
