@@ -26,7 +26,7 @@ You can use this extension on the following pages:
 * <https://chat.openai.com>
 * <https://poe.com>
 * <https://www.phind.com>
-* <https://bard.google.com>
+* <https://chat.mistral.ai>
 * <https://www.chatpdf.com>
 * <https://www.perplexity.ai>
 
