@@ -1,29 +1,43 @@
-// document.addEventListener("click", (event) => {
-//   console.log("target element:", event.target);
-// });
+function isPromptTextAreaFunc(target, url) {
+  if (url.startsWith("https://chat.openai.com")) {
+    return target.tagName === "TEXTAREA" && target.id === "prompt-textarea";
+  } else if (url.startsWith("https://www.phind.com")) {
+    return (
+      target.tagName === "TEXTAREA" &&
+      target.getAttribute("aria-label") === "Send message"
+    );
+  } else if (url.startsWith("https://bard.google.com")) {
+    return target.getAttribute("aria-label") === "Input for prompt text";
+  }
+
+  return target.tagName === "TEXTAREA";
+}
 
 function handleCtrlEnter(event) {
   const url = window.location.href;
-  if (!url.startsWith("https://chat.openai.com") || event.target.id === "prompt-textarea") {
-    if (
-      event.target.tagName === "TEXTAREA" &&
-      event.code == "Enter" &&
-      !(event.ctrlKey || event.metaKey)
-    ) {
-      event.stopPropagation();
-    }
-  } else {
-    if (event.ctrlKey && event.code == "Enter") {
-      const newEvent = new KeyboardEvent("keydown", {
-        bubbles: true,
-        cancelable: true,
-        key: "Enter",
-        code: "Enter",
-        ctrlKey: false,
-        metaKey: true
-      });
-      event.target.dispatchEvent(newEvent);
-    }
+
+  const isPromptTextArea = isPromptTextAreaFunc(event.target, url);
+  if (!isPromptTextArea) {
+    return;
+  }
+
+  const isOnlyEnter =
+    event.code == "Enter" && !(event.ctrlKey || event.metaKey);
+
+  const isCtrlEnter = event.ctrlKey && event.code == "Enter";
+
+  if (isOnlyEnter) {
+    event.stopPropagation();
+  } else if (isCtrlEnter) {
+    const newEvent = new KeyboardEvent("keydown", {
+      bubbles: true,
+      cancelable: true,
+      key: "Enter",
+      code: "Enter",
+      ctrlKey: false,
+      metaKey: true,
+    });
+    event.target.dispatchEvent(newEvent);
   }
 }
 
