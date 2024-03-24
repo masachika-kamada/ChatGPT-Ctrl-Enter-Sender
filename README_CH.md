@@ -29,6 +29,7 @@
 * <https://chat.mistral.ai>
 * <https://www.chatpdf.com>
 * <https://www.perplexity.ai>
+* <https://claude.ai>
 
 ## 演示视频
 
@@ -47,3 +48,5 @@
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
 * [Aniny](https://github.com/Aniny21)
+* [Amritanshu Singh](https://github.com/Amritanshu1912)
+* [Yuichi Miyata](https://github.com/Juris710)

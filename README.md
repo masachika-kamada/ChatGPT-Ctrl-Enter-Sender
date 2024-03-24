@@ -29,6 +29,7 @@ You can use this extension on the following pages:
 * <https://chat.mistral.ai>
 * <https://www.chatpdf.com>
 * <https://www.perplexity.ai>
+* <https://claude.ai>
 
 ## Demo Video
 
@@ -47,3 +48,5 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
 * [Aniny](https://github.com/Aniny21)
+* [Amritanshu Singh](https://github.com/Amritanshu1912)
+* [Yuichi Miyata](https://github.com/Juris710)
