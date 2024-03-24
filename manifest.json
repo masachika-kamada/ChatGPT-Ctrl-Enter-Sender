@@ -23,6 +23,11 @@
         "https://www.perplexity.ai/*"
       ],
       "js": ["script.js"]
+    },
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["script_claude.js"],
+      "run_at": "document_start"
     }
   ],
   "icons": {
@@ -36,7 +41,8 @@
     "https://www.phind.com/*",
     "https://chat.mistral.ai/*",
     "https://www.chatpdf.com/*",
-    "https://www.perplexity.ai/*"
+    "https://www.perplexity.ai/*",
+    "https://claude.ai/*"
   ],
   "action": {
     "default_popup": "popup.html",
