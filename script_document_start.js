@@ -1,10 +1,18 @@
 let isHandleCtrlEnterEnabled = false;
 
+function shouldHandleCtrlEnter(url, event) {
+  if (url.startsWith("https://claude.ai")) {
+    return event.target.tagName === "DIV" && event.target.contentEditable === "true";
+  }
+  return false;
+}
+
 function handleCtrlEnter(event) {
   if (!isHandleCtrlEnterEnabled){
     return;
   }
-  if (event.target.tagName !== "DIV" || event.target.contentEditable !== "true"){
+  const url = window.location.href;
+  if (!shouldHandleCtrlEnter(url, event)){
     return;
   }
 
