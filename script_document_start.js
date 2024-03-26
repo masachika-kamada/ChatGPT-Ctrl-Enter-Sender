@@ -4,7 +4,20 @@ function shouldHandleCtrlEnter(url, event) {
   if (url.startsWith("https://claude.ai")) {
     return event.target.tagName === "DIV" && event.target.contentEditable === "true";
   }
+  if (url.startsWith("https://www.bing.com/chat")){
+    return event.target.tagName === "CIB-SERP";
+  }
   return false;
+}
+
+function shouldPreventDefault(url){
+  if (url.startsWith("https://claude.ai")) {
+    return true;
+  }
+  if (url.startsWith("https://www.bing.com/chat")){
+    return false;
+  }
+  throw new Error("Unexpected URL: " + url);
 }
 
 function handleCtrlEnter(event) {
@@ -20,8 +33,10 @@ function handleCtrlEnter(event) {
   if (event.code == "Enter" && noModifierKeysDown){
     // Cancel Enter without any modifier key (Ctrl, Shift, meta)
     // Enter with Shift must NOT be canceled to prevent infinite loop
-    event.preventDefault(); // Claude prevents default keydown event, so do I.
-    event.stopImmediatePropagation(); // Cancel keydown event handler of Claude
+    if (shouldPreventDefault(url)) {
+      event.preventDefault();
+    }
+    event.stopImmediatePropagation(); // Cancel keydown event handler of the website
 
     // Dispatch Shift+Enter instead
     const newEvent = new KeyboardEvent("keydown", {
