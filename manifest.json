@@ -25,8 +25,11 @@
       "js": ["script.js"]
     },
     {
-      "matches": ["https://claude.ai/*"],
-      "js": ["script_claude.js"],
+      "matches": [
+        "https://claude.ai/*",
+        "https://www.bing.com/chat*"
+      ],
+      "js": ["script_document_start.js"],
       "run_at": "document_start"
     }
   ],
@@ -42,7 +45,8 @@
     "https://chat.mistral.ai/*",
     "https://www.chatpdf.com/*",
     "https://www.perplexity.ai/*",
-    "https://claude.ai/*"
+    "https://claude.ai/*",
+    "https://www.bing.com/chat*"
   ],
   "action": {
     "default_popup": "popup.html",
