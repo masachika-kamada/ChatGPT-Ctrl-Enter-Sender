@@ -31,6 +31,7 @@
 * <https://www.chatpdf.com>
 * <https://www.perplexity.ai>
 * <https://claude.ai>
+* <https://www.bing.com/chat>
 
 ## デモ動画
 

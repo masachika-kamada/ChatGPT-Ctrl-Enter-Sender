@@ -30,6 +30,7 @@ You can use this extension on the following pages:
 * <https://www.chatpdf.com>
 * <https://www.perplexity.ai>
 * <https://claude.ai>
+* <https://www.bing.com/chat>
 
 ## Demo Video
 
