@@ -40,7 +40,8 @@ def main():
         "popup.css",
         "popup.html",
         "popup.js",
-        "script.js"
+        "script.js",
+        "script_document_start.js"
     ]
     create_zip(".", "extension.zip", include_items)
 
