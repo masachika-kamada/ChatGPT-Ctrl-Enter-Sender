@@ -20,7 +20,9 @@
         "https://www.phind.com/*",
         "https://chat.mistral.ai/*",
         "https://www.chatpdf.com/*",
-        "https://www.perplexity.ai/*"
+        "https://www.perplexity.ai/*",
+        "https://you.com/*",
+        "https://dashboard.cohere.com/playground/chat"
       ],
       "js": ["script.js"]
     },
@@ -46,7 +48,9 @@
     "https://www.chatpdf.com/*",
     "https://www.perplexity.ai/*",
     "https://claude.ai/*",
-    "https://www.bing.com/chat*"
+    "https://www.bing.com/chat*",
+    "https://you.com/*",
+    "https://dashboard.cohere.com/playground/chat"
   ],
   "action": {
     "default_popup": "popup.html",
