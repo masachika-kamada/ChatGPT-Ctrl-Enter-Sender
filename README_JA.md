@@ -32,6 +32,8 @@
 * <https://www.perplexity.ai>
 * <https://claude.ai>
 * <https://www.bing.com/chat>
+* <https://you.com>
+* <https://dashboard.cohere.com/playground/chat>
 
 ## デモ動画
 

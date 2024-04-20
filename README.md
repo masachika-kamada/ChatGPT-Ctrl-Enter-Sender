@@ -31,6 +31,8 @@ You can use this extension on the following pages:
 * <https://www.perplexity.ai>
 * <https://claude.ai>
 * <https://www.bing.com/chat>
+* <https://you.com>
+* <https://dashboard.cohere.com/playground/chat>
 
 ## Demo Video
 
