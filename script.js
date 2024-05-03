@@ -12,7 +12,7 @@ function handleCtrlEnter(event) {
   } else if (isCtrlEnter) {
     // Dispatch event only on Windows
     // Use metaKey on Windows to enable editing confirmation on the ChatGPT page, similar to Mac
-    if (window.location.href.startsWith("https://chat.openai.com")) {
+    if (window.location.href.startsWith("https://chat.openai.com") || window.location.href.startsWith("https://chatgpt.com")) {
       event.stopPropagation();
       const newEvent = new KeyboardEvent("keydown", {
         bubbles: true,

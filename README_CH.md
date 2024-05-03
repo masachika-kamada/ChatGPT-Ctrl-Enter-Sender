@@ -24,6 +24,7 @@
 您可以在以下页面上使用此扩展：
 
 * <https://chat.openai.com>
+* <https://chatgpt.com>
 * <https://poe.com>
 * <https://www.phind.com>
 * <https://chat.mistral.ai>

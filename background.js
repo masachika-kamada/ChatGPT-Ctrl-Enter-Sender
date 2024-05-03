@@ -3,6 +3,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   chrome.storage.sync.get("isEnabled", (data) => {
     const isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
     if (url && (url.startsWith("https://chat.openai.com") ||
+                url.startsWith("https://chatgpt.com") ||
                 url.startsWith("https://poe.com") ||
                 url.startsWith("https://www.phind.com") ||
                 url.startsWith("https://chat.mistral.ai") ||
