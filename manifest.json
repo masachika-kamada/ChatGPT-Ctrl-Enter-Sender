@@ -15,7 +15,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
         "https://poe.com/*",
         "https://www.phind.com/*",
         "https://chat.mistral.ai/*",
@@ -41,7 +41,7 @@
     "128": "icon/icon128.png"
   },
   "host_permissions": [
-    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
     "https://poe.com/*",
     "https://www.phind.com/*",
     "https://chat.mistral.ai/*",

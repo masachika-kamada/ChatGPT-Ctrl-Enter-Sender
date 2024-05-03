@@ -16,7 +16,7 @@ toggleButton.addEventListener("change", () => {
 function updateIcon() {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const url = tabs[0].url ?? "";
-    if (url.startsWith("https://chat.openai.com") ||
+    if (url.startsWith("https://chatgpt.com") ||
         url.startsWith("https://poe.com") ||
         url.startsWith("https://www.phind.com") ||
         url.startsWith("https://chat.mistral.ai") ||

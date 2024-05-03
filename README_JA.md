@@ -24,7 +24,7 @@
 
 以下のページで、この拡張機能を使用することができます。
 
-* <https://chat.openai.com>
+* <https://chatgpt.com>
 * <https://poe.com>
 * <https://www.phind.com>
 * <https://chat.mistral.ai>
