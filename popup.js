@@ -18,6 +18,7 @@ function updateIcon() {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const url = tabs[0].url ?? "";
     if (url.startsWith("https://chat.openai.com") ||
+        url.startsWith("https://chatgpt.com") ||
         url.startsWith("https://poe.com") ||
         url.startsWith("https://www.phind.com") ||
         url.startsWith("https://bard.google.com") ||
