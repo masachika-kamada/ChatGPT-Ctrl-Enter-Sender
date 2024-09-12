@@ -1,5 +1,5 @@
 function handleCtrlEnter(event) {
-  if (!event.target.tagName === "TEXTAREA") {
+  if (event.target.tagName !== "TEXTAREA") {
     return;
   }
 
