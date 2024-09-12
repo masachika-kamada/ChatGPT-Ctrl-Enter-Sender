@@ -16,7 +16,12 @@
     {
       "matches": [
         "https://chat.openai.com/*",
-        "https://chatgpt.com/*",
+        "https://chatgpt.com/*"
+      ],
+      "js": ["script_chatgpt.js"]
+    },
+    {
+      "matches": [
         "https://poe.com/*",
         "https://www.phind.com/*",
         "https://chat.mistral.ai/*",

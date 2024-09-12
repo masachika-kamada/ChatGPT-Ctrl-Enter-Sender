@@ -42,6 +42,7 @@ def main():
         "popup.js",
         "script.js",
         "script_document_start.js"
+        "script_chatgpt.js"
     ]
     create_zip(".", "extension.zip", include_items)
 
