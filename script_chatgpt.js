@@ -8,8 +8,8 @@ function handleCtrlEnter(event) {
 
   if (isOnlyEnter) {
     event.preventDefault();
-    let newEvent = new KeyboardEvent('keydown', {
-      key: 'Enter',
+    let newEvent = new KeyboardEvent("keydown", {
+      key: "Enter",
       shiftKey: true,
       bubbles: true,
       cancelable: true
@@ -19,10 +19,13 @@ function handleCtrlEnter(event) {
     // Dispatch event only on Windows
     // Use metaKey on Windows to enable editing confirmation on the ChatGPT page, similar to Mac
     event.preventDefault();
-    let newEvent = new KeyboardEvent('keydown', {
-      key: 'Enter',
+    let newEvent = new KeyboardEvent("keydown", {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
+      key: "Enter",
+      code: "Enter",
+      ctrlKey: false,
+      metaKey: true,
     });
     event.target.dispatchEvent(newEvent);
   }
