@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "1.5.0",
+  "version": "1.5.2",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
@@ -15,7 +15,6 @@
   "content_scripts": [
     {
       "matches": [
-        "https://chat.openai.com/*",
         "https://chatgpt.com/*"
       ],
       "js": ["script_chatgpt.js"]
@@ -47,7 +46,6 @@
     "128": "icon/icon128.png"
   },
   "host_permissions": [
-    "https://chat.openai.com/*",
     "https://chatgpt.com/*",
     "https://poe.com/*",
     "https://www.phind.com/*",

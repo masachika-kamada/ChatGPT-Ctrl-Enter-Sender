@@ -23,7 +23,7 @@ You can easily toggle the extension on and off with a toggle button by clicking 
 
 You can use this extension on the following pages:
 
-* <https://chat.openai.com>
+* <https://chatgpt.com/>
 * <https://poe.com>
 * <https://www.phind.com>
 * <https://chat.mistral.ai>
@@ -53,3 +53,4 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [Aniny](https://github.com/Aniny21)
 * [Amritanshu Singh](https://github.com/Amritanshu1912)
 * [Yuichi Miyata](https://github.com/Juris710)
+* [baku sato](https://github.com/sahksas)

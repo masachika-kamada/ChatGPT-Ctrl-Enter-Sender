@@ -23,7 +23,7 @@
 
 您可以在以下页面上使用此扩展：
 
-* <https://chat.openai.com>
+* <https://chatgpt.com/>
 * <https://poe.com>
 * <https://www.phind.com>
 * <https://chat.mistral.ai>
@@ -53,3 +53,4 @@
 * [Aniny](https://github.com/Aniny21)
 * [Amritanshu Singh](https://github.com/Amritanshu1912)
 * [Yuichi Miyata](https://github.com/Juris710)
+* [baku sato](https://github.com/sahksas)
