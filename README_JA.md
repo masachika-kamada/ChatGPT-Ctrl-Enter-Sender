@@ -7,9 +7,14 @@
 * ChatGPT でのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぐ
 * 「Enter」で直感的に改行できる
 
-## Firefox Add-ons
+## 対応ブラウザ
 
-<https://addons.mozilla.org/ja/firefox/addon/chatgpt-ctrl-enter-sender/>
+### Chromium ベースのブラウザ (例: Chrome, Edge, Brave など)
+[Chrome ウェブストアで利用可能](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
+
+### Firefox
+[Firefox アドオンページ](https://addons.mozilla.org/ja/firefox/addon/chatgpt-ctrl-enter-sender/)
+
 
 ## 機能
 
@@ -19,12 +24,16 @@
 
 以下のページで、この拡張機能を使用することができます。
 
-* <https://chat.openai.com>
+* <https://chatgpt.com/>
 * <https://poe.com>
 * <https://www.phind.com>
-* <https://bard.google.com>
+* <https://chat.mistral.ai>
 * <https://www.chatpdf.com>
 * <https://www.perplexity.ai>
+* <https://claude.ai>
+* <https://www.bing.com/chat>
+* <https://you.com>
+* <https://dashboard.cohere.com/playground/chat>
 
 ## デモ動画
 
@@ -43,3 +52,6 @@
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
 * [Aniny](https://github.com/Aniny21)
+* [Amritanshu Singh](https://github.com/Amritanshu1912)
+* [Yuichi Miyata](https://github.com/Juris710)
+* [baku sato](https://github.com/sahksas)

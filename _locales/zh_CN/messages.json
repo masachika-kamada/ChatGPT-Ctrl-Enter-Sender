@@ -3,6 +3,6 @@
         "message": "ChatGPT Ctrl+Enter Sender"
     },
     "appDesc": {
-        "message": "这个 Chrome 扩展让你用 'Ctrl+Enter' 发 ChatGPT 的消息，防止误发。用 Enter 键可以直接换行，用起来很直观。"
+        "message": "这个ChatGPT等AI聊天服务让你用'Ctrl+Enter'发送消息，防止误发。用 Enter 键可以直接换行，用起来很直观。"
     }
 }

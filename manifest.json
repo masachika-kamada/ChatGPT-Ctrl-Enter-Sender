@@ -26,32 +26,30 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://chat.openai.com/*"],
-      "js": ["script.js"]
+      "matches": [
+        "https://chatgpt.com/*"
+      ],
+      "js": ["script_chatgpt.js"]
     },
-        {
-      "matches": ["https://chatgpt.com/*"],
+    {
+      "matches": [
+        "https://poe.com/*",
+        "https://www.phind.com/*",
+        "https://chat.mistral.ai/*",
+        "https://www.chatpdf.com/*",
+        "https://www.perplexity.ai/*",
+        "https://you.com/*",
+        "https://dashboard.cohere.com/playground/chat"
+      ],
       "js": ["script.js"]
     },
     {
-      "matches": ["https://poe.com/*"],
-      "js": ["script.js"]
-    },
-    {
-      "matches": ["https://www.phind.com/*"],
-      "js": ["script.js"]
-    },
-    {
-      "matches": ["https://bard.google.com/*"],
-      "js": ["script.js"]
-    },
-    {
-      "matches": ["https://www.chatpdf.com/*"],
-      "js": ["script.js"]
-    },
-    {
-      "matches": ["https://www.perplexity.ai/*"],
-      "js": ["script.js"]
+      "matches": [
+        "https://claude.ai/*",
+        "https://www.bing.com/chat*"
+      ],
+      "js": ["script_document_start.js"],
+      "run_at": "document_start"
     }
   ],
   "icons": {

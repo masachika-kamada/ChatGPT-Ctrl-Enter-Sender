@@ -7,9 +7,13 @@
 * 为 ChatGPT 分配“Ctrl+Enter”以发送消息，防止误发
 * 可直观地通过“Enter”换行
 
-## Firefox Add-ons
+## 浏览器支持
 
-<https://addons.mozilla.org/zh-CN/firefox/addon/chatgpt-ctrl-enter-sender/>
+### 基于Chromium的浏览器 (例如：Chrome、Edge、Brave 等等)
+[在 Chrome 网上应用店中可用](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
+
+### Firefox
+[Firefox 扩展页面](https://addons.mozilla.org/zh-CN/firefox/addon/chatgpt-ctrl-enter-sender/)
 
 ## 功能
 
@@ -19,12 +23,16 @@
 
 您可以在以下页面上使用此扩展：
 
-* <https://chat.openai.com>
+* <https://chatgpt.com/>
 * <https://poe.com>
 * <https://www.phind.com>
-* <https://bard.google.com>
+* <https://chat.mistral.ai>
 * <https://www.chatpdf.com>
 * <https://www.perplexity.ai>
+* <https://claude.ai>
+* <https://www.bing.com/chat>
+* <https://you.com>
+* <https://dashboard.cohere.com/playground/chat>
 
 ## 演示视频
 
@@ -43,3 +51,6 @@
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
 * [Aniny](https://github.com/Aniny21)
+* [Amritanshu Singh](https://github.com/Amritanshu1912)
+* [Yuichi Miyata](https://github.com/Juris710)
+* [baku sato](https://github.com/sahksas)
