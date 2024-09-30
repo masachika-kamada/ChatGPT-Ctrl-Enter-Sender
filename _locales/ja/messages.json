@@ -3,6 +3,6 @@
         "message": "ChatGPT Ctrl+Enter Sender"
     },
     "appDesc": {
-        "message": "ChatGPTでのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぎます。Enterキーで改行できるため直感的に操作可能です。"
+        "message": "ChatGPTなどのAIチャットサービスでのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぎます。Enterキーで改行できるため直感的に操作可能です。"
     }
 }
