@@ -50,7 +50,6 @@ function handleNotebookLM(event) {
       sendButton.click();
       return true;
     }
-    console.debug('NotebookLM: Send button not found');
     return false;
   }
   return false;
@@ -68,7 +67,6 @@ function handleCtrlEnter(event) {
   // Special handling for NotebookLM
   if (url.startsWith("https://notebooklm.google.com")) {
     if (handleNotebookLM(event)) {
-      console.log("Handled Ctrl+Enter for NotebookLM");
       return;
     }
   }

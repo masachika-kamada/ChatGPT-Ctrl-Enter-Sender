@@ -10,8 +10,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 url.startsWith("https://www.perplexity.ai") ||
                 url.startsWith("https://claude.ai") ||
                 url.startsWith("https://www.bing.com/chat") ||
-                url.startsWith("https://notebooklm.google.com") ||  // Add this line
-                url.startsWith("https://gemini.google.com") ||  // Add this line
+                url.startsWith("https://notebooklm.google.com") ||
+                url.startsWith("https://gemini.google.com") ||
                 url.startsWith("https://you.com") ||
                 url.startsWith("https://dashboard.cohere.com/playground/chat"))) {
         if (changeInfo.status === "complete") {
