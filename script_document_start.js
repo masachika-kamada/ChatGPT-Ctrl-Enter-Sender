@@ -34,6 +34,28 @@ function shouldPreventDefault(url){
   throw new Error("Unexpected URL: " + url);
 }
 
+function findSendButton() {
+  const submitButton = document.querySelector('query-box form button[type="submit"]');
+  if (submitButton) return submitButton;
+  return null;
+}
+
+function handleNotebookLM(event) {
+  if ((event.ctrlKey || event.metaKey) && event.code === "Enter") {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    
+    const sendButton = findSendButton();
+    if (sendButton) {
+      sendButton.click();
+      return true;
+    }
+    console.debug('NotebookLM: Send button not found');
+    return false;
+  }
+  return false;
+}
+
 function handleCtrlEnter(event) {
   if (!isHandleCtrlEnterEnabled){
     return;
@@ -41,6 +63,14 @@ function handleCtrlEnter(event) {
   const url = window.location.href;
   if (!shouldHandleCtrlEnter(url, event)){
     return;
+  }
+
+  // Special handling for NotebookLM
+  if (url.startsWith("https://notebooklm.google.com")) {
+    if (handleNotebookLM(event)) {
+      console.log("Handled Ctrl+Enter for NotebookLM");
+      return;
+    }
   }
 
   const noModifierKeysDown = !(event.ctrlKey || event.shiftKey || event.metaKey)
