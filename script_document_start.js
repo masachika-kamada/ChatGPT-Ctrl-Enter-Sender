@@ -7,6 +7,14 @@ function shouldHandleCtrlEnter(url, event) {
   if (url.startsWith("https://www.bing.com/chat")){
     return event.target.tagName === "CIB-SERP";
   }
+  if (url.startsWith("https://notebooklm.google.com")) {
+    return event.target.tagName === "TEXTAREA" && event.target.classList.contains("query-box-input");
+  }  
+  if (url.startsWith("https://gemini.google.com")) {
+    return event.target.tagName === "DIV" && 
+           event.target.classList.contains("ql-editor") && 
+           event.target.contentEditable === "true";
+  }
   return false;
 }
 
@@ -15,6 +23,12 @@ function shouldPreventDefault(url){
     return true;
   }
   if (url.startsWith("https://www.bing.com/chat")){
+    return false;
+  }
+  if (url.startsWith("https://notebooklm.google.com")) {
+    return false;
+  }
+  if (url.startsWith("https://gemini.google.com")) {
     return false;
   }
   throw new Error("Unexpected URL: " + url);
