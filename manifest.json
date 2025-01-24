@@ -27,6 +27,7 @@
         "https://www.chatpdf.com/*",
         "https://www.perplexity.ai/*",
         "https://you.com/*",
+        "https://v0.dev/chat*",
         "https://dashboard.cohere.com/playground/chat"
       ],
       "js": ["script.js"]
