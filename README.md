@@ -33,6 +33,8 @@ You can use this extension on the following pages:
 * <https://www.bing.com/chat>
 * <https://you.com>
 * <https://dashboard.cohere.com/playground/chat>
+* <https://gemini.google.com>
+* <https://chat.deepseek.com>
 
 ## Demo Video
 
