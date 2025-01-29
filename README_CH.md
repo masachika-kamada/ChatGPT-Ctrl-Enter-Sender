@@ -32,7 +32,7 @@
 * <https://claude.ai>
 * <https://www.bing.com/chat>
 * <https://you.com>
-* <https://v0.dev/chat>
+* <https://v0.dev>
 * <https://dashboard.cohere.com/playground/chat>
 
 ## 演示视频
