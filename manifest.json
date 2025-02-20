@@ -29,7 +29,8 @@
         "https://you.com/*",
         "https://dashboard.cohere.com/playground/chat",
         "https://gemini.google.com/*",
-        "https://chat.deepseek.com/*"
+        "https://chat.deepseek.com/*",
+        "https://grok.com/*"
       ],
       "js": ["script.js"]
     },
@@ -59,7 +60,8 @@
     "https://you.com/*",
     "https://dashboard.cohere.com/playground/chat",
     "https://gemini.google.com/*",
-    "https://chat.deepseek.com/*"
+    "https://chat.deepseek.com/*",
+    "https://grok.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

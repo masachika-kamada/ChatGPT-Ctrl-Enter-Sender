@@ -35,6 +35,7 @@ You can use this extension on the following pages:
 * <https://dashboard.cohere.com/playground/chat>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>
+* <https://grok.com/>
 
 ## Demo Video
 

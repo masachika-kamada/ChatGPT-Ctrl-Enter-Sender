@@ -36,6 +36,7 @@
 * <https://dashboard.cohere.com/playground/chat>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>
+* <https://grok.com/>
 
 ## デモ動画
 
