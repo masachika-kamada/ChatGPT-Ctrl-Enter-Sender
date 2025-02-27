@@ -28,7 +28,8 @@ function updateIcon() {
         url.startsWith("https://dashboard.cohere.com/playground/chat") ||
         url.startsWith("https://gemini.google.com") ||
         url.startsWith("https://chat.deepseek.com") ||
-        url.startsWith("https://grok.com/")
+        url.startsWith("https://grok.com/") ||
+        url.startsWith("https://copilot.microsoft.com/")
     ) {
       chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
     }

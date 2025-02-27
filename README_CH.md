@@ -36,6 +36,7 @@
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>
 * <https://grok.com/>
+* <https://copilot.microsoft.com/>
 
 ## 演示视频
 
