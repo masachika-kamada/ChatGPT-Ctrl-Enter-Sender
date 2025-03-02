@@ -38,6 +38,12 @@
       ],
       "js": ["script_document_start.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://github.com/*"
+      ],
+      "js": ["script_github.js"]
     }
   ],
   "icons": {
@@ -55,7 +61,8 @@
     "https://claude.ai/*",
     "https://www.bing.com/chat*",
     "https://you.com/*",
-    "https://dashboard.cohere.com/playground/chat"
+    "https://dashboard.cohere.com/playground/chat",
+    "https://github.com/*"
   ],
   "action": {
     "default_popup": "popup.html",
