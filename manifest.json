@@ -41,9 +41,10 @@
     },
     {
       "matches": [
-        "https://github.com/*"
+        "https://github.com/*",
+        "https://grok.com/*"
       ],
-      "js": ["script_github.js"]
+      "js": ["script_button_click.js"]
     }
   ],
   "icons": {
@@ -62,7 +63,8 @@
     "https://www.bing.com/chat*",
     "https://you.com/*",
     "https://dashboard.cohere.com/playground/chat",
-    "https://github.com/*"
+    "https://github.com/*",
+    "https://grok.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

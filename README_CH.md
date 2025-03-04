@@ -33,6 +33,8 @@
 * <https://www.bing.com/chat>
 * <https://you.com>
 * <https://dashboard.cohere.com/playground/chat>
+* <https://github.com>
+* <https://grok.com>
 
 ## 演示视频
 
