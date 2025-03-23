@@ -36,13 +36,13 @@ def main():
         "_locales",
         "icon",
         "background.js",
+        "ctrl_enter_chatgpt.js",
+        "ctrl_enter_custom_inputs.js",
+        "ctrl_enter_textarea.js",
         "manifest.json",
         "popup.css",
         "popup.html",
         "popup.js",
-        "script.js",
-        "script_document_start.js",
-        "script_chatgpt.js"
     ]
     create_zip(".", "extension.zip", include_items)
 
