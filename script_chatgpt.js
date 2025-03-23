@@ -1,31 +1,21 @@
 function handleCtrlEnter(event) {
-  if (event.target.id !== "prompt-textarea") {
+  if (event.target.id !== "prompt-textarea" || !event.isTrusted) {
     return;
   }
 
-  const isOnlyEnter = event.code == "Enter" && !(event.ctrlKey || event.metaKey);
-  const isCtrlEnter = event.code == "Enter" && event.ctrlKey;
+  const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
+  const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
 
-  if (isOnlyEnter) {
+  if (isOnlyEnter || isCtrlEnter) {
     event.preventDefault();
     let newEvent = new KeyboardEvent("keydown", {
-      key: "Enter",
-      shiftKey: true,
-      bubbles: true,
-      cancelable: true
-    });
-    event.target.dispatchEvent(newEvent);
-  } else if (isCtrlEnter) {
-    // Dispatch event only on Windows
-    // Use metaKey on Windows to enable editing confirmation on the ChatGPT page, similar to Mac
-    event.preventDefault();
-    let newEvent = new KeyboardEvent("keydown", {
-      bubbles: true,
-      cancelable: true,
       key: "Enter",
       code: "Enter",
+      bubbles: true,
+      cancelable: true,
       ctrlKey: false,
-      metaKey: true,
+      metaKey: false,
+      shiftKey: isOnlyEnter
     });
     event.target.dispatchEvent(newEvent);
   }
@@ -39,15 +29,17 @@ function disableSendingWithCtrlEnter() {
   document.removeEventListener("keydown", handleCtrlEnter, { capture: true });
 }
 
+// Load stored settings and enable/disable the feature accordingly
 chrome.storage.sync.get("isEnabled", (data) => {
-  const isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
+  const isEnabled = data.isEnabled ?? true;
   if (isEnabled) {
     enableSendingWithCtrlEnter();
   }
 });
 
+// Listen for changes in the settings and update the feature state
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "sync" && "isEnabled" in changes) {
+  if (area === "sync" && changes.hasOwnProperty("isEnabled")) {
     const isEnabled = changes.isEnabled.newValue;
     if (isEnabled) {
       enableSendingWithCtrlEnter();

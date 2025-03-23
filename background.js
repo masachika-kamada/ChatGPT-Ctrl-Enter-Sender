@@ -6,10 +6,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 url.startsWith("https://poe.com") ||
                 url.startsWith("https://www.phind.com") ||
                 url.startsWith("https://chat.mistral.ai") ||
-                url.startsWith("https://www.chatpdf.com") ||
+                // url.startsWith("https://www.chatpdf.com") ||
                 url.startsWith("https://www.perplexity.ai") ||
                 url.startsWith("https://claude.ai") ||
-                url.startsWith("https://www.bing.com/chat") ||
+                url.startsWith("https://notebooklm.google.com") ||
+                url.startsWith("https://gemini.google.com") ||
                 url.startsWith("https://you.com") ||
                 url.startsWith("https://v0.dev") ||
                 url.startsWith("https://dashboard.cohere.com/playground/chat"))) {
