@@ -61,3 +61,4 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [baku sato](https://github.com/sahksas)
 * [coni524](https://github.com/coni524)
 * [sakamossan](https://github.com/sakamossan)
+* [S. Ota](https://github.com/susumuota)

@@ -16,7 +16,13 @@ function shouldHandleCtrlEnter(url, event) {
            event.target.contentEditable === "true";
   }
   else if (url.startsWith("https://chat.deepseek.com")) {
-    return event.target.id === "chat-input"
+    return event.target.id === "chat-input";
+  }
+  else if (url.startsWith("https://grok.com")) {
+    return event.target.tagName === "TEXTAREA";
+  }
+  else if (url.startsWith("https://github.com")) {
+    return event.target.getAttribute("placeholder") === "Ask Copilot";
   }
   return false;
 }

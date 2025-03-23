@@ -36,17 +36,12 @@
         "https://notebooklm.google.com/*",
         "https://gemini.google.com/*",
         "https://www.phind.com/*",
-        "https://chat.deepseek.com/*"
-      ],
-      "js": ["script_document_start.js"],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
+        "https://chat.deepseek.com/*",
         "https://github.com/*",
         "https://grok.com/*"
       ],
-      "js": ["script_button_click.js"]
+      "js": ["script_document_start.js"],
+      "run_at": "document_start"
     }
   ],
   "icons": {
