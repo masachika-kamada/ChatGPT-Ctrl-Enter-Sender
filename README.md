@@ -36,6 +36,8 @@ You can use this extension on the following pages:
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>
+* <https://github.com>
+* <https://grok.com>
 
 ## Demo Video
 

@@ -40,6 +40,13 @@
       ],
       "js": ["script_document_start.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://github.com/*",
+        "https://grok.com/*"
+      ],
+      "js": ["script_button_click.js"]
     }
   ],
   "icons": {
@@ -59,7 +66,9 @@
     "https://notebooklm.google.com/*",
     "https://gemini.google.com/*",
     "https://v0.dev/*",
-    "https://chat.deepseek.com/*"
+    "https://chat.deepseek.com/*",
+    "https://github.com/*",
+    "https://grok.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

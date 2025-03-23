@@ -36,6 +36,8 @@
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>
+* <https://github.com>
+* <https://grok.com>
 
 ## 演示视频
 
