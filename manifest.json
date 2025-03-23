@@ -25,6 +25,7 @@
         "https://chat.mistral.ai/*",
         "https://www.perplexity.ai/*",
         "https://you.com/*",
+        "https://v0.dev/*",
         "https://dashboard.cohere.com/playground/chat"
       ],
       "js": ["script.js"]
@@ -55,7 +56,8 @@
     "https://you.com/*",
     "https://dashboard.cohere.com/playground/chat",
     "https://notebooklm.google.com/*",
-    "https://gemini.google.com/*"
+    "https://gemini.google.com/*",
+    "https://v0.dev/*"
   ],
   "action": {
     "default_popup": "popup.html",
