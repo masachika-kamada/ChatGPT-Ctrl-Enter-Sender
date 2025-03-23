@@ -13,6 +13,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 url.startsWith("https://gemini.google.com") ||
                 url.startsWith("https://you.com") ||
                 url.startsWith("https://v0.dev") ||
+                url.startsWith("https://chat.deepseek.com") ||
                 url.startsWith("https://dashboard.cohere.com/playground/chat"))) {
         if (changeInfo.status === "complete") {
           chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });

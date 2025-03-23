@@ -35,7 +35,8 @@
         "https://claude.ai/*",
         "https://notebooklm.google.com/*",
         "https://gemini.google.com/*",
-        "https://www.phind.com/*"
+        "https://www.phind.com/*",
+        "https://chat.deepseek.com/*"
       ],
       "js": ["script_document_start.js"],
       "run_at": "document_start"
@@ -57,7 +58,8 @@
     "https://dashboard.cohere.com/playground/chat",
     "https://notebooklm.google.com/*",
     "https://gemini.google.com/*",
-    "https://v0.dev/*"
+    "https://v0.dev/*",
+    "https://chat.deepseek.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

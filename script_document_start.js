@@ -15,6 +15,9 @@ function shouldHandleCtrlEnter(url, event) {
            event.target.classList.contains("public-DraftEditor-content") &&
            event.target.contentEditable === "true";
   }
+  else if (url.startsWith("https://chat.deepseek.com")) {
+    return event.target.id === "chat-input"
+  }
   return false;
 }
 

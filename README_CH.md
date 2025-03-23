@@ -35,6 +35,7 @@
 * <https://dashboard.cohere.com/playground/chat>
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
+* <https://chat.deepseek.com>
 
 ## 演示视频
 
@@ -57,3 +58,4 @@
 * [Yuichi Miyata](https://github.com/Juris710)
 * [baku sato](https://github.com/sahksas)
 * [coni524](https://github.com/coni524)
+* [sakamossan](https://github.com/sakamossan)

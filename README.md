@@ -35,6 +35,7 @@ You can use this extension on the following pages:
 * <https://dashboard.cohere.com/playground/chat>
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
+* <https://chat.deepseek.com>
 
 ## Demo Video
 
@@ -57,3 +58,4 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [Yuichi Miyata](https://github.com/Juris710)
 * [baku sato](https://github.com/sahksas)
 * [coni524](https://github.com/coni524)
+* [sakamossan](https://github.com/sakamossan)
