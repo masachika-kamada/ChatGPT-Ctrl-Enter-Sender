@@ -2,15 +2,17 @@ function shouldHandleCtrlEnter(url, event) {
   if (url.startsWith("https://claude.ai")) {
     return event.target.tagName === "DIV" && event.target.contentEditable === "true";
   }
-  if (url.startsWith("https://www.bing.com/chat")){
-    return event.target.tagName === "CIB-SERP";
-  }
   else if (url.startsWith("https://notebooklm.google.com")) {
     return event.target.tagName === "TEXTAREA" && event.target.classList.contains("query-box-input");
   }
   else if (url.startsWith("https://gemini.google.com")) {
     return event.target.tagName === "DIV" &&
            event.target.classList.contains("ql-editor") &&
+           event.target.contentEditable === "true";
+  }
+  else if (url.startsWith("https://www.phind.com")) {
+    return event.target.tagName === "DIV" &&
+           event.target.classList.contains("public-DraftEditor-content") &&
            event.target.contentEditable === "true";
   }
   return false;
@@ -47,6 +49,11 @@ function handleCtrlEnter(event) {
       cancelable: true,
       shiftKey: isOnlyEnter
     };
+
+    // Phind requires keyCode to be set explicitly
+    if (url.startsWith("https://www.phind.com")) {
+      eventConfig.keyCode = 13;
+    }
 
     const newEvent = new KeyboardEvent("keydown", eventConfig);
     event.target.dispatchEvent(newEvent);
