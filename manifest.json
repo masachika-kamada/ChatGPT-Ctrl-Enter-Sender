@@ -22,11 +22,10 @@
     {
       "matches": [
         "https://poe.com/*",
-        "https://www.phind.com/*",
         "https://chat.mistral.ai/*",
-        "https://www.chatpdf.com/*",
         "https://www.perplexity.ai/*",
         "https://you.com/*",
+        "https://v0.dev/*",
         "https://dashboard.cohere.com/playground/chat"
       ],
       "js": ["script.js"]
@@ -34,7 +33,10 @@
     {
       "matches": [
         "https://claude.ai/*",
-        "https://www.bing.com/chat*"
+        "https://notebooklm.google.com/*",
+        "https://gemini.google.com/*",
+        "https://www.phind.com/*",
+        "https://chat.deepseek.com/*"
       ],
       "js": ["script_document_start.js"],
       "run_at": "document_start"
@@ -57,12 +59,14 @@
     "https://poe.com/*",
     "https://www.phind.com/*",
     "https://chat.mistral.ai/*",
-    "https://www.chatpdf.com/*",
     "https://www.perplexity.ai/*",
     "https://claude.ai/*",
-    "https://www.bing.com/chat*",
     "https://you.com/*",
     "https://dashboard.cohere.com/playground/chat",
+    "https://notebooklm.google.com/*",
+    "https://gemini.google.com/*",
+    "https://v0.dev/*",
+    "https://chat.deepseek.com/*",
     "https://github.com/*",
     "https://grok.com/*"
   ],
