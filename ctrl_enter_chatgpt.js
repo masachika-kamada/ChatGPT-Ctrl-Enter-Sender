@@ -4,9 +4,8 @@ function handleCtrlEnter(event) {
   }
 
   const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
-  const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
 
-  if (isOnlyEnter || isCtrlEnter) {
+  if (isOnlyEnter) {
     event.preventDefault();
     let newEvent = new KeyboardEvent("keydown", {
       key: "Enter",
