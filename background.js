@@ -14,7 +14,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 url.startsWith("https://you.com") ||
                 url.startsWith("https://v0.dev") ||
                 url.startsWith("https://chat.deepseek.com") ||
-                url.startsWith("https://dashboard.cohere.com/playground/chat"))) {
+                url.startsWith("https://dashboard.cohere.com/playground/chat") ||
+                url.startsWith("https://copilot.microsoft.com"))) {
         if (changeInfo.status === "complete") {
           chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
           chrome.action.enable(tabId);

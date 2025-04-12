@@ -26,7 +26,8 @@
         "https://www.perplexity.ai/*",
         "https://you.com/*",
         "https://v0.dev/*",
-        "https://dashboard.cohere.com/playground/chat"
+        "https://dashboard.cohere.com/playground/chat",
+        "https://copilot.microsoft.com/*"
       ],
       "js": ["ctrl_enter_textarea.js"],
       "run_at": "document_start"
