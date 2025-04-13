@@ -63,3 +63,5 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [coni524](https://github.com/coni524)
 * [sakamossan](https://github.com/sakamossan)
 * [S. Ota](https://github.com/susumuota)
+* [inadati](https://github.com/inadati)
+* [Kohei Nakada](https://github.com/ankd-k)
