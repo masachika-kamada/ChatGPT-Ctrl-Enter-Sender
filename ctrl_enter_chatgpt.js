@@ -1,20 +1,37 @@
 function handleCtrlEnter(event) {
-  if (event.target.id !== "prompt-textarea" || !event.isTrusted) {
-    return;
-  }
-
   const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
 
-  if (isOnlyEnter) {
+  // Ignore untrusted events
+  if (!event.isTrusted) return;
+
+  if (event.target.id === "prompt-textarea" && isOnlyEnter) {
     event.preventDefault();
-    let newEvent = new KeyboardEvent("keydown", {
+    const newEvent = new KeyboardEvent("keydown", {
       key: "Enter",
       code: "Enter",
       bubbles: true,
       cancelable: true,
       ctrlKey: false,
       metaKey: false,
-      shiftKey: isOnlyEnter
+      shiftKey: true,  // Simulate Shift+Enter to insert a line break
+    });
+    event.target.dispatchEvent(newEvent);
+  }
+
+  // On macOS, users can submit edits using the Meta key (Command key)
+  // To allow submitting edits on Windows, convert Ctrl to Meta
+  const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
+
+  if (event.target.tagName === "TEXTAREA" && isCtrlEnter) {
+    event.preventDefault();
+    const newEvent = new KeyboardEvent("keydown", {
+      key: "Enter",
+      code: "Enter",
+      bubbles: true,
+      cancelable: true,
+      ctrlKey: false,
+      metaKey: true,  // Simulate Meta+Enter to trigger submit on Windows as well
+      shiftKey: false,
     });
     event.target.dispatchEvent(newEvent);
   }
