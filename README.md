@@ -38,6 +38,7 @@ You can use this extension on the following pages:
 * <https://chat.deepseek.com>
 * <https://github.com>
 * <https://grok.com>
+* <https://copilot.microsoft.com>
 
 ## Demo Video
 
