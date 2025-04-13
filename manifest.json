@@ -17,26 +17,32 @@
       "matches": [
         "https://chatgpt.com/*"
       ],
-      "js": ["script_chatgpt.js"]
+      "js": ["ctrl_enter_chatgpt.js"]
     },
     {
       "matches": [
         "https://poe.com/*",
-        "https://www.phind.com/*",
         "https://chat.mistral.ai/*",
-        "https://www.chatpdf.com/*",
         "https://www.perplexity.ai/*",
         "https://you.com/*",
-        "https://dashboard.cohere.com/playground/chat"
+        "https://v0.dev/*",
+        "https://dashboard.cohere.com/playground/chat",
+        "https://copilot.microsoft.com/*"
       ],
-      "js": ["script.js"]
+      "js": ["ctrl_enter_textarea.js"],
+      "run_at": "document_start"
     },
     {
       "matches": [
         "https://claude.ai/*",
-        "https://www.bing.com/chat*"
+        "https://notebooklm.google.com/*",
+        "https://gemini.google.com/*",
+        "https://www.phind.com/*",
+        "https://chat.deepseek.com/*",
+        "https://github.com/*",
+        "https://grok.com/*"
       ],
-      "js": ["script_document_start.js"],
+      "js": ["ctrl_enter_custom_inputs.js"],
       "run_at": "document_start"
     }
   ],
@@ -50,12 +56,16 @@
     "https://poe.com/*",
     "https://www.phind.com/*",
     "https://chat.mistral.ai/*",
-    "https://www.chatpdf.com/*",
     "https://www.perplexity.ai/*",
     "https://claude.ai/*",
-    "https://www.bing.com/chat*",
     "https://you.com/*",
-    "https://dashboard.cohere.com/playground/chat"
+    "https://dashboard.cohere.com/playground/chat",
+    "https://notebooklm.google.com/*",
+    "https://gemini.google.com/*",
+    "https://v0.dev/*",
+    "https://chat.deepseek.com/*",
+    "https://github.com/*",
+    "https://grok.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

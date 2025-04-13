@@ -27,12 +27,18 @@ You can use this extension on the following pages:
 * <https://poe.com>
 * <https://www.phind.com>
 * <https://chat.mistral.ai>
-* <https://www.chatpdf.com>
+* ~~<https://www.chatpdf.com>~~
 * <https://www.perplexity.ai>
 * <https://claude.ai>
-* <https://www.bing.com/chat>
 * <https://you.com>
+* <https://v0.dev>
 * <https://dashboard.cohere.com/playground/chat>
+* <https://notebooklm.google.com>
+* <https://gemini.google.com>
+* <https://chat.deepseek.com>
+* <https://github.com>
+* <https://grok.com>
+* <https://copilot.microsoft.com>
 
 ## Demo Video
 
@@ -54,3 +60,6 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [Amritanshu Singh](https://github.com/Amritanshu1912)
 * [Yuichi Miyata](https://github.com/Juris710)
 * [baku sato](https://github.com/sahksas)
+* [coni524](https://github.com/coni524)
+* [sakamossan](https://github.com/sakamossan)
+* [S. Ota](https://github.com/susumuota)
