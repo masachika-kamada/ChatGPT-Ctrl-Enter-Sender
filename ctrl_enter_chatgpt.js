@@ -1,10 +1,12 @@
 function handleCtrlEnter(event) {
   const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
+  const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
 
   // Ignore untrusted events
   if (!event.isTrusted) return;
 
-  if (event.target.id === "prompt-textarea" && isOnlyEnter) {
+  // Specific handling for ChatGPT's prompt textarea
+  if (event.target.id === "prompt-textarea" && (isOnlyEnter || isCtrlEnter)) {
     event.preventDefault();
     const newEvent = new KeyboardEvent("keydown", {
       key: "Enter",
@@ -12,17 +14,15 @@ function handleCtrlEnter(event) {
       bubbles: true,
       cancelable: true,
       ctrlKey: false,
-      metaKey: false,
-      shiftKey: true,  // Simulate Shift+Enter to insert a line break
+      metaKey: isCtrlEnter,  // ChatGPT UI ignores Ctrl+Enter in narrow (mobile/sidebar) view; simulate Meta+Enter instead to ensure submission
+      shiftKey: isOnlyEnter,  // Simulate Shift+Enter to insert a line break
     });
     event.target.dispatchEvent(newEvent);
   }
 
   // On macOS, users can submit edits using the Meta key (Command key)
   // To allow submitting edits on Windows, convert Ctrl to Meta
-  const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
-
-  if (event.target.tagName === "TEXTAREA" && isCtrlEnter) {
+  else if (event.target.tagName === "TEXTAREA" && isCtrlEnter) {
     event.preventDefault();
     const newEvent = new KeyboardEvent("keydown", {
       key: "Enter",
