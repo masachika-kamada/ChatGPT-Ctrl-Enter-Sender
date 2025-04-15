@@ -1,12 +1,13 @@
 function handleCtrlEnter(event) {
   const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
   const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
+  const isPromptTextarea = event.target.id === "prompt-textarea";
 
   // Ignore untrusted events
   if (!event.isTrusted) return;
 
   // Specific handling for ChatGPT's prompt textarea
-  if (event.target.id === "prompt-textarea" && (isOnlyEnter || isCtrlEnter)) {
+  if (isPromptTextarea && isOnlyEnter) {
     event.preventDefault();
     const newEvent = new KeyboardEvent("keydown", {
       key: "Enter",
@@ -14,8 +15,21 @@ function handleCtrlEnter(event) {
       bubbles: true,
       cancelable: true,
       ctrlKey: false,
-      metaKey: isCtrlEnter,  // ChatGPT UI ignores Ctrl+Enter in narrow (mobile/sidebar) view; simulate Meta+Enter instead to ensure submission
-      shiftKey: isOnlyEnter,  // Simulate Shift+Enter to insert a line break
+      metaKey: false,
+      shiftKey: true,  // Simulate Shift+Enter to insert a line break
+    });
+    event.target.dispatchEvent(newEvent);
+  }
+  else if (isPromptTextarea && isCtrlEnter) {
+    event.preventDefault();
+    const newEvent = new KeyboardEvent("keydown", {
+      key: "Enter",
+      code: "Enter",
+      bubbles: true,
+      cancelable: true,
+      ctrlKey: false,
+      metaKey: true,  // ChatGPT UI ignores Ctrl+Enter in narrow (mobile/sidebar) view; simulate Meta+Enter instead to ensure submission
+      shiftKey: false,
     });
     event.target.dispatchEvent(newEvent);
   }
