@@ -23,11 +23,10 @@
 
 您可以在以下页面上使用此扩展：
 
-* <https://chatgpt.com/>
+* <https://chatgpt.com>
 * <https://poe.com>
 * <https://www.phind.com>
 * <https://chat.mistral.ai>
-* ~~<https://www.chatpdf.com>~~
 * <https://www.perplexity.ai>
 * <https://claude.ai>
 * <https://you.com>

@@ -34,15 +34,13 @@ def create_zip(source_dir, target_zip, include_items):
 def main():
     include_items = [
         "_locales",
+        "constants",
+        "content",
         "icon",
+        "options",
+        "popup",
         "background.js",
-        "ctrl_enter_chatgpt.js",
-        "ctrl_enter_custom_inputs.js",
-        "ctrl_enter_textarea.js",
         "manifest.json",
-        "popup.css",
-        "popup.html",
-        "popup.js",
     ]
     create_zip(".", "extension.zip", include_items)
 

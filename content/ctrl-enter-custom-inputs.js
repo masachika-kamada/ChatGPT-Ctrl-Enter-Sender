@@ -77,30 +77,12 @@ function handleCtrlEnter(event) {
   }
 }
 
-function enableSendingWithCtrlEnter() {
-  document.addEventListener("keydown", handleCtrlEnter, { capture: true });
-}
+// Apply the setting based on the current site on initial load
+applySiteSetting();
 
-function disableSendingWithCtrlEnter() {
-  document.removeEventListener("keydown", handleCtrlEnter, { capture: true });
-}
-
-// Load stored settings and enable/disable the feature accordingly
-chrome.storage.sync.get("isEnabled", (data) => {
-  const isEnabled = data.isEnabled ?? true;
-  if (isEnabled) {
-    enableSendingWithCtrlEnter();
-  }
-});
-
-// Listen for changes in the settings and update the feature state
+// Listen for changes to the site settings and apply them dynamically
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "sync" && changes.hasOwnProperty("isEnabled")) {
-    const isEnabled = changes.isEnabled.newValue;
-    if (isEnabled) {
-      enableSendingWithCtrlEnter();
-    } else {
-      disableSendingWithCtrlEnter();
-    }
+  if (area === "sync" && changes.siteSettings) {
+    applySiteSetting();
   }
 });

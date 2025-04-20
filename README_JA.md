@@ -23,11 +23,10 @@
 
 以下のページで、この拡張機能を使用することができます。
 
-* <https://chatgpt.com/>
+* <https://chatgpt.com>
 * <https://poe.com>
 * <https://www.phind.com>
 * <https://chat.mistral.ai>
-* ~~<https://www.chatpdf.com>~~
 * <https://www.perplexity.ai>
 * <https://claude.ai>
 * <https://you.com>
