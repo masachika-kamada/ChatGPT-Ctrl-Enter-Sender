@@ -1,4 +1,4 @@
-import { SUPPORTED_SITES } from "./supportedSites.js";
+import { SUPPORTED_SITES } from "../constants/supported-sites.js";
 
 let isEnabled = false;
 const toggleButton = document.querySelector("#isEnabled");
@@ -41,7 +41,7 @@ toggleButton.addEventListener("change", () => {
 
 function updateIcon(enabled, tabId, hostname) {
   if (SUPPORTED_SITES.includes(hostname)) {
-    chrome.action.setIcon({ tabId, path: enabled ? "icon/enabled.png" : "icon/disabled.png" });
+    chrome.action.setIcon({ tabId, path: enabled ? "../icon/enabled.png" : "../icon/disabled.png" });
     chrome.action.enable(tabId);
   } else {
     chrome.action.disable(tabId);
