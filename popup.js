@@ -1,36 +1,65 @@
 let isEnabled = false;
 const toggleButton = document.querySelector("#isEnabled");
 
-chrome.storage.sync.get("isEnabled", (data) => {
-  isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
-  toggleButton.checked = isEnabled;
-  updateIcon();
+function extractHostname(url) {
+  try {
+    return new URL(url).hostname;
+  } catch (e) {
+    return "";
+  }
+}
+
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  const tab = tabs[0];
+  const hostname = extractHostname(tab.url);
+
+  chrome.storage.sync.get("siteSettings", (data) => {
+    const siteSettings = data.siteSettings || {};
+    isEnabled = siteSettings[hostname] ?? false;
+    toggleButton.checked = isEnabled;
+    updateIcon(isEnabled, tab.id, hostname);
+  });
 });
 
 toggleButton.addEventListener("change", () => {
-  isEnabled = toggleButton.checked;
-  chrome.storage.sync.set({ isEnabled });
-  updateIcon();
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const tab = tabs[0];
+    const hostname = extractHostname(tab.url);
+    isEnabled = toggleButton.checked;
+
+    chrome.storage.sync.get("siteSettings", (data) => {
+      const siteSettings = data.siteSettings || {};
+      siteSettings[hostname] = isEnabled;
+      chrome.storage.sync.set({ siteSettings }, () => {
+        updateIcon(isEnabled, tab.id, hostname);
+      });
+    });
+  });
 });
 
-function updateIcon() {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    const url = tabs[0].url ?? "";
-    if (url.startsWith("https://chatgpt.com") ||
-        url.startsWith("https://poe.com") ||
-        url.startsWith("https://www.phind.com") ||
-        url.startsWith("https://chat.mistral.ai") ||
-        // url.startsWith("https://www.chatpdf.com") ||
-        url.startsWith("https://www.perplexity.ai") ||
-        url.startsWith("https://claude.ai") ||
-        url.startsWith("https://notebooklm.google.com") ||
-        url.startsWith("https://gemini.google.com") ||
-        url.startsWith("https://you.com") ||
-        url.startsWith("https://v0.dev") ||
-        url.startsWith("https://chat.deepseek.com") ||
-        url.startsWith("https://dashboard.cohere.com/playground/chat") ||
-        url.startsWith("https://copilot.microsoft.com")) {
-      chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
-    }
-  });
+function updateIcon(enabled, tabId, hostname) {
+  const SUPPORTED_SITES = [
+    "chatgpt.com",
+    "poe.com",
+    "www.phind.com",
+    "chat.mistral.ai",
+    "www.perplexity.ai",
+    "claude.ai",
+    "you.com",
+    "v0.dev",
+    "dashboard.cohere.com",
+    "notebooklm.google.com",
+    "gemini.google.com",
+    "chat.deepseek.com",
+    "github.com",
+    "grok.com",
+    "copilot.microsoft.com"
+  ];
+
+  if (SUPPORTED_SITES.includes(hostname)) {
+    chrome.action.setIcon({ tabId, path: enabled ? "icon/enabled.png" : "icon/disabled.png" });
+    chrome.action.enable(tabId);
+  } else {
+    chrome.action.disable(tabId);
+  }
 }

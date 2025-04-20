@@ -74,5 +74,6 @@
       "48": "icon/icon48.png",
       "128": "icon/icon128.png"
     }
-  }
+  },
+  "options_page": "options.html"
 }
