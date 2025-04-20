@@ -17,7 +17,10 @@
       "matches": [
         "https://chatgpt.com/*"
       ],
-      "js": ["ctrl_enter_chatgpt.js"]
+      "js": [
+        "ctrl-enter-utils.js",
+        "ctrl_enter_chatgpt.js"
+      ]
     },
     {
       "matches": [
@@ -29,7 +32,10 @@
         "https://dashboard.cohere.com/playground/chat",
         "https://copilot.microsoft.com/*"
       ],
-      "js": ["ctrl_enter_textarea.js"],
+      "js": [
+        "ctrl-enter-utils.js",
+        "ctrl_enter_textarea.js"
+      ],
       "run_at": "document_start"
     },
     {
@@ -42,7 +48,10 @@
         "https://github.com/*",
         "https://grok.com/*"
       ],
-      "js": ["ctrl_enter_custom_inputs.js"],
+      "js": [
+        "ctrl-enter-utils.js",
+        "ctrl_enter_custom_inputs.js"
+      ],
       "run_at": "document_start"
     }
   ],
