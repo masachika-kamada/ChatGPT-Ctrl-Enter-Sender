@@ -74,7 +74,8 @@
     "https://v0.dev/*",
     "https://chat.deepseek.com/*",
     "https://github.com/*",
-    "https://grok.com/*"
+    "https://grok.com/*",
+    "https://copilot.microsoft.com/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",
