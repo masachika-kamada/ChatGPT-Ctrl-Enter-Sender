@@ -1,37 +1,13 @@
-const SITES = [
-  "https://chatgpt.com",
-  "https://poe.com",
-  "https://www.phind.com",
-  "https://chat.mistral.ai",
-  "https://www.perplexity.ai",
-  "https://claude.ai",
-  "https://you.com",
-  "https://v0.dev",
-  "https://dashboard.cohere.com",
-  "https://notebooklm.google.com",
-  "https://gemini.google.com",
-  "https://chat.deepseek.com",
-  "https://github.com",
-  "https://grok.com",
-  "https://copilot.microsoft.com"
-];
+import { SUPPORTED_SITES } from "./supportedSites.js";
 
 const siteList = document.getElementById("siteList");
 const selectAllCheckbox = document.getElementById("selectAll");
 const saveButton = document.getElementById("saveButton");
 
-// Extract the hostname from a URL
-function extractHostname(url) {
-  const a = document.createElement("a");
-  a.href = url;
-  return a.hostname;
-}
-
-// Render checkbox list based on the SITES array
+// Render checkbox list based on the SUPPORTED_SITES array
 function renderCheckboxes(savedSettings = {}) {
   siteList.innerHTML = '';
-  SITES.forEach((url) => {
-    const hostname = extractHostname(url);
+  SUPPORTED_SITES.forEach((hostname) => {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = hostname;
@@ -40,7 +16,7 @@ function renderCheckboxes(savedSettings = {}) {
     const label = document.createElement("label");
     label.className = "site-label";
     label.appendChild(checkbox);
-    label.append(` ${url}`);
+    label.append(` https://${hostname}`);
 
     siteList.appendChild(label);
   });
@@ -49,8 +25,7 @@ function renderCheckboxes(savedSettings = {}) {
 // Save settings to chrome.storage
 function saveSettings() {
   const settings = {};
-  SITES.forEach((url) => {
-    const hostname = extractHostname(url);
+  SUPPORTED_SITES.forEach((hostname) => {
     const checkbox = document.getElementById(hostname);
     settings[hostname] = checkbox.checked;
   });
@@ -69,8 +44,7 @@ function saveSettings() {
 // Handle Select All checkbox
 selectAllCheckbox.addEventListener("change", () => {
   const allChecked = selectAllCheckbox.checked;
-  SITES.forEach((url) => {
-    const hostname = extractHostname(url);
+  SUPPORTED_SITES.forEach((hostname) => {
     const checkbox = document.getElementById(hostname);
     if (checkbox) checkbox.checked = allChecked;
   });

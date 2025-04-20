@@ -1,3 +1,5 @@
+import { SUPPORTED_SITES } from "./supportedSites.js";
+
 let isEnabled = false;
 const toggleButton = document.querySelector("#isEnabled");
 
@@ -38,24 +40,6 @@ toggleButton.addEventListener("change", () => {
 });
 
 function updateIcon(enabled, tabId, hostname) {
-  const SUPPORTED_SITES = [
-    "chatgpt.com",
-    "poe.com",
-    "www.phind.com",
-    "chat.mistral.ai",
-    "www.perplexity.ai",
-    "claude.ai",
-    "you.com",
-    "v0.dev",
-    "dashboard.cohere.com",
-    "notebooklm.google.com",
-    "gemini.google.com",
-    "chat.deepseek.com",
-    "github.com",
-    "grok.com",
-    "copilot.microsoft.com"
-  ];
-
   if (SUPPORTED_SITES.includes(hostname)) {
     chrome.action.setIcon({ tabId, path: enabled ? "icon/enabled.png" : "icon/disabled.png" });
     chrome.action.enable(tabId);
