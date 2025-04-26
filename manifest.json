@@ -17,7 +17,10 @@
       "matches": [
         "https://chatgpt.com/*"
       ],
-      "js": ["ctrl_enter_chatgpt.js"]
+      "js": [
+        "content/ctrl-enter-utils.js",
+        "content/ctrl-enter-chatgpt.js"
+      ]
     },
     {
       "matches": [
@@ -29,7 +32,10 @@
         "https://dashboard.cohere.com/playground/chat",
         "https://copilot.microsoft.com/*"
       ],
-      "js": ["ctrl_enter_textarea.js"],
+      "js": [
+        "content/ctrl-enter-utils.js",
+        "content/ctrl-enter-textarea.js"
+      ],
       "run_at": "document_start"
     },
     {
@@ -40,9 +46,13 @@
         "https://www.phind.com/*",
         "https://chat.deepseek.com/*",
         "https://github.com/*",
-        "https://grok.com/*"
+        "https://grok.com/*",
+        "https://m365.cloud.microsoft/*"
       ],
-      "js": ["ctrl_enter_custom_inputs.js"],
+      "js": [
+        "content/ctrl-enter-utils.js",
+        "content/ctrl-enter-custom-inputs.js"
+      ],
       "run_at": "document_start"
     }
   ],
@@ -65,14 +75,17 @@
     "https://v0.dev/*",
     "https://chat.deepseek.com/*",
     "https://github.com/*",
-    "https://grok.com/*"
+    "https://grok.com/*",
+    "https://copilot.microsoft.com/*",
+    "https://m365.cloud.microsoft/*"
   ],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icon/icon16.png",
       "48": "icon/icon48.png",
       "128": "icon/icon128.png"
     }
-  }
+  },
+  "options_page": "options/options.html"
 }

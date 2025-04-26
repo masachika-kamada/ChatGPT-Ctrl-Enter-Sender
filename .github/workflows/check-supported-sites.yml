@@ -1,0 +1,30 @@
+name: Check Supported Sites Consistency
+
+on:
+  push:
+    paths:
+      - 'manifest.json'
+      - 'constants/supported-sites.js'
+      - 'README*.md'
+      - 'tools/check_supported_sites.py'
+  pull_request:
+    paths:
+      - 'manifest.json'
+      - 'constants/supported-sites.js'
+      - 'README*.md'
+      - 'tools/check_supported_sites.py'
+
+jobs:
+  check-supported-sites:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run check_supported_sites.py
+        run: python tools/check_supported_sites.py
