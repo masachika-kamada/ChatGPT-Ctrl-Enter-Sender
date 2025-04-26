@@ -38,6 +38,7 @@ You can use this extension on the following pages:
 * <https://github.com>
 * <https://grok.com>
 * <https://copilot.microsoft.com>
+* <https://m365.cloud.microsoft/chat>
 
 ## Demo Video
 

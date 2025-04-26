@@ -46,7 +46,8 @@
         "https://www.phind.com/*",
         "https://chat.deepseek.com/*",
         "https://github.com/*",
-        "https://grok.com/*"
+        "https://grok.com/*",
+        "https://m365.cloud.microsoft/*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
@@ -75,7 +76,8 @@
     "https://chat.deepseek.com/*",
     "https://github.com/*",
     "https://grok.com/*",
-    "https://copilot.microsoft.com/*"
+    "https://copilot.microsoft.com/*",
+    "https://m365.cloud.microsoft/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",

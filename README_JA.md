@@ -38,6 +38,7 @@
 * <https://github.com>
 * <https://grok.com>
 * <https://copilot.microsoft.com>
+* <https://m365.cloud.microsoft/chat>
 
 ## デモ動画
 

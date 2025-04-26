@@ -24,6 +24,9 @@ function shouldHandleCtrlEnter(url, event) {
   else if (url.startsWith("https://github.com")) {
     return event.target.getAttribute("placeholder") === "Ask Copilot";
   }
+  else if (url.startsWith("https://m365.cloud.microsoft/chat")) {
+    return event.target.id === "m365-chat-editor-target-element";
+  }
   return false;
 }
 
@@ -61,6 +64,11 @@ function handleCtrlEnter(event) {
 
     // Phind requires keyCode to be set explicitly
     if (url.startsWith("https://www.phind.com")) {
+      eventConfig.keyCode = 13;
+    }
+
+    // M365 Chat requires keyCode=13 for Ctrl+Enter to send message
+    if (url.startsWith("https://m365.cloud.microsoft/chat") && isCtrlEnter) {
       eventConfig.keyCode = 13;
     }
 

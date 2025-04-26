@@ -13,5 +13,6 @@ export const SUPPORTED_SITES = [
   "chat.deepseek.com",
   "github.com",
   "grok.com",
-  "copilot.microsoft.com"
+  "copilot.microsoft.com",
+  "m365.cloud.microsoft"
 ];
