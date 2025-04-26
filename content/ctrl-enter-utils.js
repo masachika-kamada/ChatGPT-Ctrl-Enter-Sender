@@ -15,7 +15,7 @@ function applySiteSetting() {
 
   chrome.storage.sync.get("siteSettings", (data) => {
     const settings = data.siteSettings || {};
-    const isEnabled = settings[hostname] ?? false;
+    const isEnabled = settings[hostname] ?? true;
 
     if (isEnabled) {
       enableSendingWithCtrlEnter();

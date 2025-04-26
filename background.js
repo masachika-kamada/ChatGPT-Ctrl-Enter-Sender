@@ -20,7 +20,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === "complete") {
     chrome.storage.sync.get("siteSettings", (data) => {
       const siteSettings = data.siteSettings || {};
-      const isEnabled = siteSettings[hostname] ?? false;
+      const isEnabled = siteSettings[hostname] ?? true;
 
       chrome.action.setIcon({ tabId, path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
       chrome.action.enable(tabId);

@@ -17,7 +17,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
   chrome.storage.sync.get("siteSettings", (data) => {
     const siteSettings = data.siteSettings || {};
-    isEnabled = siteSettings[hostname] ?? false;
+    isEnabled = siteSettings[hostname] ?? true;
     toggleButton.checked = isEnabled;
     updateIcon(isEnabled, tab.id, hostname);
   });

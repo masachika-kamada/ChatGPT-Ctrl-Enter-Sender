@@ -11,7 +11,7 @@ function renderCheckboxes(savedSettings = {}) {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = hostname;
-    checkbox.checked = savedSettings[hostname] || false;
+    checkbox.checked = savedSettings[hostname] ?? true;
 
     const label = document.createElement("label");
     label.className = "site-label";
