@@ -9,8 +9,9 @@
     "storage"
   ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "scripts": [
+      "background.js"
+    ]
   },
   "content_scripts": [
     {
@@ -74,5 +75,5 @@
       "48": "icon/icon48.png",
       "128": "icon/icon128.png"
     }
-  }
-}
+    }
+ }

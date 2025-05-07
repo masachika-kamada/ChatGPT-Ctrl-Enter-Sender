@@ -1,3 +1,5 @@
+const browserOrChrome = typeof browser !== "undefined" ? browser : chrome;
+
 function handleCtrlEnter(event) {
   const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
   const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
@@ -60,7 +62,7 @@ function disableSendingWithCtrlEnter() {
 }
 
 // Load stored settings and enable/disable the feature accordingly
-chrome.storage.sync.get("isEnabled", (data) => {
+browserOrChrome.storage.sync.get("isEnabled", (data) => {
   const isEnabled = data.isEnabled ?? true;
   if (isEnabled) {
     enableSendingWithCtrlEnter();
@@ -68,7 +70,7 @@ chrome.storage.sync.get("isEnabled", (data) => {
 });
 
 // Listen for changes in the settings and update the feature state
-chrome.storage.onChanged.addListener((changes, area) => {
+browserOrChrome.storage.onChanged.addListener((changes, area) => {
   if (area === "sync" && changes.hasOwnProperty("isEnabled")) {
     const isEnabled = changes.isEnabled.newValue;
     if (isEnabled) {

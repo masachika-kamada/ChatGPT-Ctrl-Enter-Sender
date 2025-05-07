@@ -1,7 +1,7 @@
 let isEnabled = false;
 const toggleButton = document.querySelector("#isEnabled");
 
-chrome.storage.sync.get("isEnabled", (data) => {
+browser.storage.sync.get("isEnabled", (data) => {
   isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
   toggleButton.checked = isEnabled;
   updateIcon();
@@ -9,12 +9,12 @@ chrome.storage.sync.get("isEnabled", (data) => {
 
 toggleButton.addEventListener("change", () => {
   isEnabled = toggleButton.checked;
-  chrome.storage.sync.set({ isEnabled });
+  browser.storage.sync.set({ isEnabled });
   updateIcon();
 });
 
 function updateIcon() {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const url = tabs[0].url ?? "";
     if (url.startsWith("https://chatgpt.com") ||
         url.startsWith("https://poe.com") ||
@@ -30,7 +30,7 @@ function updateIcon() {
         url.startsWith("https://chat.deepseek.com") ||
         url.startsWith("https://dashboard.cohere.com/playground/chat") ||
         url.startsWith("https://copilot.microsoft.com")) {
-      chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
+      browser.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
     }
   });
 }

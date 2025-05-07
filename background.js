@@ -1,6 +1,8 @@
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+const browserOrChrome = typeof browser !== "undefined" ? browser : chrome;
+
+browserOrChrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   const url = tab.url;
-  chrome.storage.sync.get("isEnabled", (data) => {
+  browserOrChrome.storage.sync.get("isEnabled", (data) => {
     const isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
     if (url && (url.startsWith("https://chatgpt.com") ||
                 url.startsWith("https://poe.com") ||
@@ -17,11 +19,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 url.startsWith("https://dashboard.cohere.com/playground/chat") ||
                 url.startsWith("https://copilot.microsoft.com"))) {
         if (changeInfo.status === "complete") {
-          chrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
-          chrome.action.enable(tabId);
+          browserOrChrome.action.setIcon({ path: isEnabled ? "icon/enabled.png" : "icon/disabled.png" });
+          browserOrChrome.action.enable(tabId);
         }
     } else {
-      chrome.action.disable(tabId);
+      browserOrChrome.action.disable(tabId);
     }
   });
 });
