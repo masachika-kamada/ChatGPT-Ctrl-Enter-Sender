@@ -41,9 +41,9 @@ toggleButton.addEventListener("change", () => {
 
 function updateIcon(enabled, tabId, hostname) {
   if (SUPPORTED_SITES.includes(hostname)) {
-    chrome.action.setIcon({ tabId, path: enabled ? "../icon/enabled.png" : "../icon/disabled.png" });
-    chrome.action.enable(tabId);
+    chrome.browserAction.setIcon({ tabId, path: enabled ? "../icon/enabled.png" : "../icon/disabled.png" });
+    chrome.browserAction.enable(tabId);
   } else {
-    chrome.action.disable(tabId);
+    chrome.browserAction.disable(tabId);
   }
 }

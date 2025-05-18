@@ -1,16 +1,39 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "__MSG_appName__",
-  "version": "1.6.1",
+  "version": "2.0.0",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "chatgpt-ctrl-enter-sender@chatgpt-extension.io",
+      "strict_min_version": "58.0"
+    }
+  },
   "permissions": [
-    "storage"
+    "storage",
+    "https://chatgpt.com/*",
+    "https://poe.com/*",
+    "https://www.phind.com/*",
+    "https://chat.mistral.ai/*",
+    "https://www.perplexity.ai/*",
+    "https://claude.ai/*",
+    "https://you.com/*",
+    "https://dashboard.cohere.com/playground/chat",
+    "https://notebooklm.google.com/*",
+    "https://gemini.google.com/*",
+    "https://v0.dev/*",
+    "https://chat.deepseek.com/*",
+    "https://github.com/*",
+    "https://grok.com/*",
+    "https://copilot.microsoft.com/*",
+    "https://m365.cloud.microsoft/*"
   ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "scripts": [
+      "background.js"
+    ]
   },
   "content_scripts": [
     {
@@ -61,25 +84,7 @@
     "48": "icon/icon48.png",
     "128": "icon/icon128.png"
   },
-  "host_permissions": [
-    "https://chatgpt.com/*",
-    "https://poe.com/*",
-    "https://www.phind.com/*",
-    "https://chat.mistral.ai/*",
-    "https://www.perplexity.ai/*",
-    "https://claude.ai/*",
-    "https://you.com/*",
-    "https://dashboard.cohere.com/playground/chat",
-    "https://notebooklm.google.com/*",
-    "https://gemini.google.com/*",
-    "https://v0.dev/*",
-    "https://chat.deepseek.com/*",
-    "https://github.com/*",
-    "https://grok.com/*",
-    "https://copilot.microsoft.com/*",
-    "https://m365.cloud.microsoft/*"
-  ],
-  "action": {
+  "browser_action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icon/icon16.png",
