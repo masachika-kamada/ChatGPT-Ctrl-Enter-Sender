@@ -30,7 +30,8 @@
         "https://you.com/*",
         "https://v0.dev/*",
         "https://dashboard.cohere.com/playground/chat",
-        "https://copilot.microsoft.com/*"
+        "https://copilot.microsoft.com/*",
+        "https://genspark.ai/*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
@@ -77,7 +78,8 @@
     "https://github.com/*",
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
-    "https://m365.cloud.microsoft/*"
+    "https://m365.cloud.microsoft/*",
+    "https://genspark.ai/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",
