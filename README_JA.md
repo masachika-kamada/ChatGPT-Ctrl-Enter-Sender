@@ -40,6 +40,7 @@
 * <https://copilot.microsoft.com>
 * <https://m365.cloud.microsoft/chat>
 * <https://genspark.ai>
+* <https://manus.im>
 
 ## デモ動画
 

@@ -15,5 +15,6 @@ export const SUPPORTED_SITES = [
   "grok.com",
   "copilot.microsoft.com",
   "m365.cloud.microsoft",
-  "genspark.ai"
+  "genspark.ai",
+  "manus.im"
 ];
