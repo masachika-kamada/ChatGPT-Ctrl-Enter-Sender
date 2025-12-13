@@ -19,7 +19,7 @@ function shouldHandleCtrlEnter(url, event) {
     return event.target.id === "chat-input";
   }
   else if (url.startsWith("https://grok.com")) {
-    return event.target.tagName === "TEXTAREA";
+    return event.target.tagName === "TEXTAREA" || (event.target.tagName === "DIV" && event.target.contentEditable === "true");
   }
   else if (url.startsWith("https://github.com")) {
     return event.target.getAttribute("placeholder") === "Ask Copilot";
