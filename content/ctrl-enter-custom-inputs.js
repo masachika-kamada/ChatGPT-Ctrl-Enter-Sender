@@ -33,6 +33,12 @@ function shouldHandleCtrlEnter(url, event) {
   else if (url.startsWith("https://m365.cloud.microsoft/chat")) {
     return event.target.id === "m365-chat-editor-target-element";
   }
+  else if (url.startsWith("https://www.perplexity.ai")) {
+    return event.target.tagName === "DIV" &&
+           event.target.contentEditable === "true" &&
+           event.target.id === "ask-input";
+  }
+
   return false;
 }
 
@@ -54,7 +60,7 @@ function handleCtrlEnter(event) {
 
   if (isOnlyEnter || isCtrlEnter) {
     // Prevent default behavior only for certain sites
-    const preventDefaultSites = ["https://claude.ai", "https://www.phind.com"];
+    const preventDefaultSites = ["https://claude.ai", "https://www.phind.com", "https://www.perplexity.ai"];
     if (preventDefaultSites.some((site) => url.startsWith(site))) {
       event.preventDefault();
     }

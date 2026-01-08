@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
@@ -26,7 +26,6 @@
       "matches": [
         "https://poe.com/*",
         "https://chat.mistral.ai/*",
-        "https://www.perplexity.ai/*",
         "https://you.com/*",
         "https://v0.dev/*",
         "https://dashboard.cohere.com/playground/chat",
@@ -47,7 +46,8 @@
         "https://chat.deepseek.com/*",
         "https://github.com/*",
         "https://grok.com/*",
-        "https://m365.cloud.microsoft/*"
+        "https://m365.cloud.microsoft/*",
+        "https://www.perplexity.ai/*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
