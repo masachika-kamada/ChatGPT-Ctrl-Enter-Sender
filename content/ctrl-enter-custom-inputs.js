@@ -22,7 +22,7 @@ function shouldHandleCtrlEnter(url, event) {
            event.target.contentEditable === "true";
   }
   else if (url.startsWith("https://chat.deepseek.com")) {
-    return event.target.id === "chat-input";
+    return event.target.tagName === "TEXTAREA";
   }
   else if (url.startsWith("https://grok.com")) {
     return event.target.tagName === "TEXTAREA" || (event.target.tagName === "DIV" && event.target.contentEditable === "true");
@@ -82,6 +82,12 @@ function handleCtrlEnter(event) {
     // M365 Chat requires keyCode=13 for Ctrl+Enter to send message
     if (url.startsWith("https://m365.cloud.microsoft/chat") && isCtrlEnter) {
       eventConfig.keyCode = 13;
+    }
+
+    // DeepSeek requires keyCode and composed for proper event handling
+    if (url.startsWith("https://chat.deepseek.com")) {
+      eventConfig.keyCode = 13;
+      eventConfig.composed = true;
     }
 
     const newEvent = new KeyboardEvent("keydown", eventConfig);
