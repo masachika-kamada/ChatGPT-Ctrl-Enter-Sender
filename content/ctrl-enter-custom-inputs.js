@@ -1,6 +1,8 @@
 function shouldHandleCtrlEnter(url, event) {
   if (url.startsWith("https://claude.ai")) {
-    return event.target.tagName === "DIV" && event.target.contentEditable === "true";
+    // Support both main input (DIV) and edit mode (TEXTAREA)
+    return (event.target.tagName === "DIV" && event.target.contentEditable === "true") ||
+           event.target.tagName === "TEXTAREA";
   }
   else if (url.startsWith("https://notebooklm.google.com")) {
     return event.target.tagName === "TEXTAREA" && event.target.classList.contains("query-box-input");
@@ -22,7 +24,7 @@ function shouldHandleCtrlEnter(url, event) {
            event.target.contentEditable === "true";
   }
   else if (url.startsWith("https://chat.deepseek.com")) {
-    return event.target.id === "chat-input";
+    return event.target.tagName === "TEXTAREA";
   }
   else if (url.startsWith("https://grok.com")) {
     return event.target.tagName === "TEXTAREA" || (event.target.tagName === "DIV" && event.target.contentEditable === "true");
@@ -50,6 +52,11 @@ function findSendButton() {
 
 function handleCtrlEnter(event) {
   const url = window.location.href;
+
+  // Skip if composing (e.g., Japanese IME input)
+  if (event.isComposing) {
+    return;
+  }
 
   if (!shouldHandleCtrlEnter(url, event) || !event.isTrusted) {
     return;
@@ -84,6 +91,12 @@ function handleCtrlEnter(event) {
       eventConfig.keyCode = 13;
     }
 
+    // DeepSeek requires keyCode and composed for proper event handling
+    if (url.startsWith("https://chat.deepseek.com")) {
+      eventConfig.keyCode = 13;
+      eventConfig.composed = true;
+    }
+
     const newEvent = new KeyboardEvent("keydown", eventConfig);
     event.target.dispatchEvent(newEvent);
   }
@@ -93,6 +106,27 @@ function handleCtrlEnter(event) {
     const sendButton = findSendButton();
     if (sendButton) {
       sendButton.click();
+    }
+  }
+
+  // Claude edit mode: TEXTAREA needs special handling
+  if (url.startsWith("https://claude.ai") && event.target.tagName === "TEXTAREA") {
+    if (isOnlyEnter) {
+      // Insert newline at cursor position
+      const textarea = event.target;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const value = textarea.value;
+      textarea.value = value.substring(0, start) + "\n" + value.substring(end);
+      textarea.selectionStart = textarea.selectionEnd = start + 1;
+      // Trigger input event to notify the app of the change
+      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    } else if (isCtrlEnter) {
+      // Click the save/submit button
+      const saveButton = document.querySelector('button[type="submit"]');
+      if (saveButton) {
+        saveButton.click();
+      }
     }
   }
 }
