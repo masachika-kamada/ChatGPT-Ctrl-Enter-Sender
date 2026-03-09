@@ -47,7 +47,8 @@
         "https://github.com/*",
         "https://grok.com/*",
         "https://m365.cloud.microsoft/*",
-        "https://www.perplexity.ai/*"
+        "https://www.perplexity.ai/*",
+        "https://cursor.com/*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
@@ -77,7 +78,8 @@
     "https://github.com/*",
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
-    "https://m365.cloud.microsoft/*"
+    "https://m365.cloud.microsoft/*",
+    "https://cursor.com/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",
