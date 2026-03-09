@@ -76,7 +76,7 @@ function findCursorSendButton(target) {
     if (formSubmitButton) return formSubmitButton;
   }
 
-  return document.querySelector(submitSelector);
+  return null;
 }
 
 function handleCtrlEnter(event) {
@@ -95,24 +95,25 @@ function handleCtrlEnter(event) {
   const isCtrlEnter = (event.code === "Enter") && (event.ctrlKey || event.metaKey);
   const isCursorAgents = url.startsWith("https://cursor.com") && isCursorAgentsPath(url);
 
-  if (isCursorAgents && (isOnlyEnter || isCtrlEnter)) {
+  if (isCursorAgents && isOnlyEnter) {
     event.preventDefault();
     event.stopImmediatePropagation();
+    const newEvent = new KeyboardEvent("keydown", {
+      key: "Enter",
+      code: "Enter",
+      bubbles: true,
+      cancelable: true,
+      shiftKey: true
+    });
+    event.target.dispatchEvent(newEvent);
+    return;
+  }
 
-    if (isOnlyEnter) {
-      const newEvent = new KeyboardEvent("keydown", {
-        key: "Enter",
-        code: "Enter",
-        bubbles: true,
-        cancelable: true,
-        shiftKey: true
-      });
-      event.target.dispatchEvent(newEvent);
-      return;
-    }
-
+  if (isCursorAgents && isCtrlEnter) {
     const sendButton = findCursorSendButton(event.target);
     if (sendButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
       sendButton.click();
     }
     return;
