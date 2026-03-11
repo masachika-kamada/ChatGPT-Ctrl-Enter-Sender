@@ -144,10 +144,10 @@ test("Cursor Agents の Ctrl+Enter は form 内送信ボタンをクリックす
   assert.equal(formSendButton.clickCount, 1);
 });
 
-test("Cursor Agents の Meta+Enter は document 側送信ボタンをフォールバッククリックする", () => {
-  const documentSendButton = createButton();
-  const context = loadCustomInputs("https://cursor.com/ja/agents", documentSendButton);
-  const { target, dispatchedEvents } = createLexicalTarget();
+test("Cursor Agents の Meta+Enter は form 内送信ボタンをクリックする", () => {
+  const formSendButton = createButton();
+  const context = loadCustomInputs("https://cursor.com/ja/agents", createButton());
+  const { target, dispatchedEvents } = createLexicalTarget({ formSendButton });
   const event = createKeydownEvent(target, { metaKey: true });
 
   context.handleCtrlEnter(event);
@@ -155,5 +155,5 @@ test("Cursor Agents の Meta+Enter は document 側送信ボタンをフォー�
   assert.equal(event.preventDefaultCount, 1);
   assert.equal(event.stopImmediatePropagationCount, 1);
   assert.equal(dispatchedEvents.length, 0);
-  assert.equal(documentSendButton.clickCount, 1);
+  assert.equal(formSendButton.clickCount, 1);
 });
