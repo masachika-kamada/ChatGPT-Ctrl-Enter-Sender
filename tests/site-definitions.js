@@ -60,14 +60,6 @@ const SITES = [
     notes: "認証不要でトップページから利用可能",
   },
   {
-    name: "Phind",
-    url: "https://www.phind.com/",
-    inputSelector: 'div.public-DraftEditor-content[contenteditable="true"]',
-    inputType: "contenteditable",
-    requiresAuth: false,
-    notes: "認証不要",
-  },
-  {
     name: "Poe",
     url: "https://poe.com/",
     inputSelector: "textarea",

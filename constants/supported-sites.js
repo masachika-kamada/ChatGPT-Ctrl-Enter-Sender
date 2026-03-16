@@ -1,7 +1,6 @@
 export const SUPPORTED_SITES = [
   "chatgpt.com",
   "poe.com",
-  "www.phind.com",
   "chat.mistral.ai",
   "www.perplexity.ai",
   "claude.ai",

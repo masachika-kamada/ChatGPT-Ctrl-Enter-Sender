@@ -25,7 +25,6 @@
 
 * <https://chatgpt.com>
 * <https://poe.com>
-* <https://www.phind.com>
 * <https://chat.mistral.ai>
 * <https://www.perplexity.ai>
 * <https://claude.ai>
