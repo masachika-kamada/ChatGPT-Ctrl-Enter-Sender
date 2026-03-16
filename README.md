@@ -28,9 +28,7 @@ You can use this extension on the following pages:
 * <https://chat.mistral.ai>
 * <https://www.perplexity.ai>
 * <https://claude.ai>
-* <https://you.com>
 * <https://v0.dev>
-* <https://dashboard.cohere.com/playground/chat>
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>

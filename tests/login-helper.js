@@ -24,7 +24,6 @@ const AUTH_SITES = [
   { name: "Poe", url: "https://poe.com/" },
   { name: "Mistral", url: "https://chat.mistral.ai/chat" },
   { name: "NotebookLM", url: "https://notebooklm.google.com/" },
-  { name: "You.com", url: "https://you.com/" },
 ];
 
 function askUser(question) {

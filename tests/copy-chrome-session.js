@@ -27,7 +27,6 @@ const SUPPORTED_DOMAINS = [
   "poe.com",
   "chat.mistral.ai",
   "notebooklm.google.com",
-  "you.com",
   "grok.com",
   "www.perplexity.ai",
   "copilot.microsoft.com",

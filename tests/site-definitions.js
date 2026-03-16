@@ -76,14 +76,6 @@ const SITES = [
     notes: "Enter→改行, Ctrl+Enter→送信",
   },
   {
-    name: "You.com",
-    url: "https://you.com/",
-    inputSelector: "textarea",
-    inputType: "textarea",
-    requiresAuth: false,
-    notes: "認証不要",
-  },
-  {
     name: "Copilot",
     url: "https://copilot.microsoft.com/",
     inputSelector: "textarea",
