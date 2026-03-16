@@ -1,0 +1,32 @@
+{
+  "name": "chatgpt-ctrl-enter-sender",
+  "version": "1.0.0",
+  "description": "English | [日本語](README_JA.md) | [简体中文](README_CH.md)",
+  "main": "background.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:loading": "npx playwright test extension-loading",
+    "test:sites": "npx playwright test site-accessibility",
+    "test:behavior": "npx playwright test ctrl-enter-behavior",
+    "test:public": "npx playwright test --grep 'Public Sites'",
+    "login": "node tests/login-helper.js",
+    "login:all": "node tests/login-helper.js",
+    "login:chrome": "node tests/login-helper.js --use-chrome-profile",
+    "copy-session": "node tests/copy-chrome-session.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masachika-kamada/send-message-with-ctrl-enter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/masachika-kamada/send-message-with-ctrl-enter/issues"
+  },
+  "homepage": "https://github.com/masachika-kamada/send-message-with-ctrl-enter#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}

@@ -1,2 +1,8 @@
 __pycache__/
+.ruff_cache/
 extension.zip
+node_modules/
+test-user-data/
+test-results/
+playwright-report/
+tests/screenshots/*.png
