@@ -47,7 +47,9 @@
         "https://github.com/*",
         "https://grok.com/*",
         "https://m365.cloud.microsoft/*",
-        "https://www.perplexity.ai/*"
+        "https://www.perplexity.ai/*",
+        "https://cursor.com/agents*",
+        "https://cursor.com/*/agents*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
