@@ -13,7 +13,8 @@
 [Chrome ウェブストアで利用可能](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
 ### Firefox
-[Firefox アドオンページ](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
+
+> **⚠️ Firefox版のメンテナンスは終了しました。** 最後のバージョンは [firefoxブランチ](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox) をご覧ください。フォークによる継続は歓迎します。
 
 ## 機能
 

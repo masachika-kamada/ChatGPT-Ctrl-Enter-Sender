@@ -16,16 +16,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/masachika-kamada/send-message-with-ctrl-enter.git"
+    "url": "git+https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/masachika-kamada/send-message-with-ctrl-enter/issues"
+    "url": "https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/issues"
   },
-  "homepage": "https://github.com/masachika-kamada/send-message-with-ctrl-enter#readme",
+  "homepage": "https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender#readme",
   "devDependencies": {
     "@playwright/test": "^1.58.2"
   }
