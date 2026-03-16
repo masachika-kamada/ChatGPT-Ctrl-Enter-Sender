@@ -15,6 +15,8 @@ English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 ### Firefox
 [Firefox Add-on page](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
 
+> **Note:** The Firefox version is not currently being updated as the maintainer is unable to dedicate time to it. The link above is the last available version.
+
 ## Features
 
 **ChatGPT Ctrl+Enter Sender** allows you to send messages in ChatGPT and other sites using "Ctrl+Enter".<br>
@@ -25,13 +27,10 @@ You can use this extension on the following pages:
 
 * <https://chatgpt.com>
 * <https://poe.com>
-* <https://www.phind.com>
 * <https://chat.mistral.ai>
 * <https://www.perplexity.ai>
 * <https://claude.ai>
-* <https://you.com>
 * <https://v0.dev>
-* <https://dashboard.cohere.com/playground/chat>
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>

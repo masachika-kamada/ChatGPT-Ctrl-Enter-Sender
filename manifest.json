@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
@@ -26,9 +26,7 @@
       "matches": [
         "https://poe.com/*",
         "https://chat.mistral.ai/*",
-        "https://you.com/*",
         "https://v0.dev/*",
-        "https://dashboard.cohere.com/playground/chat",
         "https://copilot.microsoft.com/*"
       ],
       "js": [
@@ -42,7 +40,6 @@
         "https://claude.ai/*",
         "https://notebooklm.google.com/*",
         "https://gemini.google.com/*",
-        "https://www.phind.com/*",
         "https://chat.deepseek.com/*",
         "https://github.com/*",
         "https://grok.com/*",
@@ -66,12 +63,9 @@
   "host_permissions": [
     "https://chatgpt.com/*",
     "https://poe.com/*",
-    "https://www.phind.com/*",
     "https://chat.mistral.ai/*",
     "https://www.perplexity.ai/*",
     "https://claude.ai/*",
-    "https://you.com/*",
-    "https://dashboard.cohere.com/playground/chat",
     "https://notebooklm.google.com/*",
     "https://gemini.google.com/*",
     "https://v0.dev/*",
@@ -79,7 +73,8 @@
     "https://github.com/*",
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
-    "https://m365.cloud.microsoft/*"
+    "https://m365.cloud.microsoft/*",
+    "https://cursor.com/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",

@@ -15,6 +15,8 @@
 ### Firefox
 [Firefox アドオンページ](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
 
+> **注意:** メンテナがFirefox版に注力できていないため、現在更新を停止しています。上記リンクは最後のバージョンとなります。
+
 ## 機能
 
 **ChatGPT Ctrl+Enter Sender** は、ChatGPT などのサイトでメッセージを「Ctrl+Enter」で送信できるようにします。<br>
@@ -25,13 +27,10 @@
 
 * <https://chatgpt.com>
 * <https://poe.com>
-* <https://www.phind.com>
 * <https://chat.mistral.ai>
 * <https://www.perplexity.ai>
 * <https://claude.ai>
-* <https://you.com>
 * <https://v0.dev>
-* <https://dashboard.cohere.com/playground/chat>
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>

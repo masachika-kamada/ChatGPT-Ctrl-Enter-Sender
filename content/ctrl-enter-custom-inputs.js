@@ -28,11 +28,6 @@ function shouldHandleCtrlEnter(url, event) {
       )) &&
       !(event.shiftKey && event.code === "Enter");
   }
-  else if (url.startsWith("https://www.phind.com")) {
-    return event.target.tagName === "DIV" &&
-           event.target.classList.contains("public-DraftEditor-content") &&
-           event.target.contentEditable === "true";
-  }
   else if (url.startsWith("https://chat.deepseek.com")) {
     return event.target.tagName === "TEXTAREA";
   }
@@ -121,7 +116,7 @@ function handleCtrlEnter(event) {
 
   if (isOnlyEnter || isCtrlEnter) {
     // Prevent default behavior only for certain sites
-    const preventDefaultSites = ["https://claude.ai", "https://www.phind.com", "https://www.perplexity.ai"];
+    const preventDefaultSites = ["https://claude.ai", "https://www.perplexity.ai"];
     if (preventDefaultSites.some((site) => url.startsWith(site))) {
       event.preventDefault();
     }
@@ -134,11 +129,6 @@ function handleCtrlEnter(event) {
       cancelable: true,
       shiftKey: isOnlyEnter
     };
-
-    // Phind requires keyCode to be set explicitly
-    if (url.startsWith("https://www.phind.com")) {
-      eventConfig.keyCode = 13;
-    }
 
     // M365 Chat requires keyCode=13 for Ctrl+Enter to send message
     if (url.startsWith("https://m365.cloud.microsoft/chat") && isCtrlEnter) {

@@ -15,6 +15,8 @@
 ### Firefox
 [Firefox 扩展页面](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
 
+> **注意:** 由于维护者无法投入精力维护Firefox版本，目前已停止更新。以上链接为最后的版本。
+
 ## 功能
 
 **ChatGPT Ctrl+Enter Sender** 可以让您在 ChatGPT 等网站上使用“Ctrl+Enter”发送消息。<br>
@@ -25,13 +27,10 @@
 
 * <https://chatgpt.com>
 * <https://poe.com>
-* <https://www.phind.com>
 * <https://chat.mistral.ai>
 * <https://www.perplexity.ai>
 * <https://claude.ai>
-* <https://you.com>
 * <https://v0.dev>
-* <https://dashboard.cohere.com/playground/chat>
 * <https://notebooklm.google.com>
 * <https://gemini.google.com>
 * <https://chat.deepseek.com>
