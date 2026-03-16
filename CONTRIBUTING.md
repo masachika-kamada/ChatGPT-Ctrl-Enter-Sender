@@ -52,4 +52,4 @@ Bug reports for Tier 1 and Tier 2 sites are always welcome. Please use the issue
 
 ## Firefox
 
-**Firefox support has been discontinued.** The Firefox branch is no longer maintained. Forks are welcome to continue Firefox support independently.
+**Firefox support has been discontinued.** The maintainer does not use Firefox and the Firefox extension platform has significant differences (MV3 migration, etc.), making continued maintenance difficult. The Firefox branch contains the last available version.

@@ -13,8 +13,9 @@ English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 [Available on Chrome Web Store](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
 ### Firefox
+[Firefox Add-on page](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
 
-> **⚠️ Firefox support has been discontinued.** The Firefox version is no longer maintained. See the [firefox branch](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox) for the last available version. Forks are welcome.
+> **Note:** The Firefox version is not currently being updated as the maintainer is unable to dedicate time to it. The link above is the last available version.
 
 ## Features
 

@@ -122,14 +122,3 @@ body {
 .sponsor-btn:hover {
   opacity: 0.85;
 }
-
-.sponsor-sub {
-  font-size: 11px;
-  color: #888;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.sponsor-sub:hover {
-  color: #ffdd00;
-}

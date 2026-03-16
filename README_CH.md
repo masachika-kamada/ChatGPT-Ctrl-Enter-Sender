@@ -13,8 +13,9 @@
 [在 Chrome 网上应用店中可用](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
 ### Firefox
+[Firefox 扩展页面](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
 
-> **⚠️ Firefox版本已停止维护。** 最后的版本请参见 [firefox分支](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)。欢迎 Fork 继续维护。
+> **注意:** 由于维护者无法投入精力维护Firefox版本，目前已停止更新。以上链接为最后的版本。
 
 ## 功能
 

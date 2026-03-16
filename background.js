@@ -8,14 +8,6 @@ function extractHostname(url) {
   }
 }
 
-chrome.runtime.onInstalled.addListener((details) => {
-  if (details.reason === "update") {
-    chrome.tabs.create({
-      url: "https://github.com/sponsors/masachika-kamada",
-    });
-  }
-});
-
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   const url = tab.url;
   const hostname = extractHostname(url);
