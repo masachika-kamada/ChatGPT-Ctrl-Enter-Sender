@@ -11,5 +11,6 @@ export const SUPPORTED_SITES = [
   "notebooklm.google.com",
   "github.com",
   "poe.com",
-  "v0.dev"
+  "v0.dev",
+  "cursor.com"
 ];

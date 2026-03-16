@@ -91,6 +91,14 @@ const SITES = [
     requiresAuth: true,
     notes: "Ctrl+Enter→ボタンクリックで送信",
   },
+  {
+    name: "Cursor Agents",
+    url: "https://cursor.com/agents",
+    inputSelector: 'div[data-lexical-editor="true"][role="textbox"]',
+    inputType: "contenteditable",
+    requiresAuth: true,
+    notes: "Lexical editor。サブスクリプション必要",
+  },
 ];
 
 module.exports = { SITES };

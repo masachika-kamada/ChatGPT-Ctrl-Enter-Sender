@@ -1,3 +1,13 @@
+function isCursorAgentsPath(url) {
+  try {
+    const { pathname } = new URL(url);
+    // Support both /agents and locale-prefixed paths like /ja/agents.
+    return /^\/(?:[a-z]{2}(?:-[A-Za-z]{2})?\/)?agents(?:\/|$)/.test(pathname);
+  } catch (e) {
+    return false;
+  }
+}
+
 function shouldHandleCtrlEnter(url, event) {
   if (url.startsWith("https://claude.ai")) {
     // Support both main input (DIV) and edit mode (TEXTAREA)
@@ -35,6 +45,13 @@ function shouldHandleCtrlEnter(url, event) {
            event.target.contentEditable === "true" &&
            event.target.id === "ask-input";
   }
+  else if (url.startsWith("https://cursor.com")) {
+    return isCursorAgentsPath(url) &&
+           event.target.tagName === "DIV" &&
+           event.target.contentEditable === "true" &&
+           event.target.getAttribute("data-lexical-editor") === "true" &&
+           event.target.getAttribute("role") === "textbox";
+  }
 
   return false;
 }
@@ -42,6 +59,18 @@ function shouldHandleCtrlEnter(url, event) {
 function findSendButton() {
   const submitButton = document.querySelector('query-box form button[type="submit"]');
   if (submitButton) return submitButton;
+  return null;
+}
+
+function findCursorSendButton(target) {
+  const submitSelector = 'button[type="submit"]:not([disabled])';
+
+  const parentForm = target.closest("form");
+  if (parentForm) {
+    const formSubmitButton = parentForm.querySelector(submitSelector);
+    if (formSubmitButton) return formSubmitButton;
+  }
+
   return null;
 }
 
@@ -59,6 +88,31 @@ function handleCtrlEnter(event) {
 
   const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
   const isCtrlEnter = (event.code === "Enter") && (event.ctrlKey || event.metaKey);
+  const isCursorAgents = url.startsWith("https://cursor.com") && isCursorAgentsPath(url);
+
+  if (isCursorAgents && isOnlyEnter) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const newEvent = new KeyboardEvent("keydown", {
+      key: "Enter",
+      code: "Enter",
+      bubbles: true,
+      cancelable: true,
+      shiftKey: true
+    });
+    event.target.dispatchEvent(newEvent);
+    return;
+  }
+
+  if (isCursorAgents && isCtrlEnter) {
+    const sendButton = findCursorSendButton(event.target);
+    if (sendButton) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      sendButton.click();
+    }
+    return;
+  }
 
   if (isOnlyEnter || isCtrlEnter) {
     // Prevent default behavior only for certain sites

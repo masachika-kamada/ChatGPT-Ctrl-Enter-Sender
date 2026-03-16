@@ -38,6 +38,7 @@
 * <https://grok.com>
 * <https://copilot.microsoft.com>
 * <https://m365.cloud.microsoft/chat>
+* <https://cursor.com/agents>
 
 ## 演示视频
 
