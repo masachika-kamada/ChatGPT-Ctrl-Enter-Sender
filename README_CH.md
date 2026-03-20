@@ -52,6 +52,20 @@
 * [WebChatGPT](https://chrome.google.com/webstore/detail/webchatgpt-chatgpt-with-i/lpfemeioodjbpieminkklglpmhlngfcn)
 * [TalkBerry](https://chrome.google.com/webstore/detail/talkberry-talk-to-chatgpt/facjhgcdnbfghhbnmfjgkncnbimfdakb)
 
-## 贡献者
+## 贡献者 :smile:
 
-感谢所有贡献者！完整列表请查看[贡献者页面](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/graphs/contributors)。
+* [momosuke](https://github.com/ry0y4n)
+* [Yusuke Sakai](https://github.com/ore88ore)
+* [Aniny](https://github.com/Aniny21)
+* [Amritanshu Singh](https://github.com/Amritanshu1912)
+* [Yuichi Miyata](https://github.com/Juris710)
+* [baku sato](https://github.com/sahksas)
+* [coni524](https://github.com/coni524)
+* [sakamossan](https://github.com/sakamossan)
+* [S. Ota](https://github.com/susumuota)
+* [inadati](https://github.com/inadati)
+* [Kohei Nakada](https://github.com/ankd-k)
+* [itachi](https://github.com/doma-itachi)
+* [shuya goto](https://github.com/syuya2036)
+* [censor-ed](https://github.com/censor-ed)
+* [HappyOnigiri](https://github.com/HappyOnigiri)

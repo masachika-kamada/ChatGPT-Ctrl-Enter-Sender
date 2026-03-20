@@ -26,7 +26,7 @@ function shouldHandleCtrlEnter(url, event) {
       ) || (
         event.target.tagName === "TEXTAREA"
       )) &&
-      !(event.shiftKey && event.code === "Enter");
+      !(event.shiftKey && (event.code === "Enter" || event.code === "NumpadEnter"));
   }
   else if (url.startsWith("https://chat.deepseek.com")) {
     return event.target.tagName === "TEXTAREA";
@@ -48,8 +48,7 @@ function shouldHandleCtrlEnter(url, event) {
   }
   else if (url.startsWith("https://www.perplexity.ai")) {
     return event.target.tagName === "DIV" &&
-           event.target.contentEditable === "true" &&
-           event.target.id === "ask-input";
+           event.target.contentEditable === "true";
   }
   else if (url.startsWith("https://cursor.com")) {
     return isCursorAgentsPath(url) &&
@@ -92,8 +91,8 @@ function handleCtrlEnter(event) {
     return;
   }
 
-  const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
-  const isCtrlEnter = (event.code === "Enter") && (event.ctrlKey || event.metaKey);
+  const isOnlyEnter = (event.code === "Enter" || event.code === "NumpadEnter") && !(event.ctrlKey || event.metaKey);
+  const isCtrlEnter = (event.code === "Enter" || event.code === "NumpadEnter") && (event.ctrlKey || event.metaKey);
   const isCursorAgents = url.startsWith("https://cursor.com") && isCursorAgentsPath(url);
 
   if (isCursorAgents && isOnlyEnter) {
