@@ -3,7 +3,7 @@ function handleCtrlEnter(event) {
     return;
   }
 
-  const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
+  const isOnlyEnter = (event.code === "Enter" || event.code === "NumpadEnter") && !(event.ctrlKey || event.metaKey);
 
   if (isOnlyEnter) {
     // stopPropagation for both Windows and Mac

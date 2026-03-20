@@ -1,6 +1,6 @@
 function handleCtrlEnter(event) {
-  const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
-  const isCtrlEnter = (event.code === "Enter") && event.ctrlKey;
+  const isOnlyEnter = (event.code === "Enter" || event.code === "NumpadEnter") && !(event.ctrlKey || event.metaKey);
+  const isCtrlEnter = (event.code === "Enter" || event.code === "NumpadEnter") && event.ctrlKey;
   const isPromptTextarea = event.target.id === "prompt-textarea";
 
   // Ignore untrusted events
