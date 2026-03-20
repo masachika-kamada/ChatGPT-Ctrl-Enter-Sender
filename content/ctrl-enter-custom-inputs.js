@@ -40,8 +40,8 @@ function shouldHandleCtrlEnter(url, event) {
   else if (url.startsWith("https://grok.com")) {
     return event.target.tagName === "TEXTAREA" || (event.target.tagName === "DIV" && event.target.contentEditable === "true");
   }
-  else if (url.startsWith("https://github.com")) {
-    return event.target.getAttribute("placeholder") === "Ask Copilot";
+  else if (url.startsWith("https://github.com/copilot")) {
+    return event.target.tagName === "TEXTAREA";
   }
   else if (url.startsWith("https://m365.cloud.microsoft/chat")) {
     return event.target.id === "m365-chat-editor-target-element";
