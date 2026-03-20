@@ -40,7 +40,7 @@ function shouldHandleCtrlEnter(url, event) {
   else if (url.startsWith("https://grok.com")) {
     return event.target.tagName === "TEXTAREA" || (event.target.tagName === "DIV" && event.target.contentEditable === "true");
   }
-  else if (url.startsWith("https://github.com/copilot")) {
+  else if (url.startsWith("https://github.com/copilot") || url.startsWith("https://github.com/spark")) {
     return event.target.tagName === "TEXTAREA";
   }
   else if (url.startsWith("https://m365.cloud.microsoft/chat")) {
