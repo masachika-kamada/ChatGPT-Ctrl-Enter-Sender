@@ -31,6 +31,12 @@ function shouldHandleCtrlEnter(url, event) {
   else if (url.startsWith("https://chat.deepseek.com")) {
     return event.target.tagName === "TEXTAREA";
   }
+  else if (url.startsWith("https://chat.mistral.ai")) {
+    return (event.target.tagName === "DIV" &&
+           event.target.classList.contains("ProseMirror") &&
+           event.target.contentEditable === "true") ||
+           event.target.tagName === "TEXTAREA";
+  }
   else if (url.startsWith("https://grok.com")) {
     return event.target.tagName === "TEXTAREA" || (event.target.tagName === "DIV" && event.target.contentEditable === "true");
   }
@@ -116,7 +122,7 @@ function handleCtrlEnter(event) {
 
   if (isOnlyEnter || isCtrlEnter) {
     // Prevent default behavior only for certain sites
-    const preventDefaultSites = ["https://claude.ai", "https://www.perplexity.ai"];
+    const preventDefaultSites = ["https://claude.ai", "https://www.perplexity.ai", "https://chat.mistral.ai"];
     if (preventDefaultSites.some((site) => url.startsWith(site))) {
       event.preventDefault();
     }

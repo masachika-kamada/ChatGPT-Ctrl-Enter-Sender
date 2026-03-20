@@ -25,7 +25,6 @@
     {
       "matches": [
         "https://poe.com/*",
-        "https://chat.mistral.ai/*",
         "https://v0.dev/*",
         "https://copilot.microsoft.com/*"
       ],
@@ -41,6 +40,7 @@
         "https://notebooklm.google.com/*",
         "https://gemini.google.com/*",
         "https://chat.deepseek.com/*",
+        "https://chat.mistral.ai/*",
         "https://github.com/*",
         "https://grok.com/*",
         "https://m365.cloud.microsoft/*",
