@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
@@ -25,7 +25,6 @@
     {
       "matches": [
         "https://poe.com/*",
-        "https://chat.mistral.ai/*",
         "https://v0.dev/*",
         "https://copilot.microsoft.com/*"
       ],
@@ -41,7 +40,9 @@
         "https://notebooklm.google.com/*",
         "https://gemini.google.com/*",
         "https://chat.deepseek.com/*",
-        "https://github.com/*",
+        "https://chat.mistral.ai/*",
+        "https://github.com/copilot*",
+        "https://github.com/spark*",
         "https://grok.com/*",
         "https://m365.cloud.microsoft/*",
         "https://www.perplexity.ai/*",
@@ -70,7 +71,8 @@
     "https://gemini.google.com/*",
     "https://v0.dev/*",
     "https://chat.deepseek.com/*",
-    "https://github.com/*",
+    "https://github.com/copilot*",
+    "https://github.com/spark*",
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
     "https://m365.cloud.microsoft/*",

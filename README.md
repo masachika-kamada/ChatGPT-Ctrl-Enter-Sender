@@ -26,18 +26,18 @@ You can easily toggle the extension on and off with a toggle button by clicking 
 You can use this extension on the following pages:
 
 * <https://chatgpt.com>
-* <https://poe.com>
-* <https://chat.mistral.ai>
-* <https://www.perplexity.ai>
 * <https://claude.ai>
-* <https://v0.dev>
-* <https://notebooklm.google.com>
 * <https://gemini.google.com>
-* <https://chat.deepseek.com>
-* <https://github.com>
-* <https://grok.com>
 * <https://copilot.microsoft.com>
 * <https://m365.cloud.microsoft/chat>
+* <https://chat.deepseek.com>
+* <https://grok.com>
+* <https://www.perplexity.ai>
+* <https://chat.mistral.ai>
+* <https://notebooklm.google.com>
+* <https://github.com> (Copilot, Spark)
+* <https://poe.com>
+* <https://v0.dev>
 * <https://cursor.com/agents>
 
 ## Demo Video
@@ -52,7 +52,7 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [WebChatGPT](https://chrome.google.com/webstore/detail/webchatgpt-chatgpt-with-i/lpfemeioodjbpieminkklglpmhlngfcn)
 * [TalkBerry](https://chrome.google.com/webstore/detail/talkberry-talk-to-chatgpt/facjhgcdnbfghhbnmfjgkncnbimfdakb)
 
-## Contribute :smile:
+## Contributors :smile:
 
 * [momosuke](https://github.com/ry0y4n)
 * [Yusuke Sakai](https://github.com/ore88ore)
@@ -67,3 +67,5 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [Kohei Nakada](https://github.com/ankd-k)
 * [itachi](https://github.com/doma-itachi)
 * [shuya goto](https://github.com/syuya2036)
+* [censor-ed](https://github.com/censor-ed)
+* [HappyOnigiri](https://github.com/HappyOnigiri)

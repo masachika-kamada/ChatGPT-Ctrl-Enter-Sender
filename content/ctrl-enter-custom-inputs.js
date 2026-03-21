@@ -26,24 +26,29 @@ function shouldHandleCtrlEnter(url, event) {
       ) || (
         event.target.tagName === "TEXTAREA"
       )) &&
-      !(event.shiftKey && event.code === "Enter");
+      !(event.shiftKey && (event.code === "Enter" || event.code === "NumpadEnter"));
   }
   else if (url.startsWith("https://chat.deepseek.com")) {
     return event.target.tagName === "TEXTAREA";
   }
+  else if (url.startsWith("https://chat.mistral.ai")) {
+    return (event.target.tagName === "DIV" &&
+           event.target.classList.contains("ProseMirror") &&
+           event.target.contentEditable === "true") ||
+           event.target.tagName === "TEXTAREA";
+  }
   else if (url.startsWith("https://grok.com")) {
     return event.target.tagName === "TEXTAREA" || (event.target.tagName === "DIV" && event.target.contentEditable === "true");
   }
-  else if (url.startsWith("https://github.com")) {
-    return event.target.getAttribute("placeholder") === "Ask Copilot";
+  else if (url.startsWith("https://github.com/copilot") || url.startsWith("https://github.com/spark")) {
+    return event.target.tagName === "TEXTAREA";
   }
   else if (url.startsWith("https://m365.cloud.microsoft/chat")) {
     return event.target.id === "m365-chat-editor-target-element";
   }
   else if (url.startsWith("https://www.perplexity.ai")) {
     return event.target.tagName === "DIV" &&
-           event.target.contentEditable === "true" &&
-           event.target.id === "ask-input";
+           event.target.contentEditable === "true";
   }
   else if (url.startsWith("https://cursor.com")) {
     return isCursorAgentsPath(url) &&
@@ -86,8 +91,8 @@ function handleCtrlEnter(event) {
     return;
   }
 
-  const isOnlyEnter = (event.code === "Enter") && !(event.ctrlKey || event.metaKey);
-  const isCtrlEnter = (event.code === "Enter") && (event.ctrlKey || event.metaKey);
+  const isOnlyEnter = (event.code === "Enter" || event.code === "NumpadEnter") && !(event.ctrlKey || event.metaKey);
+  const isCtrlEnter = (event.code === "Enter" || event.code === "NumpadEnter") && (event.ctrlKey || event.metaKey);
   const isCursorAgents = url.startsWith("https://cursor.com") && isCursorAgentsPath(url);
 
   if (isCursorAgents && isOnlyEnter) {
@@ -116,7 +121,7 @@ function handleCtrlEnter(event) {
 
   if (isOnlyEnter || isCtrlEnter) {
     // Prevent default behavior only for certain sites
-    const preventDefaultSites = ["https://claude.ai", "https://www.perplexity.ai"];
+    const preventDefaultSites = ["https://claude.ai", "https://www.perplexity.ai", "https://chat.mistral.ai"];
     if (preventDefaultSites.some((site) => url.startsWith(site))) {
       event.preventDefault();
     }
