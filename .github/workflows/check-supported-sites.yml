@@ -4,12 +4,14 @@ on:
   push:
     paths:
       - 'manifest.json'
+      - 'constants/site-configs.js'
       - 'constants/supported-sites.js'
       - 'README*.md'
       - 'tools/check_supported_sites.py'
   pull_request:
     paths:
       - 'manifest.json'
+      - 'constants/site-configs.js'
       - 'constants/supported-sites.js'
       - 'README*.md'
       - 'tools/check_supported_sites.py'
