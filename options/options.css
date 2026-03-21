@@ -11,12 +11,14 @@ label {
   display: block;
   font-size: 15px;
   margin: 5px 0;
+  cursor: pointer;
 }
 
 .site-label {
   display: block;
   margin: 4px 0;
   font-size: 14px;
+  cursor: pointer;
 }
 
 #siteList {
@@ -26,7 +28,7 @@ label {
   border-radius: 4px;
 }
 
-button {
+#saveButton {
   min-width: 100px;
   padding: 10px 20px;
   font-size: 16px;
@@ -39,7 +41,7 @@ button {
   transition: background-color 0.2s ease;
 }
 
-button:disabled {
+#saveButton:disabled {
   background-color: #9ccc9c;
   cursor: not-allowed;
 }
@@ -59,4 +61,29 @@ button:disabled {
 
 .sponsor-link:hover {
   opacity: 0.7;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #202123;
+    color: #DADADA;
+  }
+
+  #siteList {
+    border-color: #444;
+  }
+
+  #saveButton {
+    background-color: #4BD865;
+    color: #202123;
+  }
+
+  #saveButton:disabled {
+    background-color: #2a7a38;
+    color: #999;
+  }
+
+  .sponsor-section {
+    border-top-color: #444;
+  }
 }
