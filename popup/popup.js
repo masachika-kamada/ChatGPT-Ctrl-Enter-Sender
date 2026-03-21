@@ -1,15 +1,7 @@
-import { SUPPORTED_SITES } from "../constants/supported-sites.js";
+import { SUPPORTED_SITES, extractHostname } from "../constants/site-configs.js";
 
 let isEnabled = false;
 const toggleButton = document.querySelector("#isEnabled");
-
-function extractHostname(url) {
-  try {
-    return new URL(url).hostname;
-  } catch (e) {
-    return "";
-  }
-}
 
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   const tab = tabs[0];

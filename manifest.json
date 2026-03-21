@@ -15,43 +15,26 @@
   "content_scripts": [
     {
       "matches": [
-        "https://chatgpt.com/*"
-      ],
-      "js": [
-        "content/ctrl-enter-utils.js",
-        "content/ctrl-enter-chatgpt.js"
-      ]
-    },
-    {
-      "matches": [
-        "https://poe.com/*",
-        "https://v0.dev/*",
-        "https://copilot.microsoft.com/*"
-      ],
-      "js": [
-        "content/ctrl-enter-utils.js",
-        "content/ctrl-enter-textarea.js"
-      ],
-      "run_at": "document_start"
-    },
-    {
-      "matches": [
+        "https://chatgpt.com/*",
         "https://claude.ai/*",
-        "https://notebooklm.google.com/*",
         "https://gemini.google.com/*",
+        "https://copilot.microsoft.com/*",
+        "https://m365.cloud.microsoft/*",
         "https://chat.deepseek.com/*",
+        "https://grok.com/*",
+        "https://www.perplexity.ai/*",
         "https://chat.mistral.ai/*",
+        "https://notebooklm.google.com/*",
         "https://github.com/copilot*",
         "https://github.com/spark*",
-        "https://grok.com/*",
-        "https://m365.cloud.microsoft/*",
-        "https://www.perplexity.ai/*",
+        "https://poe.com/*",
+        "https://v0.dev/*",
         "https://cursor.com/agents*",
         "https://cursor.com/*/agents*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
-        "content/ctrl-enter-custom-inputs.js"
+        "content/ctrl-enter-handler.js"
       ],
       "run_at": "document_start"
     }
