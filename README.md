@@ -37,7 +37,7 @@ You can use this extension on the following pages:
 * <https://notebooklm.google.com>
 * <https://github.com> (Copilot, Spark)
 * <https://poe.com>
-* <https://v0.dev>
+* <https://v0.app>
 * <https://cursor.com/agents>
 
 ## Demo Video

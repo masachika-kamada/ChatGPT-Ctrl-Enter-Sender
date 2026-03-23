@@ -44,7 +44,7 @@ function isCursorAgentsPath(url) {
 // Ordered by tier (see CONTRIBUTING.md):
 //   Tier 1: ChatGPT, Claude, Gemini, Copilot, M365
 //   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub
-//   Tier 3: Poe, v0.dev, Cursor
+//   Tier 3: Poe, v0, Cursor
 
 const SITE_BEHAVIORS = {
 
@@ -249,12 +249,29 @@ const SITE_BEHAVIORS = {
     },
   },
 
-  "v0.dev": {
+  "v0.app": {
     shouldHandle(event) {
-      return event.target.tagName === "TEXTAREA";
+      return event.target.tagName === "TEXTAREA" ||
+             (event.target.tagName === "DIV" &&
+              event.target.classList.contains("ProseMirror") &&
+              event.target.contentEditable === "true");
     },
     onEnter(event) {
-      event.stopPropagation();
+      if (event.target.tagName === "TEXTAREA") {
+        event.stopPropagation();
+      } else {
+        // ProseMirror follow-up input
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        dispatchEnter(event.target, { shiftKey: true });
+      }
+    },
+    onCtrlEnter(event) {
+      if (event.target.tagName === "DIV") {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        dispatchEnter(event.target, {});
+      }
     },
   },
 

@@ -31,7 +31,7 @@ SITES = [
     {"hostname": "notebooklm.google.com", "name": "NotebookLM"},
     {"hostname": "github.com", "name": "GitHub Copilot"},
     {"hostname": "poe.com", "name": "Poe"},
-    {"hostname": "v0.dev", "name": "v0"},
+    {"hostname": "v0.app", "name": "v0"},
     {"hostname": "cursor.com", "name": "Cursor"},
 ]
 
