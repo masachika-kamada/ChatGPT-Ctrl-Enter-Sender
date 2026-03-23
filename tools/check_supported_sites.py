@@ -69,11 +69,15 @@ def main():
         urls = extract_urls_from_section(section)
         domains_from_readmes.update(urls)
 
-    # 3. Load supported-site.js and extract domains
-    with open(f"{REPO_ROOT}/constants/supported-sites.js", encoding="utf-8") as f:
+    # 3. Load site-configs.js and extract hostnames
+    with open(f"{REPO_ROOT}/constants/site-configs.js", encoding="utf-8") as f:
         js = f.read()
-    supported_sites = re.findall(r'"([^"]+)"', js)
+    supported_sites = re.findall(r'hostname:\s*"([^"]+)"', js)
     domains_supported_sites = [extract_domain(u) for u in supported_sites]
+
+    # Also extract matchPatterns from site-configs.js and verify against manifest
+    config_match_patterns = re.findall(r'"(https://[^"]+)"', js)
+    domains_config_matches = [extract_domain(u) for u in config_match_patterns]
 
     # 4. Compare sets
     def diff(a, b):
@@ -87,9 +91,13 @@ def main():
     print("In host_permissions but not in any README:", diff(domains_host_permissions, domains_from_readmes))
     print("In any README but not in host_permissions:", diff(domains_from_readmes, domains_host_permissions))
 
-    print("\n--- host_permissions vs supported-site.js ---")
-    print("In host_permissions but not in supported-site.js:", diff(domains_host_permissions, domains_supported_sites))
-    print("In supported-site.js but not in host_permissions:", diff(domains_supported_sites, domains_host_permissions))
+    print("\n--- host_permissions vs site-configs.js hostnames ---")
+    print("In host_permissions but not in site-configs.js:", diff(domains_host_permissions, domains_supported_sites))
+    print("In site-configs.js but not in host_permissions:", diff(domains_supported_sites, domains_host_permissions))
+
+    print("\n--- manifest matches vs site-configs.js matchPatterns ---")
+    print("In manifest matches but not in site-configs.js:", diff(domains_matches, domains_config_matches))
+    print("In site-configs.js but not in manifest matches:", diff(domains_config_matches, domains_matches))
 
     # Exit with error if there are any differences
     if any([
@@ -98,7 +106,9 @@ def main():
         diff(domains_host_permissions, domains_from_readmes),
         diff(domains_from_readmes, domains_host_permissions),
         diff(domains_host_permissions, domains_supported_sites),
-        diff(domains_supported_sites, domains_host_permissions)
+        diff(domains_supported_sites, domains_host_permissions),
+        diff(domains_matches, domains_config_matches),
+        diff(domains_config_matches, domains_matches),
     ]):
         sys.exit(1)
 

@@ -1,4 +1,4 @@
-import { SUPPORTED_SITES } from "../constants/supported-sites.js";
+import { SUPPORTED_SITES } from "../constants/site-configs.js";
 
 const siteList = document.getElementById("siteList");
 const selectAllCheckbox = document.getElementById("selectAll");

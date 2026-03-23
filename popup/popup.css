@@ -61,6 +61,11 @@ body {
   z-index: 2;
 }
 
+.toggle_input:focus-visible+.toggle_label {
+  outline: 2px solid #4BD865;
+  outline-offset: 2px;
+}
+
 .toggle_input:checked+.toggle_label {
   background-color: #4BD865;
 }

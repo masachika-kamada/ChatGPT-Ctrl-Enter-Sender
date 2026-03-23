@@ -52,20 +52,20 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 * [WebChatGPT](https://chrome.google.com/webstore/detail/webchatgpt-chatgpt-with-i/lpfemeioodjbpieminkklglpmhlngfcn)
 * [TalkBerry](https://chrome.google.com/webstore/detail/talkberry-talk-to-chatgpt/facjhgcdnbfghhbnmfjgkncnbimfdakb)
 
-## Contributors :smile:
+## Contributors
 
-* [momosuke](https://github.com/ry0y4n)
-* [Yusuke Sakai](https://github.com/ore88ore)
-* [Aniny](https://github.com/Aniny21)
-* [Amritanshu Singh](https://github.com/Amritanshu1912)
-* [Yuichi Miyata](https://github.com/Juris710)
-* [baku sato](https://github.com/sahksas)
-* [coni524](https://github.com/coni524)
-* [sakamossan](https://github.com/sakamossan)
-* [S. Ota](https://github.com/susumuota)
-* [inadati](https://github.com/inadati)
-* [Kohei Nakada](https://github.com/ankd-k)
-* [itachi](https://github.com/doma-itachi)
-* [shuya goto](https://github.com/syuya2036)
-* [censor-ed](https://github.com/censor-ed)
-* [HappyOnigiri](https://github.com/HappyOnigiri)
+<a href="https://github.com/ry0y4n"><img src="https://github.com/ry0y4n.png" width="40"></a>
+<a href="https://github.com/ore88ore"><img src="https://github.com/ore88ore.png" width="40"></a>
+<a href="https://github.com/Aniny21"><img src="https://github.com/Aniny21.png" width="40"></a>
+<a href="https://github.com/Amritanshu1912"><img src="https://github.com/Amritanshu1912.png" width="40"></a>
+<a href="https://github.com/Juris710"><img src="https://github.com/Juris710.png" width="40"></a>
+<a href="https://github.com/sahksas"><img src="https://github.com/sahksas.png" width="40"></a>
+<a href="https://github.com/coni524"><img src="https://github.com/coni524.png" width="40"></a>
+<a href="https://github.com/sakamossan"><img src="https://github.com/sakamossan.png" width="40"></a>
+<a href="https://github.com/susumuota"><img src="https://github.com/susumuota.png" width="40"></a>
+<a href="https://github.com/inadati"><img src="https://github.com/inadati.png" width="40"></a>
+<a href="https://github.com/ankd-k"><img src="https://github.com/ankd-k.png" width="40"></a>
+<a href="https://github.com/doma-itachi"><img src="https://github.com/doma-itachi.png" width="40"></a>
+<a href="https://github.com/syuya2036"><img src="https://github.com/syuya2036.png" width="40"></a>
+<a href="https://github.com/censor-ed"><img src="https://github.com/censor-ed.png" width="40"></a>
+<a href="https://github.com/HappyOnigiri"><img src="https://github.com/HappyOnigiri.png" width="40"></a>

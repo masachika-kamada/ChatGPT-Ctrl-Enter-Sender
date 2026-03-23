@@ -6,3 +6,5 @@ test-user-data/
 test-results/
 playwright-report/
 tests/screenshots/*.png
+tools/logos/
+tools/supported_sites.png

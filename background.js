@@ -1,12 +1,4 @@
-import { SUPPORTED_SITES } from "./constants/supported-sites.js";
-
-function extractHostname(url) {
-  try {
-    return new URL(url).hostname;
-  } catch (e) {
-    return "";
-  }
-}
+import { SUPPORTED_SITES, extractHostname } from "./constants/site-configs.js";
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   const url = tab.url;
