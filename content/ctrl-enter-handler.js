@@ -44,7 +44,7 @@ function isCursorAgentsPath(url) {
 // Ordered by tier (see CONTRIBUTING.md):
 //   Tier 1: ChatGPT, Claude, Gemini, Copilot, M365
 //   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub
-//   Tier 3: Poe, v0.dev, Cursor
+//   Tier 3: Poe, v0, Cursor
 
 const SITE_BEHAVIORS = {
 
@@ -249,7 +249,7 @@ const SITE_BEHAVIORS = {
     },
   },
 
-  "v0.dev": {
+  "v0.app": {
     shouldHandle(event) {
       return event.target.tagName === "TEXTAREA";
     },

@@ -28,7 +28,7 @@
         "https://github.com/copilot*",
         "https://github.com/spark*",
         "https://poe.com/*",
-        "https://v0.dev/*",
+        "https://v0.app/*",
         "https://cursor.com/agents*",
         "https://cursor.com/*/agents*"
       ],
@@ -52,7 +52,7 @@
     "https://claude.ai/*",
     "https://notebooklm.google.com/*",
     "https://gemini.google.com/*",
-    "https://v0.dev/*",
+    "https://v0.app/*",
     "https://chat.deepseek.com/*",
     "https://github.com/copilot*",
     "https://github.com/spark*",

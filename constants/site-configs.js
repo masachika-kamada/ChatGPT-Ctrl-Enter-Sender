@@ -20,7 +20,7 @@ export const SITE_CONFIGS = [
   { hostname: "notebooklm.google.com", matchPatterns: ["https://notebooklm.google.com/*"] },
   { hostname: "github.com", matchPatterns: ["https://github.com/copilot*", "https://github.com/spark*"] },
   { hostname: "poe.com", matchPatterns: ["https://poe.com/*"] },
-  { hostname: "v0.dev", matchPatterns: ["https://v0.dev/*"] },
+  { hostname: "v0.app", matchPatterns: ["https://v0.app/*"] },
   { hostname: "cursor.com", matchPatterns: ["https://cursor.com/agents*", "https://cursor.com/*/agents*"] },
 ];
 
