@@ -12,10 +12,13 @@
 ### 基于Chromium的浏览器 (例如：Chrome、Edge、Brave 等等)
 [在 Chrome 网上应用店中可用](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
-### Firefox
-[Firefox 扩展页面](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
+### Firefox（128及以上）
+Firefox 通过与 Chrome 相同的代码库（Manifest V3）得到支持。
 
-> **注意:** 由于维护者无法投入精力维护Firefox版本，目前已停止更新。以上链接为最后的版本。
+在 Firefox 扩展页面上架之前，请按以下步骤手动安装：
+1. 下载或克隆本仓库
+2. 在 Firefox 中打开 `about:debugging` → **此 Firefox** → **临时载入附加组件**
+3. 选择仓库文件夹中的 `manifest.json`
 
 ## 功能
 

@@ -12,10 +12,13 @@
 ### Chromium ベースのブラウザ (例: Chrome, Edge, Brave など)
 [Chrome ウェブストアで利用可能](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
-### Firefox
-[Firefox アドオンページ](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
+### Firefox (128以降)
+Chrome と同じコードベース（Manifest V3）で Firefox に対応しています。
 
-> **注意:** メンテナがFirefox版に注力できていないため、現在更新を停止しています。上記リンクは最後のバージョンとなります。
+Firefox アドオンページが公開されるまでの手動インストール手順：
+1. このリポジトリをダウンロードまたはクローンする
+2. Firefox で `about:debugging` を開く → **この Firefox** → **一時的なアドオンを読み込む**
+3. リポジトリフォルダ内の `manifest.json` を選択する
 
 ## 機能
 

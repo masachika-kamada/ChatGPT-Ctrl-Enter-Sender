@@ -12,10 +12,13 @@ English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 ### Chromium-based Browsers (e.g. Chrome, Edge, Brave, etc.)
 [Available on Chrome Web Store](https://chrome.google.com/webstore/detail/chatgpt-ctrl%20enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
-### Firefox
-[Firefox Add-on page](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
+### Firefox (128+)
+Firefox is supported via the same codebase as Chrome (Manifest V3).
 
-> **Note:** The Firefox version is not currently being updated as the maintainer is unable to dedicate time to it. The link above is the last available version.
+To install manually until a Firefox Add-on page is available:
+1. Download or clone this repository
+2. Open `about:debugging` in Firefox → **This Firefox** → **Load Temporary Add-on**
+3. Select `manifest.json` from the repository folder
 
 ## Features
 

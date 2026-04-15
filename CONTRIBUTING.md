@@ -52,4 +52,6 @@ Bug reports for Tier 1 and Tier 2 sites are always welcome. Please use the issue
 
 ## Firefox
 
-**Firefox support has been discontinued.** The maintainer does not use Firefox and the Firefox extension platform has significant differences (MV3 migration, etc.), making continued maintenance difficult. The Firefox branch contains the last available version.
+Firefox 128+ is supported via the same Manifest V3 codebase as Chrome. The `browser_specific_settings.gecko` key in `manifest.json` enables Firefox compatibility. No separate Firefox branch is needed.
+
+Bug reports for Firefox are welcome. Please note the Firefox version in your report.

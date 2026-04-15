@@ -5,6 +5,12 @@
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "chatgpt-ctrl-enter-sender@chatgpt-extension.io",
+      "strict_min_version": "128.0"
+    }
+  },
   "permissions": [
     "storage"
   ],
