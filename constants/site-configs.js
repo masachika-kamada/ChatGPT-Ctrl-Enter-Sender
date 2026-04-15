@@ -22,6 +22,7 @@ export const SITE_CONFIGS = [
   { hostname: "poe.com", matchPatterns: ["https://poe.com/*"] },
   { hostname: "v0.app", matchPatterns: ["https://v0.app/*"] },
   { hostname: "cursor.com", matchPatterns: ["https://cursor.com/agents*", "https://cursor.com/*/agents*"] },
+  { hostname: "ai.rakuten.co.jp", matchPatterns: ["https://ai.rakuten.co.jp/*"] },
 ];
 
 export const SUPPORTED_SITES = SITE_CONFIGS.map((c) => c.hostname);
