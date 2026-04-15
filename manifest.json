@@ -59,7 +59,8 @@
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
     "https://m365.cloud.microsoft/*",
-    "https://cursor.com/*"
+    "https://cursor.com/agents*",
+    "https://cursor.com/*/agents*"
   ],
   "action": {
     "default_popup": "popup/popup.html",

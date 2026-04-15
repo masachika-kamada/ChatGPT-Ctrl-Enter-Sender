@@ -89,7 +89,8 @@ const SITE_BEHAVIORS = {
       dispatchEnter(event.target, {});
       // Claude edit mode: TEXTAREA needs button click to submit
       if (event.target.tagName === "TEXTAREA") {
-        const saveButton = document.querySelector('button[type="submit"]');
+        const container = event.target.closest('form') || event.target.parentElement;
+        const saveButton = container?.querySelector('button[type="submit"]');
         if (saveButton) saveButton.click();
       }
     },
@@ -302,8 +303,10 @@ const SITE_BEHAVIORS = {
 
 // ── Unified handler ──────────────────────────────────────────────────────────
 
+let _handling = false;
+
 function handleCtrlEnter(event) {
-  if (event.isComposing || !event.isTrusted) return;
+  if (_handling || event.isComposing || !event.isTrusted) return;
   if (!isEnterKey(event)) return;
 
   const hostname = window.location.hostname;
@@ -313,10 +316,15 @@ function handleCtrlEnter(event) {
   const isOnlyEnter = !event.ctrlKey && !event.metaKey;
   const isCtrlEnter = event.ctrlKey || event.metaKey;
 
-  if (isOnlyEnter && behavior.onEnter) {
-    behavior.onEnter(event);
-  } else if (isCtrlEnter && behavior.onCtrlEnter) {
-    behavior.onCtrlEnter(event);
+  _handling = true;
+  try {
+    if (isOnlyEnter && behavior.onEnter) {
+      behavior.onEnter(event);
+    } else if (isCtrlEnter && behavior.onCtrlEnter) {
+      behavior.onCtrlEnter(event);
+    }
+  } finally {
+    _handling = false;
   }
 }
 
