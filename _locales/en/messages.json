@@ -1,6 +1,6 @@
 {
     "appName": {
-        "message": "ChatGPT Ctrl+Enter Sender"
+        "message": "Chat AI Ctrl+Enter Sender"
     },
     "appDesc": {
         "message": "Use 'Ctrl+Enter' for sending messages in AI chat services like ChatGPT. Prevents accidental sends and allows line breaks with Enter."
