@@ -99,6 +99,14 @@ const SITES = [
     requiresAuth: true,
     notes: "Lexical editor。サブスクリプション必要",
   },
+  {
+    name: "Rakuten AI",
+    url: "https://ai.rakuten.co.jp/",
+    inputSelector: "textarea",
+    inputType: "textarea",
+    requiresAuth: false,
+    notes: "Enter→送信（デフォルト）。Shift+Enter→改行。認証不要でチャット可能",
+  },
 ];
 
 module.exports = { SITES };

@@ -275,6 +275,20 @@ const SITE_BEHAVIORS = {
     },
   },
 
+  "ai.rakuten.co.jp": {
+    shouldHandle(event) {
+      return event.target.tagName === "TEXTAREA";
+    },
+    onEnter(event) {
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { shiftKey: true });
+    },
+    onCtrlEnter(event) {
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, {});
+    },
+  },
+
   "cursor.com": {
     shouldHandle(event) {
       const url = window.location.href;
