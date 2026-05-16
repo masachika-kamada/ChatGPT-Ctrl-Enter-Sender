@@ -86,11 +86,12 @@ const SITE_BEHAVIORS = {
     onCtrlEnter(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      dispatchEnter(event.target, {});
-      // Claude edit mode: TEXTAREA needs button click to submit
       if (event.target.tagName === "TEXTAREA") {
-        const saveButton = document.querySelector('button[type="submit"]');
+        // Edit mode: synthetic Enter would double-submit
+        const saveButton = findFormButton(event.target, 'button[type="submit"]:not([disabled])');
         if (saveButton) saveButton.click();
+      } else {
+        dispatchEnter(event.target, {});
       }
     },
   },
