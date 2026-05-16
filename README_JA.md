@@ -69,3 +69,4 @@
 <a href="https://github.com/syuya2036"><img src="https://github.com/syuya2036.png" width="40"></a>
 <a href="https://github.com/censor-ed"><img src="https://github.com/censor-ed.png" width="40"></a>
 <a href="https://github.com/HappyOnigiri"><img src="https://github.com/HappyOnigiri.png" width="40"></a>
+<a href="https://github.com/njm2360"><img src="https://github.com/njm2360.png" width="40"></a>
