@@ -121,7 +121,7 @@ const SITE_BEHAVIORS = {
       return event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
-      event.stopPropagation();
+      event.stopImmediatePropagation();
     },
   },
 

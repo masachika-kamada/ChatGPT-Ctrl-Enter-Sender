@@ -242,6 +242,28 @@ test("Poe の TEXTAREA で Ctrl+Enter はパススルー", () => {
   assert.equal(event.preventDefaultCount, 0);
 });
 
+test("Copilot の TEXTAREA で Enter は stopImmediatePropagation のみ", () => {
+  const context = loadHandler("https://copilot.microsoft.com/", createButton());
+  const event = createKeydownEvent({ tagName: "TEXTAREA" });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(event.stopPropagationCount, 0);
+  assert.equal(event.preventDefaultCount, 0);
+});
+
+test("Copilot の TEXTAREA で Ctrl+Enter はパススルー", () => {
+  const context = loadHandler("https://copilot.microsoft.com/", createButton());
+  const event = createKeydownEvent({ tagName: "TEXTAREA" }, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.stopImmediatePropagationCount, 0);
+  assert.equal(event.stopPropagationCount, 0);
+  assert.equal(event.preventDefaultCount, 0);
+});
+
 // ── ChatGPT tests ────────────────────────────────────────────────────────────
 
 test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング", () => {
