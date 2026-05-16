@@ -16,6 +16,9 @@ on:
       - 'README*.md'
       - 'tools/check_supported_sites.py'
 
+permissions:
+  contents: read
+
 jobs:
   check-supported-sites:
     runs-on: ubuntu-latest
