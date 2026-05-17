@@ -30,7 +30,8 @@
         "https://poe.com/*",
         "https://v0.app/*",
         "https://cursor.com/agents*",
-        "https://cursor.com/*/agents*"
+        "https://cursor.com/*/agents*",
+        "https://ai.rakuten.co.jp/*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
@@ -59,7 +60,8 @@
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
     "https://m365.cloud.microsoft/*",
-    "https://cursor.com/*"
+    "https://cursor.com/*",
+    "https://ai.rakuten.co.jp/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",

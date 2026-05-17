@@ -39,6 +39,7 @@
 * <https://poe.com>
 * <https://v0.app>
 * <https://cursor.com/agents>
+* <https://ai.rakuten.co.jp>
 
 ## 演示视频
 
