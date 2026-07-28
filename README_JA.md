@@ -42,6 +42,7 @@
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
+* <https://www.kimi.com> (opt-in)
 
 *オプトイン サイト: 全ユーザーへの権限再承認を避けるため、これらのサイトはユーザーごとに有効化する方式です。サイトを開いて拡張機能のアイコンをクリックし、「Enable on this site」を一度押してください。*
 

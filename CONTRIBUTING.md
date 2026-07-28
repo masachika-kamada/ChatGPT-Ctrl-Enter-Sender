@@ -19,7 +19,7 @@ These sites are supported but maintained on a best-effort basis:
 
 ### Tier 3 — Minimal Support
 These sites may be removed if they become unmaintainable:
-- Poe, v0, Cursor, Genspark, duck.ai, Manus
+- Poe, v0, Cursor, Genspark, duck.ai, Manus, Kimi
 
 ## How New Sites Are Shipped (Opt-in)
 
