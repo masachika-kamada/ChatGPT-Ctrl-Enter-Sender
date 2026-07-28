@@ -373,6 +373,27 @@ const SITE_BEHAVIORS = {
       dispatchEnter(event.target, {});
     },
   },
+
+  "www.kimi.com": {
+    shouldHandle(event) {
+      return event.target.tagName === "DIV" &&
+        event.target.contentEditable === "true" &&
+        event.target.getAttribute("data-lexical-editor") === "true" &&
+        event.target.getAttribute("role") === "textbox";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { shiftKey: true });
+    },
+    onCtrlEnter(event) {
+      // Kimi maps Ctrl+Enter to a line break, so the native handler must be
+      // stopped before dispatching the plain Enter that submits
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, {});
+    },
+  },
 };
 
 // ── Unified handler ──────────────────────────────────────────────────────────

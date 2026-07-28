@@ -34,6 +34,7 @@ export const SITE_CONFIGS = [
   { hostname: "www.genspark.ai", matchPatterns: ["https://www.genspark.ai/*"], optional: true },
   { hostname: "duck.ai", matchPatterns: ["https://duck.ai/*"], optional: true },
   { hostname: "manus.im", matchPatterns: ["https://manus.im/*"], optional: true },
+  { hostname: "www.kimi.com", matchPatterns: ["https://www.kimi.com/*"], optional: true },
 ];
 
 export const OPTIONAL_SITE_CONFIGS = SITE_CONFIGS.filter((c) => c.optional);

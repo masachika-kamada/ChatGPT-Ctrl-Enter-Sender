@@ -42,6 +42,7 @@
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
+* <https://www.kimi.com> (opt-in)
 
 *可选站点: 为避免更新时要求所有用户重新授权，这些站点需按用户启用。打开站点，点击扩展图标，然后按一次 "Enable on this site"。*
 

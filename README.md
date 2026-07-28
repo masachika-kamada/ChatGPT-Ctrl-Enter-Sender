@@ -42,6 +42,7 @@ You can use this extension on the following pages:
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
+* <https://www.kimi.com> (opt-in)
 
 *Opt-in sites: to keep updates from requiring new permissions for everyone, these sites are enabled per user. Open the site, click the extension icon, and press "Enable on this site" once.*
 
