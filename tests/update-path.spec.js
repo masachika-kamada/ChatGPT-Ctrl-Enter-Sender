@@ -1,10 +1,10 @@
 /**
  * Update-path regression test.
  *
- * Chrome keeps serving the previous service worker script when its URL is
- * unchanged, so an extension update can leave the worker running pre-update
- * code: sites added by the update get no action rule and no content script.
- * v2.4.0 shipped with that defect.
+ * An extension update can leave a service worker that was started before the
+ * update running pre-update code, because its script URL is unchanged: sites
+ * added by the update then get no action rule and no content script. v2.4.0
+ * shipped with that defect.
  *
  * The guarantee this test protects is the repair path in shared/site-sync.js:
  * extension pages always load current code, so opening the popup after an
@@ -19,17 +19,20 @@ const path = require("path");
 const os = require("os");
 
 const REPO_ROOT = path.resolve(__dirname, "..");
-const PACKAGED = ["_locales", "constants", "content", "icon", "options", "popup", "shared"];
+const PACKAGED_DIRS = ["_locales", "constants", "content", "icon", "options", "popup", "shared"];
+const PACKAGED_FILES = ["service-worker.js", "manifest.json"];
 const SITE_ENTRY = /\{ hostname: "([^"]+)", matchPatterns: \[([^\]]+)\], optional: true \},?\r?\n?/g;
+const ACTION_RULE_ID = "supported-sites";
 
 function copyCurrentBuild(targetDir) {
   fs.rmSync(targetDir, { recursive: true, force: true });
   fs.mkdirSync(targetDir, { recursive: true });
-  for (const dir of PACKAGED) {
+  for (const dir of PACKAGED_DIRS) {
     fs.cpSync(path.join(REPO_ROOT, dir), path.join(targetDir, dir), { recursive: true });
   }
-  fs.copyFileSync(path.join(REPO_ROOT, "service-worker.js"), path.join(targetDir, "service-worker.js"));
-  fs.copyFileSync(path.join(REPO_ROOT, "manifest.json"), path.join(targetDir, "manifest.json"));
+  for (const file of PACKAGED_FILES) {
+    fs.copyFileSync(path.join(REPO_ROOT, file), path.join(targetDir, file));
+  }
 }
 
 function buildPreviousVersion(targetDir) {
@@ -37,16 +40,17 @@ function buildPreviousVersion(targetDir) {
 
   const configPath = path.join(targetDir, "constants", "site-configs.js");
   const configSource = fs.readFileSync(configPath, "utf-8");
-  const entries = [...configSource.matchAll(SITE_ENTRY)];
-  const newest = entries.at(-1);
+  const newest = [...configSource.matchAll(SITE_ENTRY)].at(-1);
   expect(newest, "site-configs.js has no opt-in site to remove").toBeTruthy();
 
-  const patterns = newest[2].split(",").map((p) => p.trim().replace(/^"|"$/g, ""));
+  const patterns = newest[2].split(",").map((pattern) => pattern.trim().replace(/^"|"$/g, ""));
   fs.writeFileSync(configPath, configSource.replace(newest[0], ""));
 
   const manifestPath = path.join(targetDir, "manifest.json");
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
   manifest.optional_host_permissions = manifest.optional_host_permissions.filter((p) => !patterns.includes(p));
+  // A real update also bumps the version
+  manifest.version = "0.0.1";
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
   return { removedHostname: newest[1] };
@@ -64,17 +68,21 @@ async function withExtension(userDataDir, extensionPath, fn) {
     ignoreDefaultArgs: ["--enable-automation"],
   });
   try {
-    const serviceWorker = context.serviceWorkers()[0] || (await context.waitForEvent("serviceworker"));
-    return await fn(context, serviceWorker);
+    return await fn(context);
   } finally {
     await context.close();
   }
 }
 
-function readActionRuleRegexes(serviceWorker) {
-  return serviceWorker.evaluate(async () => {
+// Reads from an extension page so the assertion does not depend on whether the
+// service worker happens to be running
+function readActionRules(page) {
+  return page.evaluate(async () => {
     const rules = await new Promise((resolve) => chrome.declarativeContent.onPageChanged.getRules(resolve));
-    return rules.flatMap((rule) => rule.conditions.map((c) => c.pageUrl?.urlMatches));
+    return rules.map((rule) => ({
+      id: rule.id,
+      regexes: rule.conditions.map((condition) => condition.pageUrl?.urlMatches),
+    }));
   });
 }
 
@@ -87,11 +95,25 @@ test("opening the popup after an update re-syncs the action rules", async () => 
   try {
     const { removedHostname } = buildPreviousVersion(extensionDir);
 
-    await withExtension(userDataDir, extensionDir, (context, serviceWorker) =>
-      expect(async () => {
-        expect((await readActionRuleRegexes(serviceWorker)).length).toBeGreaterThan(0);
-      }).toPass({ timeout: 10000 })
-    );
+    const extensionId = await withExtension(userDataDir, extensionDir, async (context) => {
+      const serviceWorker = context.serviceWorkers()[0] || (await context.waitForEvent("serviceworker"));
+      const id = serviceWorker.url().split("/")[2];
+      const page = await context.newPage();
+      await page.goto(`chrome-extension://${id}/popup/popup.html`);
+
+      await expect(async () => {
+        const rules = await readActionRules(page);
+        expect(rules.flatMap((rule) => rule.regexes).length).toBeGreaterThan(0);
+      }).toPass({ timeout: 10000 });
+
+      const regexes = (await readActionRules(page)).flatMap((rule) => rule.regexes);
+      expect(
+        regexes.some((regex) => regex.includes(removedHostname.replace(/\./g, "\\."))),
+        `the previous version must not already know ${removedHostname}`
+      ).toBe(false);
+
+      return id;
+    });
 
     const manifest = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, "manifest.json"), "utf-8"));
     const expectedPatternCount =
@@ -100,17 +122,19 @@ test("opening the popup after an update re-syncs the action rules", async () => 
     // Same profile, same extension id and same service worker URL: an update,
     // not a fresh install
     copyCurrentBuild(extensionDir);
-    await withExtension(userDataDir, extensionDir, async (context, serviceWorker) => {
-      const extensionId = serviceWorker.url().split("/")[2];
+    await withExtension(userDataDir, extensionDir, async (context) => {
       const page = await context.newPage();
       await page.goto(`chrome-extension://${extensionId}/popup/popup.html`);
 
       await expect(async () => {
-        const regexes = await readActionRuleRegexes(serviceWorker);
+        const rules = await readActionRules(page);
+        expect(rules.length, "the action rules must not be duplicated").toBe(1);
+        expect(rules[0].id).toBe(ACTION_RULE_ID);
         expect(
-          regexes.length,
-          `Action rules were not re-synced after the update (${removedHostname} is missing)`
-        ).toBe(expectedPatternCount);
+          rules[0].regexes.some((regex) => regex.includes(removedHostname.replace(/\./g, "\\."))),
+          `${removedHostname} was not re-synced after the update`
+        ).toBe(true);
+        expect(rules[0].regexes.length).toBe(expectedPatternCount);
       }).toPass({ timeout: 10000 });
     });
   } finally {

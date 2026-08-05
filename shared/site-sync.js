@@ -1,16 +1,22 @@
 /**
  * Site registration sync — shared by the service worker and the extension pages.
  *
- * Chrome keeps serving the previous service worker script after an extension
- * update because the script URL is unchanged, so a service worker that was
- * started before the update keeps an outdated SITE_CONFIGS in memory. Any site
- * added by the update would then never get an action rule or a content script.
- * Extension pages always load the current code, so the popup and the options
- * page run this sync too and repair the state on their next open.
+ * An extension update can leave a service worker that was started before the
+ * update running pre-update code, because its script URL is unchanged. Such a
+ * worker holds an outdated SITE_CONFIGS, so any site added by the update gets
+ * neither an action rule nor a content script. Reproduced with unpacked
+ * updates; whether packed store updates hit the same path is unverified, so
+ * this module is written to repair the state either way.
  *
- * Both functions are idempotent and safe to call from any extension context.
+ * Extension pages always load current code, so the popup and the options page
+ * run this sync too. Every export is idempotent and safe to call concurrently
+ * from any extension context.
  */
 import { SITE_CONFIGS, OPTIONAL_SITE_CONFIGS } from "../constants/site-configs.js";
+
+const ACTION_RULE_ID = "supported-sites";
+const CONTENT_SCRIPT_FILES = ["content/ctrl-enter-utils.js", "content/ctrl-enter-handler.js"];
+const RUN_AT = "document_start";
 
 function matchPatternToRegex(pattern) {
   return "^" + pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$";
@@ -18,63 +24,106 @@ function matchPatternToRegex(pattern) {
 
 const ACTION_RULE_REGEXES = SITE_CONFIGS.flatMap((config) => config.matchPatterns.map(matchPatternToRegex));
 
+function sameMembers(a, b) {
+  return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((value) => b.includes(value));
+}
+
+// Callback APIs report failures through lastError instead of rejecting
+function callWithLastError(invoke) {
+  return new Promise((resolve, reject) =>
+    invoke(() => (chrome.runtime.lastError ? reject(new Error(chrome.runtime.lastError.message)) : resolve()))
+  );
+}
+
 function getActionRules() {
   return new Promise((resolve) => chrome.declarativeContent.onPageChanged.getRules(resolve));
 }
 
+// ── Action icon visibility ───────────────────────────────────────────────────
 // The action is disabled by default and shown declaratively on supported sites.
 // declarativeContent needs no host access, so the icon stays clickable on
 // optional sites even before the user grants the host permission (the popup is
 // where they grant it).
-export async function ensureActionRules() {
+
+let _rulesQueue = Promise.resolve();
+
+export function ensureActionRules() {
+  const result = _rulesQueue.then(_doEnsureActionRules, _doEnsureActionRules);
+  // A rejected sync must not poison the next caller's queue
+  _rulesQueue = result.catch(() => { });
+  return result;
+}
+
+async function _doEnsureActionRules() {
   const rules = await getActionRules();
   const current = rules.flatMap((rule) => rule.conditions.map((c) => c.pageUrl?.urlMatches));
-  const upToDate =
-    current.length === ACTION_RULE_REGEXES.length &&
-    ACTION_RULE_REGEXES.every((regex) => current.includes(regex));
+  const upToDate = rules.length === 1 && rules[0].id === ACTION_RULE_ID && sameMembers(current, ACTION_RULE_REGEXES);
   if (upToDate) return;
 
-  await new Promise((resolve) =>
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, () =>
+  // Clears both the outdated rule and the unnamed rules older versions added
+  await callWithLastError((done) => chrome.declarativeContent.onPageChanged.removeRules(undefined, done));
+  try {
+    await callWithLastError((done) =>
       chrome.declarativeContent.onPageChanged.addRules(
         [
           {
+            id: ACTION_RULE_ID,
             conditions: ACTION_RULE_REGEXES.map(
               (regex) => new chrome.declarativeContent.PageStateMatcher({ pageUrl: { urlMatches: regex } })
             ),
             actions: [new chrome.declarativeContent.ShowAction()],
           },
         ],
-        resolve
+        done
       )
-    )
-  );
+    );
+  } catch (error) {
+    // Tolerate another context winning the race with the same rule id
+    const rulesNow = await getActionRules();
+    if (!rulesNow.some((rule) => rule.id === ACTION_RULE_ID)) throw error;
+  }
 }
 
+// ── Dynamic content scripts for optional sites ───────────────────────────────
 // Optional sites are not in manifest content_scripts; their scripts are
 // registered here once the user grants the host permission (see popup).
-let _syncQueue = Promise.resolve();
+
+let _scriptsQueue = Promise.resolve();
+
 export function syncOptionalContentScripts() {
-  _syncQueue = _syncQueue.then(_doSyncOptionalContentScripts, _doSyncOptionalContentScripts);
-  return _syncQueue;
+  const result = _scriptsQueue.then(_doSyncOptionalContentScripts, _doSyncOptionalContentScripts);
+  _scriptsQueue = result.catch(() => { });
+  return result;
+}
+
+function isRegistrationCurrent(existing, script) {
+  return (
+    sameMembers(existing.matches, script.matches) &&
+    sameMembers(existing.js, script.js) &&
+    existing.runAt === script.runAt
+  );
 }
 
 async function _doSyncOptionalContentScripts() {
   const registered = await chrome.scripting.getRegisteredContentScripts();
-  const registeredIds = new Set(registered.map((script) => script.id));
+  const byId = new Map(registered.map((script) => [script.id, script]));
 
   for (const config of OPTIONAL_SITE_CONFIGS) {
     const granted = await chrome.permissions.contains({ origins: config.matchPatterns });
-    if (granted && !registeredIds.has(config.hostname)) {
-      await chrome.scripting.registerContentScripts([
-        {
-          id: config.hostname,
-          matches: config.matchPatterns,
-          js: ["content/ctrl-enter-utils.js", "content/ctrl-enter-handler.js"],
-          runAt: "document_start",
-        },
-      ]);
-    } else if (!granted && registeredIds.has(config.hostname)) {
+    const existing = byId.get(config.hostname);
+    const script = {
+      id: config.hostname,
+      matches: config.matchPatterns,
+      js: CONTENT_SCRIPT_FILES,
+      runAt: RUN_AT,
+    };
+
+    if (granted && !existing) {
+      await chrome.scripting.registerContentScripts([script]);
+    } else if (granted && !isRegistrationCurrent(existing, script)) {
+      // Keeps a site working after its match patterns or scripts change
+      await chrome.scripting.updateContentScripts([script]);
+    } else if (!granted && existing) {
       await chrome.scripting.unregisterContentScripts({ ids: [config.hostname] });
     }
   }

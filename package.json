@@ -6,7 +6,7 @@
   "main": "service-worker.js",
   "scripts": {
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "node --test tools/ctrl-enter-handler.test.js",
+    "test:unit": "node --test tools/*.test.js",
     "test:integration": "playwright test",
     "test:loading": "playwright test extension-loading",
     "test:live": "playwright test --config=playwright.live.config.js",
