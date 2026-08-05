@@ -1,3 +1,4 @@
+import './agent-reload.js';
 import { SITE_CONFIGS, OPTIONAL_SITE_CONFIGS, SUPPORTED_SITES, extractHostname } from "./constants/site-configs.js";
 
 // ── Action icon visibility ───────────────────────────────────────────────────

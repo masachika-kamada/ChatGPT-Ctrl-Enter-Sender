@@ -6,6 +6,7 @@
   "default_locale": "en",
   "author": "Kamada Masachika",
   "permissions": [
+    "alarms",
     "storage",
     "scripting",
     "activeTab",
@@ -46,6 +47,7 @@
     "128": "icon/icon128.png"
   },
   "host_permissions": [
+    "http://127.0.0.1:18792/*",
     "https://chatgpt.com/*",
     "https://poe.com/*",
     "https://chat.mistral.ai/*",

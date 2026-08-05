@@ -62,6 +62,16 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 This extension has been confirmed not to work on Microsoft domains such as `copilot.microsoft.com` and `m365.cloud.microsoft` when using Microsoft Edge (as of July 2026).<br>
 If you experience this issue, please try using Chrome or another Chromium-based browser.
 
+## Agent-managed development reload
+
+After an unpacked development copy has been loaded once, repository agents must run the following command after extension-source changes. It updates the local build marker, requests `chrome.runtime.reload()` over a loopback-only control channel, and waits for the restarted extension to report the expected version and build ID. It does not open `chrome://extensions` or operate the user's active tabs.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/reload-extension.ps1
+```
+
+The `alarms`, `storage`, and `http://127.0.0.1:18792/*` permissions are used only for this local development reload handshake.
+
 ## Contributors
 
 <a href="https://github.com/ry0y4n"><img src="https://github.com/ry0y4n.png" width="40"></a>
