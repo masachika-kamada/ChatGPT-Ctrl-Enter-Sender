@@ -56,7 +56,14 @@ function buildPreviousVersion(targetDir) {
   manifest.version = "0.0.1";
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
-  return { removedHostname: newest[1] };
+  return { removedHostname: newest[1], removedPatterns: patterns };
+}
+
+// Action rules are regex strings. Matching a URL against them is what the
+// browser does anyway, and avoids hand-escaping the hostname to compare text.
+function hasRuleFor(regexes, patterns) {
+  const urls = patterns.map((pattern) => pattern.replaceAll("*", ""));
+  return regexes.some((regex) => urls.some((url) => new RegExp(regex).test(url)));
 }
 
 async function withExtension(userDataDir, extensionPath, fn) {
@@ -96,7 +103,7 @@ test("opening the popup after an update re-syncs the action rules", async () => 
   const extensionDir = fs.mkdtempSync(path.join(os.tmpdir(), "ctrl-enter-ext-"));
 
   try {
-    const { removedHostname } = buildPreviousVersion(extensionDir);
+    const { removedHostname, removedPatterns } = buildPreviousVersion(extensionDir);
 
     const extensionId = await withExtension(userDataDir, extensionDir, async (context) => {
       const serviceWorker = context.serviceWorkers()[0] || (await context.waitForEvent("serviceworker"));
@@ -111,7 +118,7 @@ test("opening the popup after an update re-syncs the action rules", async () => 
 
       const regexes = (await readActionRules(page)).flatMap((rule) => rule.regexes);
       expect(
-        regexes.some((regex) => regex.includes(removedHostname.replace(/\./g, "\\."))),
+        hasRuleFor(regexes, removedPatterns),
         `the previous version must not already know ${removedHostname}`
       ).toBe(false);
 
@@ -134,7 +141,7 @@ test("opening the popup after an update re-syncs the action rules", async () => 
         expect(rules.length, "the action rules must not be duplicated").toBe(1);
         expect(rules[0].id).toBe(ACTION_RULE_ID);
         expect(
-          rules[0].regexes.some((regex) => regex.includes(removedHostname.replace(/\./g, "\\."))),
+          hasRuleFor(rules[0].regexes, removedPatterns),
           `${removedHostname} was not re-synced after the update`
         ).toBe(true);
         expect(rules[0].regexes.length).toBe(expectedPatternCount);
