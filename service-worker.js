@@ -1,5 +1,5 @@
-import { SUPPORTED_SITES, extractHostname } from "./constants/site-configs.js";
-import { ensureActionRules, syncOptionalContentScripts } from "./shared/site-sync.js";
+import { SUPPORTED_SITES, SITE_CONFIGS, extractHostname } from "./constants/site-configs.js";
+import { ensureActionRules, syncOptionalContentScripts, injectIntoOpenTabs } from "./shared/site-sync.js";
 import { announceNewSites } from "./shared/new-sites.js";
 
 // ── Serialized site-setting updates ─────────────────────────────────────────
@@ -37,6 +37,12 @@ announceNewSites();
 
 // Notify user on update (useful for non-host_permissions changes)
 chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === "install") {
+    // Tabs opened before the install would otherwise need a reload
+    injectIntoOpenTabs(SITE_CONFIGS.filter((config) => !config.optional));
+    return;
+  }
+
   if (details.reason === "update") {
     chrome.storage.local.set({ updatedFrom: details.previousVersion });
   }
@@ -44,7 +50,11 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 // Covers grants/revocations from the popup, the options page, and the
 // site-access controls in chrome://extensions.
-chrome.permissions.onAdded.addListener(() => syncOptionalContentScripts());
+chrome.permissions.onAdded.addListener((permissions) => {
+  const origins = permissions.origins ?? [];
+  const granted = SITE_CONFIGS.filter((config) => config.matchPatterns.some((p) => origins.includes(p)));
+  syncOptionalContentScripts().then(() => injectIntoOpenTabs(granted));
+});
 chrome.permissions.onRemoved.addListener(() => syncOptionalContentScripts());
 
 // Lets the popup/options page keep working when they are not the ones syncing.

@@ -425,6 +425,9 @@ function handleCtrlEnter(event) {
 
 // ── Initialization ───────────────────────────────────────────────────────────
 
+// Lets shared/site-sync.js skip tabs that already run the handler
+window.__ctrlEnterSenderLoaded = true;
+
 // Apply the setting based on the current site on initial load
 applySiteSetting();
 

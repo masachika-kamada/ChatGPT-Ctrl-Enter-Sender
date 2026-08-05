@@ -1,5 +1,5 @@
 import { SITE_CONFIGS, extractHostname } from "../constants/site-configs.js";
-import { syncSiteRegistrations, syncOptionalContentScripts } from "../shared/site-sync.js";
+import { syncSiteRegistrations, syncOptionalContentScripts, injectIntoOpenTabs } from "../shared/site-sync.js";
 import { localizePage } from "../shared/i18n.js";
 
 localizePage();
@@ -78,15 +78,11 @@ toggleButton.addEventListener("change", () => {
 grantButton.addEventListener("click", () => {
   chrome.permissions.request({ origins: currentConfig.matchPatterns }, (granted) => {
     if (!granted) return;
-    // Register here rather than in the service worker, then reload the page so
-    // it takes effect immediately
-    syncOptionalContentScripts().then(
-      () => {
-        chrome.tabs.reload(currentTab.id);
-        showToggle();
-      },
-      () => showStatus("Could not enable this site. Please try again.")
-    );
+    // Register here rather than in the service worker, then start the handler
+    // in tabs that are already open so no reload is needed
+    syncOptionalContentScripts()
+      .then(() => injectIntoOpenTabs([currentConfig]))
+      .then(showToggle, () => showStatus("Could not enable this site. Please try again."));
   });
 });
 

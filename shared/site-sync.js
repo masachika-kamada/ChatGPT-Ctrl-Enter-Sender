@@ -158,3 +158,30 @@ async function _doSyncOptionalContentScripts() {
 export async function syncSiteRegistrations() {
   await Promise.all([ensureActionRules(), syncOptionalContentScripts()]);
 }
+
+// A content script only reaches tabs loaded after it was registered, so tabs
+// that are already open would need a reload before the extension does anything
+export async function injectIntoOpenTabs(configs) {
+  for (const config of configs) {
+    let tabs = [];
+    try {
+      tabs = await chrome.tabs.query({ url: config.matchPatterns });
+    } catch (error) {
+      continue;
+    }
+
+    for (const tab of tabs) {
+      try {
+        const [probe] = await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: () => Boolean(window.__ctrlEnterSenderLoaded),
+        });
+        if (probe?.result) continue;
+
+        await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: CONTENT_SCRIPT_FILES });
+      } catch (error) {
+        // The tab was closed, or is a page extensions cannot run in
+      }
+    }
+  }
+}

@@ -57,7 +57,9 @@ function renderCheckboxes(savedSettings, ungrantedSites) {
         chrome.permissions.request({ origins: config.matchPatterns }, (granted) => {
           if (!granted) return;
           // Register here rather than in the service worker, then re-render
-          syncOptionalContentScripts().then(loadSettings, loadSettings);
+          syncOptionalContentScripts()
+            .then(() => injectIntoOpenTabs([config]))
+            .then(loadSettings, loadSettings);
         });
       });
       label.appendChild(grantButton);
