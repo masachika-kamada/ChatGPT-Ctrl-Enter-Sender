@@ -87,9 +87,16 @@ const SITE_BEHAVIORS = {
       event.preventDefault();
       event.stopImmediatePropagation();
       if (event.target.tagName === "TEXTAREA") {
-        // Edit mode: synthetic Enter would double-submit
-        const saveButton = findFormButton(event.target, 'button[type="submit"]:not([disabled])');
-        if (saveButton) saveButton.click();
+        // Edit mode: no form, and the save button label is localized, so it is
+        // matched by the design system's primary fill
+        const message = event.target.closest('[data-cds="UserMessage"]');
+        const saveButton = message &&
+          message.querySelector('button:not([disabled]):has(> span.bg-fill-primary)');
+        if (saveButton) {
+          saveButton.click();
+        } else {
+          dispatchEnter(event.target, {});
+        }
       } else {
         dispatchEnter(event.target, {});
       }
