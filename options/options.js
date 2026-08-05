@@ -1,4 +1,14 @@
 import { SITE_CONFIGS, SUPPORTED_SITES } from "../constants/site-configs.js";
+import { syncSiteRegistrations, syncOptionalContentScripts } from "../shared/site-sync.js";
+import { markNewSitesSeen } from "../shared/new-sites.js";
+import { localizePage } from "../shared/i18n.js";
+
+localizePage();
+markNewSitesSeen();
+
+// Repairs action rules and content-script registrations when the service
+// worker is still running pre-update code (see shared/site-sync.js)
+syncSiteRegistrations();
 
 const siteList = document.getElementById("siteList");
 const selectAllCheckbox = document.getElementById("selectAll");
@@ -46,8 +56,10 @@ function renderCheckboxes(savedSettings, ungrantedSites) {
       grantButton.addEventListener("click", () => {
         chrome.permissions.request({ origins: config.matchPatterns }, (granted) => {
           if (!granted) return;
-          // Let the background register the content script, then re-render
-          chrome.runtime.sendMessage({ type: "sync-optional-sites" }, loadSettings);
+          // Register here rather than in the service worker, then re-render
+          syncOptionalContentScripts()
+            .then(() => injectIntoOpenTabs([config]))
+            .then(loadSettings, loadSettings);
         });
       });
       label.appendChild(grantButton);

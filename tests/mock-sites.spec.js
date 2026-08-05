@@ -143,6 +143,8 @@ for (const site of MOCK_SITES) {
 
     const page = await context.newPage();
     await page.goto(site.url);
+    // The first run opens the options page, which would otherwise take the keystrokes
+    await page.bringToFront();
 
     const input = page.locator(site.inputSelector);
     await input.click();

@@ -1,12 +1,13 @@
 {
   "name": "chatgpt-ctrl-enter-sender",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "private": true,
   "description": "Browser extension that assigns Ctrl+Enter to send messages in ChatGPT and other AI chat sites, so Enter inserts a line break",
-  "main": "background.js",
+  "main": "service-worker.js",
   "scripts": {
+    "bump": "node tools/bump-version.js",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "node --test tools/ctrl-enter-handler.test.js",
+    "test:unit": "node --test tools/*.test.js",
     "test:integration": "playwright test",
     "test:loading": "playwright test extension-loading",
     "test:live": "playwright test --config=playwright.live.config.js",

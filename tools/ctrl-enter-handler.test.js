@@ -8,6 +8,7 @@ const handlerScriptPath = path.join(__dirname, "..", "content", "ctrl-enter-hand
 const handlerScript = fs.readFileSync(handlerScriptPath, "utf8");
 const submitSelector = 'button[type="submit"]:not([disabled])';
 const notebookSubmitSelector = 'query-box form button[type="submit"]';
+const claudeSaveSelector = 'button:not([disabled]):has(> span.bg-fill-primary)';
 
 function loadHandler(url, sendButton, documentButtonSelector = submitSelector) {
   const parsedUrl = new URL(url);
@@ -88,6 +89,26 @@ function createTextareaTarget({ value = "text", formSendButton = null } = {}) {
         querySelector: (query) => (query === submitSelector ? formSendButton : null)
       };
     }
+  };
+
+  return { target, dispatchedEvents };
+}
+
+function createClaudeEditTarget({ saveButton = null, value = "text" } = {}) {
+  const dispatchedEvents = [];
+  const message = {
+    querySelector: (query) => (query === claudeSaveSelector ? saveButton : null)
+  };
+  const target = {
+    tagName: "TEXTAREA",
+    value,
+    selectionStart: value.length,
+    selectionEnd: value.length,
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    },
+    closest: (selector) => (selector === '[data-cds="UserMessage"]' ? message : null)
   };
 
   return { target, dispatchedEvents };
@@ -204,6 +225,67 @@ test("Cursor Agents の Meta+Enter は form 内送信ボタンをクリックす
   assert.equal(event.stopImmediatePropagationCount, 1);
   assert.equal(dispatchedEvents.length, 0);
   assert.equal(formSendButton.clickCount, 1);
+});
+
+// ── Claude tests ────────────────────────────────────────────────────────────
+
+test("Claude の編集 TEXTAREA で Enter はカーソル位置に改行を挿入する", () => {
+  const saveButton = createButton();
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const { target, dispatchedEvents } = createClaudeEditTarget({ saveButton, value: "ab" });
+  target.selectionStart = target.selectionEnd = 1;
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(target.value, "a\nb");
+  assert.equal(target.selectionStart, 2);
+  assert.equal(saveButton.clickCount, 0);
+  assert.equal(dispatchedEvents.at(-1).type, "input");
+  assert.equal(event.preventDefaultCount, 1);
+});
+
+test("Claude の編集 TEXTAREA で Ctrl+Enter は保存ボタンを一度クリックする", () => {
+  const saveButton = createButton();
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const { target, dispatchedEvents } = createClaudeEditTarget({ saveButton });
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(saveButton.clickCount, 1);
+  assert.equal(dispatchedEvents.length, 0);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("Claude の保存ボタンが見つからない場合は通常 Enter にフォールバックする", () => {
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const { target, dispatchedEvents } = createClaudeEditTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].type, "keydown");
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+});
+
+test("Claude の入力欄（contenteditable）の Ctrl+Enter は通常 Enter を送る", () => {
+  const dispatchedEvents = [];
+  const target = {
+    tagName: "DIV",
+    contentEditable: "true",
+    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
+  };
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+  assert.equal(event.preventDefaultCount, 1);
 });
 
 // ── Other optional-site tests ───────────────────────────────────────────────

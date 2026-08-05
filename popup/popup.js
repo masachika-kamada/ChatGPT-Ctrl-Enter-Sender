@@ -1,4 +1,12 @@
 import { SITE_CONFIGS, extractHostname } from "../constants/site-configs.js";
+import { syncSiteRegistrations, syncOptionalContentScripts, injectIntoOpenTabs } from "../shared/site-sync.js";
+import { localizePage } from "../shared/i18n.js";
+
+localizePage();
+
+// Repairs action rules and content-script registrations when the service
+// worker is still running pre-update code (see shared/site-sync.js)
+syncSiteRegistrations();
 
 const toggleSection = document.querySelector("#toggleSection");
 const grantSection = document.querySelector("#grantSection");
@@ -70,12 +78,11 @@ toggleButton.addEventListener("change", () => {
 grantButton.addEventListener("click", () => {
   chrome.permissions.request({ origins: currentConfig.matchPatterns }, (granted) => {
     if (!granted) return;
-    // Wait for the background to register the content script, then reload
-    // the page so it takes effect immediately
-    chrome.runtime.sendMessage({ type: "sync-optional-sites" }, () => {
-      chrome.tabs.reload(currentTab.id);
-      showToggle();
-    });
+    // Register here rather than in the service worker, then start the handler
+    // in tabs that are already open so no reload is needed
+    syncOptionalContentScripts()
+      .then(() => injectIntoOpenTabs([currentConfig]))
+      .then(showToggle, () => showStatus("Could not enable this site. Please try again."));
   });
 });
 

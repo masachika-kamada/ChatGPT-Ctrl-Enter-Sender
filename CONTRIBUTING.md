@@ -84,6 +84,22 @@ the repository test environment. Live-site failures are diagnostic and are not a
 release gate because authentication, bot detection, and site DOM changes are
 outside this extension's control.
 
+## Releasing
+
+The version lives in `manifest.json`, `package.json` and `package-lock.json`, and
+the release workflow refuses to publish when the tag and the manifest disagree.
+Bump all three with one command rather than editing them by hand:
+
+```shell
+npm run bump 2.5.1
+```
+
+Commit that on `development`; a release does not need its own branch. Then:
+
+1. Open a pull request from `development` to `main` and merge it
+2. Tag `main` with `vX.Y.Z`, which builds the extension ZIP and creates the GitHub release
+3. Upload that ZIP to the Chrome Web Store
+
 ## Firefox
 
 **Firefox support has been discontinued.** The maintainer does not use Firefox and the Firefox extension platform has significant differences (MV3 migration, etc.), making continued maintenance difficult. The Firefox branch contains the last available version.
