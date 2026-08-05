@@ -7,8 +7,8 @@
  *     for every user until they re-enable it. Do NOT add new required sites.
  *   - Optional sites (`optional: true`): covered by optional_host_permissions.
  *     The user grants access per-site from the popup; content scripts are
- *     registered dynamically by background.js. Adding one never disables the
- *     extension for existing users.
+ *     registered dynamically by shared/site-sync.js. Adding one never disables
+ *     the extension for existing users.
  *
  * When adding a new site:
  *   1. Add an entry here with `optional: true` (hostname + matchPatterns)
