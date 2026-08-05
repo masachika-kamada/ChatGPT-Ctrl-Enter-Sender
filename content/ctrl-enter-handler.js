@@ -65,7 +65,15 @@ const SITE_BEHAVIORS = {
       // Only intercept Ctrl (not Meta); Mac Cmd+Enter works natively on ChatGPT
       if (!event.ctrlKey) return;
       event.preventDefault();
-      dispatchEnter(event.target, { metaKey: true });
+      const submitButton = findFormButton(
+        event.target,
+        'button[data-testid$="send-button"]:not([disabled]), button[type="submit"]:not([disabled])'
+      );
+      if (submitButton) {
+        submitButton.click();
+      } else {
+        dispatchEnter(event.target, { metaKey: true });
+      }
     },
   },
 

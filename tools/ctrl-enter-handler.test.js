@@ -8,6 +8,7 @@ const handlerScriptPath = path.join(__dirname, "..", "content", "ctrl-enter-hand
 const handlerScript = fs.readFileSync(handlerScriptPath, "utf8");
 const submitSelector = 'button[type="submit"]:not([disabled])';
 const notebookSubmitSelector = 'query-box form button[type="submit"]';
+const chatgptSubmitSelector = 'button[data-testid$="send-button"]:not([disabled]), button[type="submit"]:not([disabled])';
 
 function loadHandler(url, sendButton, documentButtonSelector = submitSelector) {
   const parsedUrl = new URL(url);
@@ -15,7 +16,13 @@ function loadHandler(url, sendButton, documentButtonSelector = submitSelector) {
     window: { location: { href: url, hostname: parsedUrl.hostname } },
     URL,
     document: {
-      querySelector: (selector) => (selector === documentButtonSelector ? sendButton : null)
+      querySelector: (selector) => {
+        if (selector === documentButtonSelector || selector === submitSelector || selector === chatgptSubmitSelector) {
+          if (sendButton && sendButton.disabled) return null;
+          return sendButton;
+        }
+        return null;
+      }
     },
     chrome: {
       storage: {
@@ -63,7 +70,13 @@ function createLexicalTarget({ formSendButton = null, attributes = {} } = {}) {
     closest: (selector) => {
       if (selector !== "form" || !formSendButton) return null;
       return {
-        querySelector: (query) => (query === submitSelector ? formSendButton : null)
+        querySelector: (query) => {
+          if (query === submitSelector || query === chatgptSubmitSelector) {
+            if (formSendButton && formSendButton.disabled) return null;
+            return formSendButton;
+          }
+          return null;
+        }
       };
     }
   };
@@ -127,8 +140,9 @@ function createKeydownEvent(target, { ctrlKey = false, metaKey = false, shiftKey
   };
 }
 
-function createButton() {
+function createButton({ disabled = false } = {}) {
   return {
+    disabled,
     clickCount: 0,
     click() {
       this.clickCount += 1;
@@ -428,13 +442,30 @@ test("Copilot の TEXTAREA で Ctrl+Enter はパススルー", () => {
 
 // ── ChatGPT tests ────────────────────────────────────────────────────────────
 
-test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング", () => {
+function createChatGPTTarget({ formSendButton = null, id = "prompt-textarea", tagName = "DIV" } = {}) {
   const dispatchedEvents = [];
   const target = {
-    id: "prompt-textarea",
-    tagName: "DIV",
-    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
+    id,
+    tagName,
+    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; },
+    closest: (selector) => {
+      if (selector !== "form" || !formSendButton) return null;
+      return {
+        querySelector: (query) => {
+          if (query === submitSelector || query === chatgptSubmitSelector) {
+            if (formSendButton && formSendButton.disabled) return null;
+            return formSendButton;
+          }
+          return null;
+        }
+      };
+    }
   };
+  return { target, dispatchedEvents };
+}
+
+test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング", () => {
+  const { target, dispatchedEvents } = createChatGPTTarget();
   const context = loadHandler("https://chatgpt.com/", createButton());
   const event = createKeydownEvent(target);
 
@@ -445,14 +476,22 @@ test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング",
   assert.equal(dispatchedEvents[0].shiftKey, true);
 });
 
-test("ChatGPT の prompt-textarea で Ctrl+Enter は Meta+Enter にマッピング", () => {
-  const dispatchedEvents = [];
-  const target = {
-    id: "prompt-textarea",
-    tagName: "DIV",
-    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
-  };
-  const context = loadHandler("https://chatgpt.com/", createButton());
+test("ChatGPT で Ctrl+Enter 時、form 内に有効な submit button があれば click される", () => {
+  const formSendButton = createButton();
+  const { target, dispatchedEvents } = createChatGPTTarget({ formSendButton });
+  const context = loadHandler("https://chatgpt.com/", formSendButton);
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(dispatchedEvents.length, 0); // button is clicked, so no synthetic enter is dispatched
+  assert.equal(formSendButton.clickCount, 1);
+});
+
+test("ChatGPT で Ctrl+Enter 時、有効な submit button がなければ従来通り Meta+Enter を dispatch する", () => {
+  const { target, dispatchedEvents } = createChatGPTTarget({ formSendButton: null });
+  const context = loadHandler("https://chatgpt.com/", null);
   const event = createKeydownEvent(target, { ctrlKey: true });
 
   context.handleCtrlEnter(event);
@@ -462,13 +501,22 @@ test("ChatGPT の prompt-textarea で Ctrl+Enter は Meta+Enter にマッピン�
   assert.equal(dispatchedEvents[0].metaKey, true);
 });
 
+test("ChatGPT で Ctrl+Enter 時、disabled button はクリックしない（fallback する）", () => {
+  const formSendButton = createButton({ disabled: true });
+  const { target, dispatchedEvents } = createChatGPTTarget({ formSendButton });
+  const context = loadHandler("https://chatgpt.com/", formSendButton);
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(dispatchedEvents.length, 1); // falls back to Meta+Enter
+  assert.equal(dispatchedEvents[0].metaKey, true);
+  assert.equal(formSendButton.clickCount, 0); // button not clicked
+});
+
 test("ChatGPT の Meta+Enter はパススルー（Mac ネイティブ送信）", () => {
-  const dispatchedEvents = [];
-  const target = {
-    id: "prompt-textarea",
-    tagName: "DIV",
-    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
-  };
+  const { target, dispatchedEvents } = createChatGPTTarget();
   const context = loadHandler("https://chatgpt.com/", createButton());
   const event = createKeydownEvent(target, { metaKey: true });
 
