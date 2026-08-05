@@ -1,5 +1,6 @@
 import { SUPPORTED_SITES, extractHostname } from "./constants/site-configs.js";
 import { ensureActionRules, syncOptionalContentScripts } from "./shared/site-sync.js";
+import { announceNewSites } from "./shared/new-sites.js";
 
 // ── Serialized site-setting updates ─────────────────────────────────────────
 
@@ -32,6 +33,7 @@ function validateSiteSettingUpdates(updates) {
 chrome.action.disable();
 ensureActionRules();
 syncOptionalContentScripts();
+announceNewSites();
 
 // Notify user on update (useful for non-host_permissions changes)
 chrome.runtime.onInstalled.addListener((details) => {

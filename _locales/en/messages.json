@@ -10,5 +10,8 @@
     },
     "grantNote": {
         "message": "Your browser calls this \"read and change your data\". It is only used to detect Enter key presses, never to read anything on the page."
+    },
+    "optionsIntro": {
+        "message": "Sites shown with an Allow access button are opt-in. Enable them here, or from the extension icon while you are on the site. Pinning the icon to your toolbar makes that quicker."
     }
 }
