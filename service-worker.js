@@ -1,72 +1,5 @@
-import { SITE_CONFIGS, OPTIONAL_SITE_CONFIGS, SUPPORTED_SITES, extractHostname } from "./constants/site-configs.js";
-
-// ── Action icon visibility ───────────────────────────────────────────────────
-// The action is disabled by default and shown declaratively on supported sites.
-// declarativeContent needs no host access, so the icon stays clickable on
-// optional sites even before the user grants the host permission (the popup is
-// where they grant it).
-
-function matchPatternToRegex(pattern) {
-  return "^" + pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$";
-}
-
-const ACTION_RULE_REGEXES = SITE_CONFIGS.flatMap((config) => config.matchPatterns.map(matchPatternToRegex));
-
-function getActionRules() {
-  return new Promise((resolve) => chrome.declarativeContent.onPageChanged.getRules(resolve));
-}
-
-async function ensureActionRules() {
-  chrome.action.disable();
-
-  const rules = await getActionRules();
-  const current = rules.flatMap((rule) => rule.conditions.map((c) => c.pageUrl?.urlMatches));
-  const upToDate =
-    current.length === ACTION_RULE_REGEXES.length &&
-    ACTION_RULE_REGEXES.every((regex) => current.includes(regex));
-  if (upToDate) return;
-
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
-    chrome.declarativeContent.onPageChanged.addRules([
-      {
-        conditions: ACTION_RULE_REGEXES.map(
-          (regex) => new chrome.declarativeContent.PageStateMatcher({ pageUrl: { urlMatches: regex } })
-        ),
-        actions: [new chrome.declarativeContent.ShowAction()],
-      },
-    ]);
-  });
-}
-
-// ── Dynamic content scripts for optional sites ───────────────────────────────
-// Optional sites are not in manifest content_scripts; their scripts are
-// registered here once the user grants the host permission (see popup).
-
-let _syncQueue = Promise.resolve();
-function syncOptionalContentScripts() {
-  _syncQueue = _syncQueue.then(_doSyncOptionalContentScripts, _doSyncOptionalContentScripts);
-  return _syncQueue;
-}
-async function _doSyncOptionalContentScripts() {
-  const registered = await chrome.scripting.getRegisteredContentScripts();
-  const registeredIds = new Set(registered.map((script) => script.id));
-
-  for (const config of OPTIONAL_SITE_CONFIGS) {
-    const granted = await chrome.permissions.contains({ origins: config.matchPatterns });
-    if (granted && !registeredIds.has(config.hostname)) {
-      await chrome.scripting.registerContentScripts([
-        {
-          id: config.hostname,
-          matches: config.matchPatterns,
-          js: ["content/ctrl-enter-utils.js", "content/ctrl-enter-handler.js"],
-          runAt: "document_start",
-        },
-      ]);
-    } else if (!granted && registeredIds.has(config.hostname)) {
-      await chrome.scripting.unregisterContentScripts({ ids: [config.hostname] });
-    }
-  }
-}
+import { SUPPORTED_SITES, extractHostname } from "./constants/site-configs.js";
+import { ensureActionRules, syncOptionalContentScripts } from "./shared/site-sync.js";
 
 // ── Serialized site-setting updates ─────────────────────────────────────────
 
@@ -96,6 +29,7 @@ function validateSiteSettingUpdates(updates) {
 // Both operations are idempotent, so run them on every service worker start
 // rather than relying on onInstalled/onStartup (which don't cover all the
 // ways rules and registrations can get out of sync, e.g. unpacked loads).
+chrome.action.disable();
 ensureActionRules();
 syncOptionalContentScripts();
 
@@ -111,14 +45,9 @@ chrome.runtime.onInstalled.addListener((details) => {
 chrome.permissions.onAdded.addListener(() => syncOptionalContentScripts());
 chrome.permissions.onRemoved.addListener(() => syncOptionalContentScripts());
 
-// Lets the popup/options page wait for registration before reloading the tab.
+// Lets the popup/options page keep working when they are not the ones syncing.
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (sender.id !== chrome.runtime.id) return;
-
-  if (message?.type === "sync-optional-sites") {
-    syncOptionalContentScripts().then(() => sendResponse(true));
-    return true;
-  }
 
   if (message?.type === "update-site-settings") {
     const updates = validateSiteSettingUpdates(message.updates);

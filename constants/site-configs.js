@@ -7,15 +7,22 @@
  *     for every user until they re-enable it. Do NOT add new required sites.
  *   - Optional sites (`optional: true`): covered by optional_host_permissions.
  *     The user grants access per-site from the popup; content scripts are
- *     registered dynamically by background.js. Adding one never disables the
- *     extension for existing users.
+ *     registered dynamically by shared/site-sync.js. Adding one never disables
+ *     the extension for existing users.
  *
  * When adding a new site:
  *   1. Add an entry here with `optional: true` (hostname + matchPatterns)
- *   2. Add behavior in content/ctrl-enter-handler.js
- *   3. Add the match patterns to optional_host_permissions in manifest.json
- *   4. Run `python tools/check_supported_sites.py` to verify consistency
+ *   2. Bump SITE_CONFIGS_REVISION so a leftover service worker cannot revert it
+ *   3. Add behavior in content/ctrl-enter-handler.js
+ *   4. Add the match patterns to optional_host_permissions in manifest.json
+ *   5. Run `python tools/check_supported_sites.py` to verify consistency
  */
+
+// Generation marker for the site list. shared/site-sync.js records the highest
+// revision that wrote the action rules, so a service worker left running
+// pre-update code cannot overwrite a newer sync with its outdated list.
+export const SITE_CONFIGS_REVISION = 1;
+
 export const SITE_CONFIGS = [
   { hostname: "chatgpt.com", matchPatterns: ["https://chatgpt.com/*"] },
   { hostname: "claude.ai", matchPatterns: ["https://claude.ai/*"] },
