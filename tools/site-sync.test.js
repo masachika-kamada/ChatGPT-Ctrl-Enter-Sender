@@ -24,8 +24,8 @@ async function loadSiteSync() {
   return { ...siteSync, ...configs };
 }
 
-function createChrome({ rules = [], registered = [], granted = [], storage = {}, failWrites = false } = {}) {
-  const calls = { removeRules: 0, addRules: [], register: [], update: [], unregister: [] };
+function createChrome({ rules = [], registered = [], granted = [], storage = {}, failWrites = false, tabs = [], loadedTabIds = [] } = {}) {
+  const calls = { removeRules: 0, addRules: [], register: [], update: [], unregister: [], injected: [] };
   let currentRules = rules;
   let currentScripts = registered;
 
@@ -61,8 +61,16 @@ function createChrome({ rules = [], registered = [], granted = [], storage = {},
     permissions: {
       contains: async ({ origins }) => origins.every((origin) => granted.includes(origin)),
     },
+    tabs: {
+      query: async ({ url }) => tabs.filter((tab) => url.includes(tab.pattern)),
+    },
     scripting: {
       getRegisteredContentScripts: async () => currentScripts,
+      executeScript: async ({ target, func, files }) => {
+        if (func) return [{ result: loadedTabIds.includes(target.tabId) }];
+        calls.injected.push({ tabId: target.tabId, files });
+        return [{ result: undefined }];
+      },
       registerContentScripts: async (scripts) => {
         calls.register.push(...scripts);
         if (failWrites) throw new Error("Duplicate script ID");
@@ -237,4 +245,46 @@ test("登録に失敗し状態も直っていなければ例外にする", async
   createChrome({ granted: target.matchPatterns, failWrites: true });
 
   await assert.rejects(() => syncOptionalContentScripts(), /Duplicate script ID/);
+});
+
+test("開いているタブにはリロードなしでハンドラを注入する", async () => {
+  const { injectIntoOpenTabs, OPTIONAL_SITE_CONFIGS } = await loadSiteSync();
+  const target = OPTIONAL_SITE_CONFIGS.at(-1);
+  const { calls } = createChrome({ tabs: [{ id: 7, pattern: target.matchPatterns[0] }] });
+
+  await injectIntoOpenTabs([target]);
+
+  assert.deepEqual(calls.injected, [
+    { tabId: 7, files: ["content/ctrl-enter-utils.js", "content/ctrl-enter-handler.js"] },
+  ]);
+});
+
+test("すでにハンドラが動いているタブには注入しない", async () => {
+  const { injectIntoOpenTabs, OPTIONAL_SITE_CONFIGS } = await loadSiteSync();
+  const target = OPTIONAL_SITE_CONFIGS.at(-1);
+  const { calls } = createChrome({ tabs: [{ id: 7, pattern: target.matchPatterns[0] }], loadedTabIds: [7] });
+
+  await injectIntoOpenTabs([target]);
+
+  assert.equal(calls.injected.length, 0);
+});
+
+test("一部のタブで失敗しても残りには注入する", async () => {
+  const { injectIntoOpenTabs, OPTIONAL_SITE_CONFIGS } = await loadSiteSync();
+  const target = OPTIONAL_SITE_CONFIGS.at(-1);
+  const { calls } = createChrome({
+    tabs: [
+      { id: 1, pattern: target.matchPatterns[0] },
+      { id: 2, pattern: target.matchPatterns[0] },
+    ],
+  });
+  const executeScript = globalThis.chrome.scripting.executeScript;
+  globalThis.chrome.scripting.executeScript = async (options) => {
+    if (options.files && options.target.tabId === 1) throw new Error("No tab with id 1");
+    return executeScript(options);
+  };
+
+  await injectIntoOpenTabs([target]);
+
+  assert.deepEqual(calls.injected.map((call) => call.tabId), [2]);
 });

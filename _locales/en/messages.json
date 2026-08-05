@@ -4,5 +4,17 @@
     },
     "appDesc": {
         "message": "Use 'Ctrl+Enter' for sending messages in AI chat services like ChatGPT. Prevents accidental sends and allows line breaks with Enter."
+    },
+    "enableOnSite": {
+        "message": "Enable on this site"
+    },
+    "grantNote": {
+        "message": "Your browser calls this \"read and change your data\". It is only used to detect Enter key presses, never to read anything on the page."
+    },
+    "optionsIntro": {
+        "message": "Sites shown with an Allow access button are opt-in.\nEnable them here, or from the extension icon while you are on the site.\nPinning the icon to your toolbar makes that quicker."
+    },
+    "sponsorNote": {
+        "message": "Free and open source, with no ads and no tracking."
     }
 }

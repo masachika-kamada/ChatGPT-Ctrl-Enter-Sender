@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>ChatGPT Ctrl+Enter Sender Options</title>
+  <title data-i18n="appName">Chat AI Ctrl+Enter Sender</title>
   <link rel="stylesheet" href="./popup.css">
 </head>
 
@@ -20,10 +20,12 @@
     </div>
 
     <div class="grant-section" id="grantSection" hidden>
-      <div class="message">
-        Allow access to this site to use Ctrl+Enter here.
-      </div>
       <button id="grantButton" class="grant-btn">Enable on this site</button>
+      <div class="grant-note">
+        <span class="note-icon" aria-hidden="true">i</span>
+        <span data-i18n="grantNote">Your browser calls this "read and change your data". It is only used to detect
+          Enter key presses, never to read anything on the page.</span>
+      </div>
     </div>
 
     <div class="message" id="unsupportedSection" hidden>

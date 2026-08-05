@@ -4,5 +4,17 @@
     },
     "appDesc": {
         "message": "这个ChatGPT等AI聊天服务让你用'Ctrl+Enter'发送消息，防止误发。用 Enter 键可以直接换行，用起来很直观。"
+    },
+    "enableOnSite": {
+        "message": "在此网站启用"
+    },
+    "grantNote": {
+        "message": "浏览器会显示为“读取和更改数据”，但仅用于检测 Enter 按键，绝不读取页面内容。"
+    },
+    "optionsIntro": {
+        "message": "带有 Allow access 按钮的网站需要单独启用。\n可在此处启用，或在该网站上通过扩展图标启用。\n将图标固定到工具栏会更方便。"
+    },
+    "sponsorNote": {
+        "message": "免费开源，无广告、无追踪。"
     }
 }
