@@ -9,13 +9,16 @@
  *
  * chrome.management.getPermissionWarningsByManifest() is callable without
  * the "management" permission.
+ *
+ * baseline-manifest.json is a copy of the last published manifest; refresh it
+ * after a release so the comparison keeps describing what users actually have.
  */
 const { test } = require("./fixtures");
 const { expect } = require("@playwright/test");
 const fs = require("fs");
 const path = require("path");
 
-const BASELINE_MANIFEST = path.join(__dirname, "baseline-manifest-v2.3.0.json");
+const BASELINE_MANIFEST = path.join(__dirname, "baseline-manifest.json");
 const CURRENT_MANIFEST = path.join(__dirname, "..", "manifest.json");
 
 function getPermissionWarnings(serviceWorker, manifestJson) {
@@ -43,7 +46,7 @@ test.describe("Permission Warnings", () => {
     const baselineWarnings = await getPermissionWarnings(serviceWorker, baseline);
     const currentWarnings = await getPermissionWarnings(serviceWorker, current);
 
-    console.log("  Baseline (v2.3.0) warnings:", baselineWarnings);
+    console.log(`  Baseline (v${JSON.parse(baseline).version}) warnings:`, baselineWarnings);
     console.log("  Current manifest warnings:", currentWarnings);
 
     for (const warning of currentWarnings) {

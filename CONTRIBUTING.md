@@ -99,6 +99,8 @@ Commit that on `development`; a release does not need its own branch. Then:
 1. Open a pull request from `development` to `main` and merge it
 2. Tag `main` with `vX.Y.Z`, which builds the extension ZIP and creates the GitHub release
 3. Upload that ZIP to the Chrome Web Store
+4. Copy the released `manifest.json` over `tests/baseline-manifest.json`, so the
+   permission-warning test keeps comparing against what users have installed
 
 ## Firefox
 
