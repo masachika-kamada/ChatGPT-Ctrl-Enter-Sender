@@ -44,7 +44,10 @@ function buildPreviousVersion(targetDir) {
   expect(newest, "site-configs.js has no opt-in site to remove").toBeTruthy();
 
   const patterns = newest[2].split(",").map((pattern) => pattern.trim().replace(/^"|"$/g, ""));
-  fs.writeFileSync(configPath, configSource.replace(newest[0], ""));
+  fs.writeFileSync(
+    configPath,
+    configSource.replace(newest[0], "").replace(/SITE_CONFIGS_REVISION = \d+/, "SITE_CONFIGS_REVISION = 0")
+  );
 
   const manifestPath = path.join(targetDir, "manifest.json");
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));

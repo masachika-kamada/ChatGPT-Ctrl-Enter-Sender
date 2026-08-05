@@ -12,9 +12,10 @@
  * run this sync too. Every export is idempotent and safe to call concurrently
  * from any extension context.
  */
-import { SITE_CONFIGS, OPTIONAL_SITE_CONFIGS } from "../constants/site-configs.js";
+import { SITE_CONFIGS, SITE_CONFIGS_REVISION, OPTIONAL_SITE_CONFIGS } from "../constants/site-configs.js";
 
 const ACTION_RULE_ID = "supported-sites";
+const RULES_REVISION_KEY = "actionRulesRevision";
 const CONTENT_SCRIPT_FILES = ["content/ctrl-enter-utils.js", "content/ctrl-enter-handler.js"];
 const RUN_AT = "document_start";
 
@@ -60,6 +61,11 @@ async function _doEnsureActionRules() {
   const upToDate = rules.length === 1 && rules[0].id === ACTION_RULE_ID && sameMembers(current, ACTION_RULE_REGEXES);
   if (upToDate) return;
 
+  // A worker still running pre-update code would otherwise overwrite the rules
+  // an extension page already repaired with the current site list
+  const stored = await chrome.storage.local.get(RULES_REVISION_KEY);
+  if ((stored[RULES_REVISION_KEY] ?? 0) > SITE_CONFIGS_REVISION) return;
+
   // Clears both the outdated rule and the unnamed rules older versions added
   await callWithLastError((done) => chrome.declarativeContent.onPageChanged.removeRules(undefined, done));
   try {
@@ -81,7 +87,10 @@ async function _doEnsureActionRules() {
     // Tolerate another context winning the race with the same rule id
     const rulesNow = await getActionRules();
     if (!rulesNow.some((rule) => rule.id === ACTION_RULE_ID)) throw error;
+    return;
   }
+
+  await chrome.storage.local.set({ [RULES_REVISION_KEY]: SITE_CONFIGS_REVISION });
 }
 
 // ── Dynamic content scripts for optional sites ───────────────────────────────
@@ -98,10 +107,22 @@ export function syncOptionalContentScripts() {
 
 function isRegistrationCurrent(existing, script) {
   return (
+    Boolean(existing) &&
     sameMembers(existing.matches, script.matches) &&
     sameMembers(existing.js, script.js) &&
     existing.runAt === script.runAt
   );
+}
+
+// The popup and the service worker both sync on a permission grant, and their
+// queues are per-context, so a losing writer must accept the winner's result
+async function tolerateConcurrentWrite(write, isSettled) {
+  try {
+    await write();
+  } catch (error) {
+    const registered = await chrome.scripting.getRegisteredContentScripts();
+    if (!isSettled(registered)) throw error;
+  }
 }
 
 async function _doSyncOptionalContentScripts() {
@@ -117,14 +138,19 @@ async function _doSyncOptionalContentScripts() {
       js: CONTENT_SCRIPT_FILES,
       runAt: RUN_AT,
     };
+    const findSelf = (scripts) => scripts.find((s) => s.id === config.hostname);
 
-    if (granted && !existing) {
-      await chrome.scripting.registerContentScripts([script]);
-    } else if (granted && !isRegistrationCurrent(existing, script)) {
-      // Keeps a site working after its match patterns or scripts change
-      await chrome.scripting.updateContentScripts([script]);
+    if (granted && !isRegistrationCurrent(existing, script)) {
+      // updateContentScripts keeps a site working after its patterns change
+      const write = existing
+        ? () => chrome.scripting.updateContentScripts([script])
+        : () => chrome.scripting.registerContentScripts([script]);
+      await tolerateConcurrentWrite(write, (scripts) => isRegistrationCurrent(findSelf(scripts), script));
     } else if (!granted && existing) {
-      await chrome.scripting.unregisterContentScripts({ ids: [config.hostname] });
+      await tolerateConcurrentWrite(
+        () => chrome.scripting.unregisterContentScripts({ ids: [config.hostname] }),
+        (scripts) => !findSelf(scripts)
+      );
     }
   }
 }

@@ -77,10 +77,13 @@ grantButton.addEventListener("click", () => {
     if (!granted) return;
     // Register here rather than in the service worker, then reload the page so
     // it takes effect immediately
-    syncOptionalContentScripts().then(() => {
-      chrome.tabs.reload(currentTab.id);
-      showToggle();
-    });
+    syncOptionalContentScripts().then(
+      () => {
+        chrome.tabs.reload(currentTab.id);
+        showToggle();
+      },
+      () => showStatus("Could not enable this site. Please try again.")
+    );
   });
 });
 

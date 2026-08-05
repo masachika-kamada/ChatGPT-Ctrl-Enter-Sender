@@ -24,12 +24,19 @@ async function loadSiteSync() {
   return { ...siteSync, ...configs };
 }
 
-function createChrome({ rules = [], registered = [], granted = [] } = {}) {
+function createChrome({ rules = [], registered = [], granted = [], storage = {}, failWrites = false } = {}) {
   const calls = { removeRules: 0, addRules: [], register: [], update: [], unregister: [] };
   let currentRules = rules;
+  let currentScripts = registered;
 
   globalThis.chrome = {
     runtime: { lastError: null },
+    storage: {
+      local: {
+        get: async (key) => (key in storage ? { [key]: storage[key] } : {}),
+        set: async (values) => Object.assign(storage, values),
+      },
+    },
     declarativeContent: {
       PageStateMatcher: class {
         constructor(options) {
@@ -55,14 +62,32 @@ function createChrome({ rules = [], registered = [], granted = [] } = {}) {
       contains: async ({ origins }) => origins.every((origin) => granted.includes(origin)),
     },
     scripting: {
-      getRegisteredContentScripts: async () => registered,
-      registerContentScripts: async (scripts) => calls.register.push(...scripts),
-      updateContentScripts: async (scripts) => calls.update.push(...scripts),
-      unregisterContentScripts: async ({ ids }) => calls.unregister.push(...ids),
+      getRegisteredContentScripts: async () => currentScripts,
+      registerContentScripts: async (scripts) => {
+        calls.register.push(...scripts);
+        if (failWrites) throw new Error("Duplicate script ID");
+        currentScripts = currentScripts.concat(scripts);
+      },
+      updateContentScripts: async (scripts) => {
+        calls.update.push(...scripts);
+        if (failWrites) throw new Error("Duplicate script ID");
+      },
+      unregisterContentScripts: async ({ ids }) => {
+        calls.unregister.push(...ids);
+        if (failWrites) throw new Error("Nonexistent script ID");
+        currentScripts = currentScripts.filter((script) => !ids.includes(script.id));
+      },
     },
   };
 
-  return { calls, getRules: () => currentRules };
+  return {
+    calls,
+    storage,
+    getRules: () => currentRules,
+    setScripts: (scripts) => {
+      currentScripts = scripts;
+    },
+  };
 }
 
 function toRuleRegex(pattern) {
@@ -162,4 +187,54 @@ test("未許可のサイトには何も登録しない", async () => {
   assert.equal(calls.register.length, 0);
   assert.equal(calls.update.length, 0);
   assert.equal(calls.unregister.length, 0);
+});
+
+test("新しい世代が書いたルールを古いコードは上書きしない", async () => {
+  const { ensureActionRules, SITE_CONFIGS_REVISION } = await loadSiteSync();
+  const { calls, getRules } = createChrome({
+    rules: [{ id: "supported-sites", conditions: [{ pageUrl: { urlMatches: "^https://newer\\.example/.*$" } }] }],
+    storage: { actionRulesRevision: SITE_CONFIGS_REVISION + 1 },
+  });
+
+  await ensureActionRules();
+
+  assert.equal(calls.removeRules, 0);
+  assert.equal(calls.addRules.length, 0);
+  assert.equal(getRules()[0].conditions[0].pageUrl.urlMatches, "^https://newer\\.example/.*$");
+});
+
+test("ルールを書いたら世代番号を記録する", async () => {
+  const { ensureActionRules, SITE_CONFIGS_REVISION } = await loadSiteSync();
+  const { storage } = createChrome({ rules: [{ id: "legacy", conditions: [] }] });
+
+  await ensureActionRules();
+
+  assert.equal(storage.actionRulesRevision, SITE_CONFIGS_REVISION);
+});
+
+test("他コンテキストが先に登録していれば失敗扱いにしない", async () => {
+  const { syncOptionalContentScripts, OPTIONAL_SITE_CONFIGS } = await loadSiteSync();
+  const target = OPTIONAL_SITE_CONFIGS.at(-1);
+  const winner = {
+    id: target.hostname,
+    matches: target.matchPatterns,
+    js: contentScriptFiles,
+    runAt: "document_start",
+  };
+  const { setScripts } = createChrome({ granted: target.matchPatterns, failWrites: true });
+  // The winning context registers between our read and our write
+  globalThis.chrome.scripting.registerContentScripts = async () => {
+    setScripts([winner]);
+    throw new Error("Duplicate script ID");
+  };
+
+  await assert.doesNotReject(() => syncOptionalContentScripts());
+});
+
+test("登録に失敗し状態も直っていなければ例外にする", async () => {
+  const { syncOptionalContentScripts, OPTIONAL_SITE_CONFIGS } = await loadSiteSync();
+  const target = OPTIONAL_SITE_CONFIGS.at(-1);
+  createChrome({ granted: target.matchPatterns, failWrites: true });
+
+  await assert.rejects(() => syncOptionalContentScripts(), /Duplicate script ID/);
 });
