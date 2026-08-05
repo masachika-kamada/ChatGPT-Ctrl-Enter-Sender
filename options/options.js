@@ -1,5 +1,8 @@
 import { SITE_CONFIGS, SUPPORTED_SITES } from "../constants/site-configs.js";
 import { syncSiteRegistrations, syncOptionalContentScripts } from "../shared/site-sync.js";
+import { localizePage } from "../shared/i18n.js";
+
+localizePage();
 
 // Repairs action rules and content-script registrations when the service
 // worker is still running pre-update code (see shared/site-sync.js)

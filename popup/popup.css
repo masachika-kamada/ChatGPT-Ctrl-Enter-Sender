@@ -109,6 +109,27 @@ body {
   line-height: 1.4;
 }
 
+.grant-note {
+  display: flex;
+  gap: 6px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #9A9A9A;
+}
+
+.note-icon {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin-top: 2px;
+  border: 1px solid #6E6E6E;
+  border-radius: 50%;
+  font-size: 9px;
+  line-height: 13px;
+  text-align: center;
+  font-style: italic;
+}
+
 .status-message {
   color: #ff9b9b;
   font-size: 12px;
@@ -120,15 +141,19 @@ body {
   font-size: 13px;
   color: #999;
   text-decoration: none;
-  transition: color 0.2s ease;
-  display: flex;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   margin: 0 auto;
+  padding: 3px 10px;
+  border: 1px solid #3A3B3D;
+  border-radius: 999px;
 }
 
 .settings-link:hover {
   color: #4BD865;
+  border-color: #4BD865;
 }
 
 .external-icon {
