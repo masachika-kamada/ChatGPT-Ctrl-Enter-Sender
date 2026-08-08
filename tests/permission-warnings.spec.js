@@ -43,6 +43,14 @@ test.describe("Permission Warnings", () => {
     const baseline = fs.readFileSync(BASELINE_MANIFEST, "utf-8");
     const current = fs.readFileSync(CURRENT_MANIFEST, "utf-8");
 
+    const baselineRequiredHosts = new Set(JSON.parse(baseline).host_permissions ?? []);
+    for (const host of JSON.parse(current).host_permissions ?? []) {
+      expect(
+        baselineRequiredHosts,
+        `New required host permission would disable the extension on update: "${host}"`
+      ).toContain(host);
+    }
+
     const baselineWarnings = await getPermissionWarnings(serviceWorker, baseline);
     const currentWarnings = await getPermissionWarnings(serviceWorker, current);
 

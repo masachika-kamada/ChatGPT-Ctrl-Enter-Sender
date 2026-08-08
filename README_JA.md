@@ -34,17 +34,17 @@
 * <https://grok.com>
 * <https://www.perplexity.ai>
 * <https://chat.mistral.ai>
-* <https://notebook.google.com>
+* <https://notebook.google.com> (opt-in)
 * <https://github.com> (Copilot, Spark)
 * <https://poe.com>
 * <https://v0.app>
-* <https://www.kimi.com>
+* <https://www.kimi.com> (opt-in)
 * <https://cursor.com/agents> (opt-in)
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
 
-*オプトイン サイトはエージェント系・ニッチなサービスのため、利用者が有効化を選んだ場合にのみアクセス権限を求めます。サイトを開いて拡張機能のアイコンをクリックし、「Enable on this site」を一度押してください。初回インストール時には、これらを案内する設定ページが一度だけ開きます。*
+*オプトイン サイトは、利用者が有効化を選んだ場合にのみアクセス権限を求めます。新しいホスト名への対応を追加した更新で拡張機能が無効化されるのを防ぐためです。サイトを開いて拡張機能のアイコンをクリックし、「Enable on this site」を一度押してください。初回インストール時には、これらを案内する設定ページが一度だけ開きます。*
 
 ## デモ動画
 

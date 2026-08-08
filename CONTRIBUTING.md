@@ -23,22 +23,19 @@ These sites may be removed if they become unmaintainable:
 
 ## How New Sites Are Shipped
 
-Chrome only disables an extension on update when the permission WARNING text
-changes, not whenever a host is added. This extension already sits at the
-"many websites" warning, so one more host does not trigger re-approval, and
-`tests/permission-warnings.spec.js` fails if a change ever would.
+Adding a required host permission disables the extension on update until the
+user approves it, even when Chrome displays the same warning text before and
+after the update. `tests/permission-warnings.spec.js` therefore rejects both
+new warning text and any required host absent from the published baseline.
 
-That leaves the choice to what serves users, rather than what is safe to ship:
+- **Required** only when the host already exists in the published manifest.
+- **Opt-in** for every new host pattern, including a replacement hostname for
+  an existing service. These sites are listed in `optional_host_permissions`,
+  marked `optional: true` in `constants/site-configs.js`, and enabled from the
+  popup.
 
-- **Required** for a widely used chat service that most users would want. It
-  works with no setup, which is one less way for the extension to look broken.
-- **Opt-in** for agent or IDE tooling and anything niche, so users who will
-  never open it are not asked for access to it. These sites are listed in
-  `optional_host_permissions`, marked `optional: true` in
-  `constants/site-configs.js`, and enabled from the popup.
-
-Anything needing a broad pattern such as `<all_urls>` stays opt-in, since that
-does raise the warning level.
+Agent or IDE tooling, niche sites, and broad patterns such as `<all_urls>` also
+stay opt-in.
 
 See the checklist in `constants/site-configs.js` for the exact steps.
 

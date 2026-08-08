@@ -13,12 +13,10 @@
  *     registered dynamically by shared/site-sync.js.
  *
  * Which kind to use:
- *   - A widely used chat service that most users would want -> required, so it
- *     works with no setup
- *   - Agent or IDE tooling, or anything niche -> optional, so users who will
- *     never open it are not asked for access to it
- *   - Anything needing a broad pattern -> optional, since that can raise the
- *     warning level
+ *   - Existing required host from the published manifest -> required
+ *   - Any new host pattern -> optional, because adding a required host disables
+ *     the extension on update even when Chrome displays the same warning text
+ *   - Agent or IDE tooling, niche sites, and broad patterns -> optional
  *
  * When adding a new site:
  *   1. Add an entry here (hostname + matchPatterns, plus `optional: true` if
@@ -32,7 +30,7 @@
 // Generation marker for the site list. shared/site-sync.js records the highest
 // revision that wrote the action rules, so a service worker left running
 // pre-update code cannot overwrite a newer sync with its outdated list.
-export const SITE_CONFIGS_REVISION = 2;
+export const SITE_CONFIGS_REVISION = 3;
 
 export const SITE_CONFIGS = [
   { hostname: "chatgpt.com", matchPatterns: ["https://chatgpt.com/*"] },
@@ -44,11 +42,11 @@ export const SITE_CONFIGS = [
   { hostname: "grok.com", matchPatterns: ["https://grok.com/*"] },
   { hostname: "www.perplexity.ai", matchPatterns: ["https://www.perplexity.ai/*"] },
   { hostname: "chat.mistral.ai", matchPatterns: ["https://chat.mistral.ai/*"] },
-  { hostname: "notebook.google.com", matchPatterns: ["https://notebook.google.com/*"] },
+  { hostname: "notebook.google.com", matchPatterns: ["https://notebook.google.com/*"], optional: true },
   { hostname: "github.com", matchPatterns: ["https://github.com/copilot*", "https://github.com/spark*"] },
   { hostname: "poe.com", matchPatterns: ["https://poe.com/*"] },
   { hostname: "v0.app", matchPatterns: ["https://v0.app/*"] },
-  { hostname: "www.kimi.com", matchPatterns: ["https://www.kimi.com/*"] },
+  { hostname: "www.kimi.com", matchPatterns: ["https://www.kimi.com/*"], optional: true },
   { hostname: "cursor.com", matchPatterns: ["https://cursor.com/agents*", "https://cursor.com/*/agents*"], optional: true },
   { hostname: "www.genspark.ai", matchPatterns: ["https://www.genspark.ai/*"], optional: true },
   { hostname: "duck.ai", matchPatterns: ["https://duck.ai/*"], optional: true },
