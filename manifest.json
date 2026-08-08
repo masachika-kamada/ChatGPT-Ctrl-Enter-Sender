@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
@@ -27,12 +27,10 @@
         "https://grok.com/*",
         "https://www.perplexity.ai/*",
         "https://chat.mistral.ai/*",
-        "https://notebook.google.com/*",
         "https://github.com/copilot*",
         "https://github.com/spark*",
         "https://poe.com/*",
-        "https://v0.app/*",
-        "https://www.kimi.com/*"
+        "https://v0.app/*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
@@ -52,7 +50,6 @@
     "https://chat.mistral.ai/*",
     "https://www.perplexity.ai/*",
     "https://claude.ai/*",
-    "https://notebook.google.com/*",
     "https://gemini.google.com/*",
     "https://v0.app/*",
     "https://chat.deepseek.com/*",
@@ -60,10 +57,11 @@
     "https://github.com/spark*",
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
-    "https://m365.cloud.microsoft/*",
-    "https://www.kimi.com/*"
+    "https://m365.cloud.microsoft/*"
   ],
   "optional_host_permissions": [
+    "https://notebook.google.com/*",
+    "https://www.kimi.com/*",
     "https://cursor.com/agents*",
     "https://cursor.com/*/agents*",
     "https://www.genspark.ai/*",

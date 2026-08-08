@@ -390,6 +390,18 @@ test("Manus の Ctrl+Enter は通常 Enter にマッピングする", () => {
 
 // ── NotebookLM tests ────────────────────────────────────────────────────────
 
+test("NotebookLM の Enter は Shift+Enter にマッピングする", () => {
+  const context = loadHandler("https://notebook.google.com/", createButton(), notebookSubmitSelector);
+  const { target, dispatchedEvents } = createTextareaTarget();
+  target.classList = { contains: (name) => name === "query-box-input" };
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
 test("NotebookLM の Ctrl+Enter は送信ボタンだけを一度クリックする", () => {
   const sendButton = createButton();
   const context = loadHandler(
@@ -425,6 +437,34 @@ test("NotebookLM の送信ボタンがない場合は通常 Enter にフォー�
   assert.equal(dispatchedEvents[0].shiftKey, undefined);
   assert.equal(event.preventDefaultCount, 1);
   assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+// ── Kimi tests ──────────────────────────────────────────────────────────────
+
+test("Kimi の Enter は Shift+Enter にマッピングする", () => {
+  const context = loadHandler("https://www.kimi.com/", createButton());
+  const { target, dispatchedEvents } = createLexicalTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("Kimi の Ctrl+Enter は通常 Enter にマッピングする", () => {
+  const context = loadHandler("https://www.kimi.com/", createButton());
+  const { target, dispatchedEvents } = createLexicalTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
 });
 
 // ── General behavior tests ───────────────────────────────────────────────────

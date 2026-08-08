@@ -34,17 +34,17 @@
 * <https://grok.com>
 * <https://www.perplexity.ai>
 * <https://chat.mistral.ai>
-* <https://notebook.google.com>
+* <https://notebook.google.com> (opt-in)
 * <https://github.com> (Copilot, Spark)
 * <https://poe.com>
 * <https://v0.app>
-* <https://www.kimi.com>
+* <https://www.kimi.com> (opt-in)
 * <https://cursor.com/agents> (opt-in)
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
 
-*可选站点属于智能体、IDE 工具或较小众的服务，因此仅在您选择启用时请求访问权限。打开站点，点击扩展图标，然后按一次 "Enable on this site"。首次安装后，设置页面会打开一次以介绍这些站点。*
+*可选站点仅在您选择启用时请求访问权限。这可防止因支持新主机名而导致扩展在更新后被停用。打开站点，点击扩展图标，然后按一次 "Enable on this site"。首次安装后，设置页面会打开一次以介绍这些站点。*
 
 ## 演示视频
 

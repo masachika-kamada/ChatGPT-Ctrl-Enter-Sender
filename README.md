@@ -34,17 +34,17 @@ You can use this extension on the following pages:
 * <https://grok.com>
 * <https://www.perplexity.ai>
 * <https://chat.mistral.ai>
-* <https://notebook.google.com>
+* <https://notebook.google.com> (opt-in)
 * <https://github.com> (Copilot, Spark)
 * <https://poe.com>
 * <https://v0.app>
-* <https://www.kimi.com>
+* <https://www.kimi.com> (opt-in)
 * <https://cursor.com/agents> (opt-in)
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
 
-*Opt-in sites are agent or niche services, so access is requested only when you choose to enable them. Open the site, click the extension icon, and press "Enable on this site" once. After the first installation, the settings page opens once to introduce these sites.*
+*Opt-in sites request access only when you choose to enable them. This prevents an update from disabling the extension when support needs a new hostname. Open the site, click the extension icon, and press "Enable on this site" once. After the first installation, the settings page opens once to introduce these sites.*
 
 ## Demo Video
 
