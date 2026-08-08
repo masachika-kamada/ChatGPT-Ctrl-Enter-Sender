@@ -39,5 +39,8 @@ jobs:
       - name: Check supported-site consistency
         run: python3 tools/check_supported_sites.py
 
+      - name: Test site URL monitor
+        run: python3 -m unittest tools/test_check_site_urls.py
+
       - name: Run deterministic tests
         run: xvfb-run --auto-servernum npm test

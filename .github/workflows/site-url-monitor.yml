@@ -1,0 +1,57 @@
+name: Site URL Monitor
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: site-url-monitor
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # actions/checkout v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          persist-credentials: false
+
+      - name: Check supported site URLs
+        id: site-check
+        continue-on-error: true
+        run: python3 tools/check_site_urls.py --output site-url-report.md
+
+      - name: Create, update, or close the tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          CHECK_OUTCOME: ${{ steps.site-check.outcome }}
+        run: |
+          title="[Site Monitor] Supported site URL check failed"
+          issue_number=$(gh issue list \
+            --state open \
+            --limit 100 \
+            --json number,title \
+            --jq ".[] | select(.title == \"$title\") | .number" \
+            | head -n 1)
+
+          if [ "$CHECK_OUTCOME" = "failure" ]; then
+            if [ -n "$issue_number" ]; then
+              gh issue edit "$issue_number" --body-file site-url-report.md
+            else
+              gh issue create --title "$title" --body-file site-url-report.md
+            fi
+          elif [ -n "$issue_number" ]; then
+            gh issue close "$issue_number" --comment "The daily URL check is passing again."
+          fi
+
+      - name: Fail the workflow when a site needs attention
+        if: steps.site-check.outcome == 'failure'
+        run: exit 1

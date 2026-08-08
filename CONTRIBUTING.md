@@ -90,6 +90,21 @@ the repository test environment. Live-site failures are diagnostic and are not a
 release gate because authentication, bot detection, and site DOM changes are
 outside this extension's control.
 
+## Site URL Monitoring
+
+The `Site URL Monitor` workflow checks every configured hostname once a day. It
+follows redirects and opens one tracking issue when a site moves to an
+unexpected hostname or cannot be reached after two attempts. The same issue is
+updated on later failures and closed automatically after recovery.
+
+HTTP 401, 403 and 404 responses still count as reachable because many supported
+sites block automated clients. This monitor detects hostname moves and outages;
+it does not prove that the chat input selectors still work. Run it locally with:
+
+```shell
+python tools/check_site_urls.py --output site-url-report.md
+```
+
 ## Releasing
 
 The version lives in `manifest.json`, `package.json` and `package-lock.json`, and
