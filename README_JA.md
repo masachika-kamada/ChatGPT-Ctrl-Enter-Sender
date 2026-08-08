@@ -4,7 +4,7 @@
 
 ## 概要
 
-* ChatGPT でのメッセージ送信を「Ctrl+Enter」に割り当て、誤送信を防ぐ
+* ChatGPT でのメッセージ送信を「Ctrl+Enter」（Macでは「Cmd+Enter」）に割り当て、誤送信を防ぐ
 * 「Enter」で直感的に改行できる
 
 ## 対応ブラウザ
@@ -19,7 +19,7 @@
 
 ## 機能
 
-**ChatGPT Ctrl+Enter Sender** は、ChatGPT などのサイトでメッセージを「Ctrl+Enter」で送信できるようにします。<br>
+**ChatGPT Ctrl+Enter Sender** は、ChatGPT などのサイトでメッセージを「Ctrl+Enter」（Macでは「Cmd+Enter」）で送信できるようにします。<br>
 本来送信に使用されていた Enter で改行できるようになるため、誤って Enter を押してメッセージを送信することがなくなります。<br>
 アイコンをクリックすれば、トグルボタンで簡単に拡張機能のオン/オフを切り替えられます。
 
@@ -34,17 +34,17 @@
 * <https://grok.com>
 * <https://www.perplexity.ai>
 * <https://chat.mistral.ai>
-* <https://notebooklm.google.com>
+* <https://notebook.google.com>
 * <https://github.com> (Copilot, Spark)
 * <https://poe.com>
 * <https://v0.app>
+* <https://www.kimi.com>
 * <https://cursor.com/agents> (opt-in)
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
-* <https://www.kimi.com> (opt-in)
 
-*オプトイン サイト: 全ユーザーへの権限再承認を避けるため、これらのサイトはユーザーごとに有効化する方式です。サイトを開いて拡張機能のアイコンをクリックし、「Enable on this site」を一度押してください。*
+*オプトイン サイトはエージェント系・ニッチなサービスのため、利用者が有効化を選んだ場合にのみアクセス権限を求めます。サイトを開いて拡張機能のアイコンをクリックし、「Enable on this site」を一度押してください。初回インストール時には、これらを案内する設定ページが一度だけ開きます。*
 
 ## デモ動画
 

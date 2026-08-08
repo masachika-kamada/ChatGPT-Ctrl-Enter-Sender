@@ -1,5 +1,5 @@
 import { SITE_CONFIGS, SUPPORTED_SITES } from "../constants/site-configs.js";
-import { syncSiteRegistrations, syncOptionalContentScripts } from "../shared/site-sync.js";
+import { syncSiteRegistrations, syncOptionalContentScripts, injectIntoOpenTabs } from "../shared/site-sync.js";
 import { markNewSitesSeen } from "../shared/new-sites.js";
 import { localizePage } from "../shared/i18n.js";
 

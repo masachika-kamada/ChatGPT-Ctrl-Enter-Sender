@@ -393,7 +393,7 @@ test("Manus の Ctrl+Enter は通常 Enter にマッピングする", () => {
 test("NotebookLM の Ctrl+Enter は送信ボタンだけを一度クリックする", () => {
   const sendButton = createButton();
   const context = loadHandler(
-    "https://notebooklm.google.com/",
+    "https://notebook.google.com/",
     sendButton,
     notebookSubmitSelector
   );
@@ -411,7 +411,7 @@ test("NotebookLM の Ctrl+Enter は送信ボタンだけを一度クリックす
 
 test("NotebookLM の送信ボタンがない場合は通常 Enter にフォールバックする", () => {
   const context = loadHandler(
-    "https://notebooklm.google.com/",
+    "https://notebook.google.com/",
     null,
     notebookSubmitSelector
   );

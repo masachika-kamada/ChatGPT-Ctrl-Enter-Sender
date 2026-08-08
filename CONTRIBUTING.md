@@ -15,24 +15,30 @@ These sites are actively maintained and tested:
 
 ### Tier 2 — Community Supported
 These sites are supported but maintained on a best-effort basis:
-- DeepSeek, Grok, Perplexity, Mistral (Le Chat), NotebookLM, GitHub Copilot Chat
+- DeepSeek, Grok, Perplexity, Mistral (Le Chat), NotebookLM, GitHub Copilot Chat, Kimi
 
 ### Tier 3 — Minimal Support
 These sites may be removed if they become unmaintainable:
-- Poe, v0, Cursor, Genspark, duck.ai, Manus, Kimi
+- Poe, v0, Cursor, Genspark, duck.ai, Manus
 
-## How New Sites Are Shipped (Opt-in)
+## How New Sites Are Shipped
 
-Adding a site to the manifest's required permissions disables the extension
-for every existing user until they re-approve it. To avoid this, all new
-sites are added as **opt-in** sites:
+Chrome only disables an extension on update when the permission WARNING text
+changes, not whenever a host is added. This extension already sits at the
+"many websites" warning, so one more host does not trigger re-approval, and
+`tests/permission-warnings.spec.js` fails if a change ever would.
 
-- They are listed in `optional_host_permissions` (never in `host_permissions`
-  or static `content_scripts`).
-- They are marked `optional: true` in `constants/site-configs.js`.
-- Users enable them once per site via the popup ("Enable on this site").
-- `tests/permission-warnings.spec.js` should be run locally before release to verify that no change introduces
-  a new permission warning.
+That leaves the choice to what serves users, rather than what is safe to ship:
+
+- **Required** for a widely used chat service that most users would want. It
+  works with no setup, which is one less way for the extension to look broken.
+- **Opt-in** for agent or IDE tooling and anything niche, so users who will
+  never open it are not asked for access to it. These sites are listed in
+  `optional_host_permissions`, marked `optional: true` in
+  `constants/site-configs.js`, and enabled from the popup.
+
+Anything needing a broad pattern such as `<all_urls>` stays opt-in, since that
+does raise the warning level.
 
 See the checklist in `constants/site-configs.js` for the exact steps.
 
@@ -91,7 +97,7 @@ the release workflow refuses to publish when the tag and the manifest disagree.
 Bump all three with one command rather than editing them by hand:
 
 ```shell
-npm run bump 2.5.1
+npm run bump X.Y.Z
 ```
 
 Commit that on `development`; a release does not need its own branch. Then:
@@ -99,6 +105,8 @@ Commit that on `development`; a release does not need its own branch. Then:
 1. Open a pull request from `development` to `main` and merge it
 2. Tag `main` with `vX.Y.Z`, which builds the extension ZIP and creates the GitHub release
 3. Upload that ZIP to the Chrome Web Store
+4. Copy the released `manifest.json` over `tests/baseline-manifest.json`, so the
+   permission-warning test keeps comparing against what users have installed
 
 ## Firefox
 

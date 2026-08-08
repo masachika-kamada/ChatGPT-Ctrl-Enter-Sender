@@ -102,7 +102,15 @@ function toRuleRegex(pattern) {
   return "^" + pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$";
 }
 
-test("古いルールは固定 ID の単一ルールに置き換えられる", async () => {
+function requiredRegexes(SITE_CONFIGS) {
+  return SITE_CONFIGS.filter((c) => !c.optional).flatMap((c) => c.matchPatterns.map(toRuleRegex));
+}
+
+function optionalRegexes(SITE_CONFIGS) {
+  return SITE_CONFIGS.filter((c) => c.optional).flatMap((c) => c.matchPatterns.map(toRuleRegex));
+}
+
+test("古いルールは固定 ID のルールに置き換えられる", async () => {
   const { calls } = createChrome({
     rules: [{ id: "legacy", conditions: [{ pageUrl: { urlMatches: "^https://chatgpt\\.com/.*$" } }] }],
   });
@@ -111,20 +119,45 @@ test("古いルールは固定 ID の単一ルールに置き換えられる", a
   await ensureActionRules();
 
   assert.equal(calls.removeRules, 1);
-  assert.equal(calls.addRules.length, 1);
-  assert.equal(calls.addRules[0].id, "supported-sites");
+  assert.deepEqual(calls.addRules.map((rule) => rule.id), ["supported-sites", "ungranted-sites"]);
 
-  const registered = calls.addRules[0].conditions.map((condition) => condition.pageUrl.urlMatches);
-  const expected = SITE_CONFIGS.flatMap((config) => config.matchPatterns.map(toRuleRegex));
-  assert.deepEqual(registered.slice().sort(), expected.slice().sort());
+  const supported = calls.addRules[0].conditions.map((condition) => condition.pageUrl.urlMatches);
+  assert.deepEqual(supported.slice().sort(), requiredRegexes(SITE_CONFIGS).slice().sort());
+});
+
+test("未許可の opt-in サイトは別ルールに分ける", async () => {
+  const { calls } = createChrome({ rules: [] });
+  const { ensureActionRules, SITE_CONFIGS } = await loadSiteSync();
+
+  await ensureActionRules();
+
+  const ungranted = calls.addRules[1].conditions.map((condition) => condition.pageUrl.urlMatches);
+  assert.deepEqual(ungranted.slice().sort(), optionalRegexes(SITE_CONFIGS).slice().sort());
+});
+
+test("すべて許可済みなら未許可用のルールを作らない", async () => {
+  const { ensureActionRules, SITE_CONFIGS } = await loadSiteSync();
+  const { calls } = createChrome({
+    rules: [],
+    granted: SITE_CONFIGS.filter((c) => c.optional).flatMap((c) => c.matchPatterns),
+  });
+
+  await ensureActionRules();
+
+  assert.deepEqual(calls.addRules.map((rule) => rule.id), ["supported-sites"]);
+  const supported = calls.addRules[0].conditions.map((condition) => condition.pageUrl.urlMatches);
+  assert.equal(supported.length, SITE_CONFIGS.flatMap((c) => c.matchPatterns).length);
 });
 
 test("ルールが最新なら書き換えない", async () => {
   const { ensureActionRules, SITE_CONFIGS } = await loadSiteSync();
-  const conditions = SITE_CONFIGS.flatMap((config) =>
-    config.matchPatterns.map((pattern) => ({ pageUrl: { urlMatches: toRuleRegex(pattern) } }))
-  );
-  const { calls } = createChrome({ rules: [{ id: "supported-sites", conditions }] });
+  const toConditions = (regexes) => regexes.map((urlMatches) => ({ pageUrl: { urlMatches } }));
+  const { calls } = createChrome({
+    rules: [
+      { id: "supported-sites", conditions: toConditions(requiredRegexes(SITE_CONFIGS)) },
+      { id: "ungranted-sites", conditions: toConditions(optionalRegexes(SITE_CONFIGS)) },
+    ],
+  });
 
   await ensureActionRules();
 
@@ -138,8 +171,7 @@ test("同時に呼ばれてもルールは重複しない", async () => {
 
   await Promise.all([ensureActionRules(), ensureActionRules(), ensureActionRules()]);
 
-  assert.equal(getRules().length, 1);
-  assert.equal(getRules()[0].id, "supported-sites");
+  assert.deepEqual(getRules().map((rule) => rule.id), ["supported-sites", "ungranted-sites"]);
 });
 
 test("許可済みの opt-in サイトはコンテンツスクリプトが登録される", async () => {

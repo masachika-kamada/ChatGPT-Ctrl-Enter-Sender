@@ -4,7 +4,7 @@ English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 
 ## Overview
 
-* Assigns "Ctrl+Enter" for message sending in ChatGPT to prevent accidental sending
+* Assigns "Ctrl+Enter" ("Cmd+Enter" on Mac) for message sending in ChatGPT to prevent accidental sending
 * Intuitively use "Enter" for line breaks
 
 ## Browser Support
@@ -19,7 +19,7 @@ English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 
 ## Features
 
-**ChatGPT Ctrl+Enter Sender** allows you to send messages in ChatGPT and other sites using "Ctrl+Enter".<br>
+**ChatGPT Ctrl+Enter Sender** allows you to send messages in ChatGPT and other sites using "Ctrl+Enter" ("Cmd+Enter" on Mac).<br>
 With this extension, you can use "Enter" for line breaks instead of accidentally sending messages by pressing "Enter" to send.<br>
 You can easily toggle the extension on and off with a toggle button by clicking the icon.
 
@@ -34,17 +34,17 @@ You can use this extension on the following pages:
 * <https://grok.com>
 * <https://www.perplexity.ai>
 * <https://chat.mistral.ai>
-* <https://notebooklm.google.com>
+* <https://notebook.google.com>
 * <https://github.com> (Copilot, Spark)
 * <https://poe.com>
 * <https://v0.app>
+* <https://www.kimi.com>
 * <https://cursor.com/agents> (opt-in)
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
-* <https://www.kimi.com> (opt-in)
 
-*Opt-in sites: to keep updates from requiring new permissions for everyone, these sites are enabled per user. Open the site, click the extension icon, and press "Enable on this site" once.*
+*Opt-in sites are agent or niche services, so access is requested only when you choose to enable them. Open the site, click the extension icon, and press "Enable on this site" once. After the first installation, the settings page opens once to introduce these sites.*
 
 ## Demo Video
 

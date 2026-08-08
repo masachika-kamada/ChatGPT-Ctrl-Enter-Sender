@@ -19,7 +19,7 @@ const AUTH_SITES = [
   { name: "DeepSeek", url: "https://chat.deepseek.com/" },
   { name: "Poe", url: "https://poe.com/" },
   { name: "Mistral", url: "https://chat.mistral.ai/chat" },
-  { name: "NotebookLM", url: "https://notebooklm.google.com/" },
+  { name: "NotebookLM", url: "https://notebook.google.com/" },
 ];
 
 function askUser(question) {

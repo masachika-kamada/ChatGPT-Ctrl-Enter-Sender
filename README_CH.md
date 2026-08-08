@@ -4,7 +4,7 @@
 
 ## 概述
 
-* 为 ChatGPT 分配“Ctrl+Enter”以发送消息，防止误发
+* 为 ChatGPT 分配“Ctrl+Enter”（Mac 上为“Cmd+Enter”）以发送消息，防止误发
 * 可直观地通过“Enter”换行
 
 ## 浏览器支持
@@ -19,7 +19,7 @@
 
 ## 功能
 
-**ChatGPT Ctrl+Enter Sender** 可以让您在 ChatGPT 等网站上使用“Ctrl+Enter”发送消息。<br>
+**ChatGPT Ctrl+Enter Sender** 可以让您在 ChatGPT 等网站上使用“Ctrl+Enter”（Mac 上为“Cmd+Enter”）发送消息。<br>
 由于本来用于发送的 Enter 现在可以换行，因此您不会意外地按下 Enter 发送消息。<br>
 点击图标即可在切换按钮上轻松切换扩展的开/关状态。
 
@@ -34,17 +34,17 @@
 * <https://grok.com>
 * <https://www.perplexity.ai>
 * <https://chat.mistral.ai>
-* <https://notebooklm.google.com>
+* <https://notebook.google.com>
 * <https://github.com> (Copilot, Spark)
 * <https://poe.com>
 * <https://v0.app>
+* <https://www.kimi.com>
 * <https://cursor.com/agents> (opt-in)
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
-* <https://www.kimi.com> (opt-in)
 
-*可选站点: 为避免更新时要求所有用户重新授权，这些站点需按用户启用。打开站点，点击扩展图标，然后按一次 "Enable on this site"。*
+*可选站点属于智能体、IDE 工具或较小众的服务，因此仅在您选择启用时请求访问权限。打开站点，点击扩展图标，然后按一次 "Enable on this site"。首次安装后，设置页面会打开一次以介绍这些站点。*
 
 ## 演示视频
 

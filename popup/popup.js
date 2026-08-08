@@ -9,6 +9,7 @@ localizePage();
 syncSiteRegistrations();
 
 const toggleSection = document.querySelector("#toggleSection");
+const shortcutHint = document.querySelector("#shortcutHint");
 const grantSection = document.querySelector("#grantSection");
 const unsupportedSection = document.querySelector("#unsupportedSection");
 const toggleButton = document.querySelector("#isEnabled");
@@ -46,6 +47,15 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 function showToggle() {
   grantSection.hidden = true;
   toggleSection.hidden = false;
+
+  // A tab restored at browser startup can miss the manifest injection, and
+  // opening the popup is what users try when the shortcut does nothing
+  injectIntoOpenTabs([currentConfig]);
+
+  // The shortcut is nowhere else in the UI, and users try Shift+Enter instead
+  const isMac = navigator.userAgentData?.platform === "macOS" || navigator.platform.startsWith("Mac");
+  shortcutHint.textContent = `${isMac ? "Cmd" : "Ctrl"} + Enter to send`;
+  shortcutHint.hidden = false;
 
   chrome.storage.sync.get("siteSettings", (data) => {
     const siteSettings = data.siteSettings || {};
