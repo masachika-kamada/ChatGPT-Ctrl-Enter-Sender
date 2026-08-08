@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
@@ -27,11 +27,12 @@
         "https://grok.com/*",
         "https://www.perplexity.ai/*",
         "https://chat.mistral.ai/*",
-        "https://notebooklm.google.com/*",
+        "https://notebook.google.com/*",
         "https://github.com/copilot*",
         "https://github.com/spark*",
         "https://poe.com/*",
-        "https://v0.app/*"
+        "https://v0.app/*",
+        "https://www.kimi.com/*"
       ],
       "js": [
         "content/ctrl-enter-utils.js",
@@ -51,7 +52,7 @@
     "https://chat.mistral.ai/*",
     "https://www.perplexity.ai/*",
     "https://claude.ai/*",
-    "https://notebooklm.google.com/*",
+    "https://notebook.google.com/*",
     "https://gemini.google.com/*",
     "https://v0.app/*",
     "https://chat.deepseek.com/*",
@@ -59,23 +60,19 @@
     "https://github.com/spark*",
     "https://grok.com/*",
     "https://copilot.microsoft.com/*",
-    "https://m365.cloud.microsoft/*"
+    "https://m365.cloud.microsoft/*",
+    "https://www.kimi.com/*"
   ],
   "optional_host_permissions": [
     "https://cursor.com/agents*",
     "https://cursor.com/*/agents*",
     "https://www.genspark.ai/*",
     "https://duck.ai/*",
-    "https://manus.im/*",
-    "https://www.kimi.com/*"
+    "https://manus.im/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_icon": {
-      "16": "icon/icon16.png",
-      "48": "icon/icon48.png",
-      "128": "icon/icon128.png"
-    }
+    "default_icon": "icon/na.png"
   },
   "options_page": "options/options.html"
 }

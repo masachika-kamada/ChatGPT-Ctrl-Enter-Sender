@@ -67,8 +67,8 @@ const MOCK_SITES = [
   },
   {
     name: "NotebookLM",
-    url: "https://notebooklm.google.com/",
-    route: "https://notebooklm.google.com/**",
+    url: "https://notebook.google.com/",
+    route: "https://notebook.google.com/**",
     markup: '<query-box><form><textarea id="prompt" class="query-box-input"></textarea><button type="submit">Send</button></form></query-box>',
     inputSelector: "#prompt",
     submitViaButton: true,
@@ -92,6 +92,13 @@ const MOCK_SITES = [
     url: "https://v0.app/",
     route: "https://v0.app/**",
     markup: '<textarea id="prompt"></textarea>',
+    inputSelector: "#prompt",
+  },
+  {
+    name: "Kimi",
+    url: "https://www.kimi.com/",
+    route: "https://www.kimi.com/**",
+    markup: '<div id="prompt" contenteditable="true" data-lexical-editor="true" role="textbox"></div>',
     inputSelector: "#prompt",
   },
 ];

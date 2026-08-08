@@ -15,6 +15,7 @@
 import { SITE_CONFIGS, SITE_CONFIGS_REVISION, OPTIONAL_SITE_CONFIGS } from "../constants/site-configs.js";
 
 const ACTION_RULE_ID = "supported-sites";
+const UNGRANTED_RULE_ID = "ungranted-sites";
 const RULES_REVISION_KEY = "actionRulesRevision";
 const CONTENT_SCRIPT_FILES = ["content/ctrl-enter-utils.js", "content/ctrl-enter-handler.js"];
 const RUN_AT = "document_start";
@@ -22,8 +23,6 @@ const RUN_AT = "document_start";
 function matchPatternToRegex(pattern) {
   return "^" + pattern.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$";
 }
-
-const ACTION_RULE_REGEXES = SITE_CONFIGS.flatMap((config) => config.matchPatterns.map(matchPatternToRegex));
 
 function sameMembers(a, b) {
   return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((value) => b.includes(value));
@@ -42,9 +41,44 @@ function getActionRules() {
 
 // ── Action icon visibility ───────────────────────────────────────────────────
 // The action is disabled by default and shown declaratively on supported sites.
-// declarativeContent needs no host access, so the icon stays clickable on
-// optional sites even before the user grants the host permission (the popup is
-// where they grant it).
+// declarativeContent needs no host access, which is what lets the icon appear
+// on optional sites before the user has granted anything. Those sites also get
+// the inactive icon, so the toolbar distinguishes "not supported here" from
+// "supported, but you have not enabled it yet".
+
+async function splitByGrant() {
+  const granted = [];
+  const ungranted = [];
+
+  for (const config of SITE_CONFIGS) {
+    const target =
+      !config.optional || (await chrome.permissions.contains({ origins: config.matchPatterns }))
+        ? granted
+        : ungranted;
+    target.push(...config.matchPatterns.map(matchPatternToRegex));
+  }
+
+  return { granted, ungranted };
+}
+
+// declarativeContent takes pixels rather than a path
+async function loadIconImageData(file) {
+  const bitmap = await createImageBitmap(await (await fetch(chrome.runtime.getURL(file))).blob());
+  const imageData = {};
+
+  for (const size of [16, 32]) {
+    const canvas = new OffscreenCanvas(size, size);
+    const context = canvas.getContext("2d");
+    context.drawImage(bitmap, 0, 0, size, size);
+    imageData[size] = context.getImageData(0, 0, size, size);
+  }
+
+  return imageData;
+}
+
+function toConditions(regexes) {
+  return regexes.map((regex) => new chrome.declarativeContent.PageStateMatcher({ pageUrl: { urlMatches: regex } }));
+}
 
 let _rulesQueue = Promise.resolve();
 
@@ -56,9 +90,13 @@ export function ensureActionRules() {
 }
 
 async function _doEnsureActionRules() {
+  const { granted, ungranted } = await splitByGrant();
   const rules = await getActionRules();
-  const current = rules.flatMap((rule) => rule.conditions.map((c) => c.pageUrl?.urlMatches));
-  const upToDate = rules.length === 1 && rules[0].id === ACTION_RULE_ID && sameMembers(current, ACTION_RULE_REGEXES);
+  const conditionsById = new Map(rules.map((rule) => [rule.id, rule.conditions.map((c) => c.pageUrl?.urlMatches)]));
+  const upToDate =
+    rules.length === (ungranted.length > 0 ? 2 : 1) &&
+    sameMembers(conditionsById.get(ACTION_RULE_ID) ?? [], granted) &&
+    (ungranted.length === 0 || sameMembers(conditionsById.get(UNGRANTED_RULE_ID) ?? [], ungranted));
   if (upToDate) return;
 
   // A worker still running pre-update code would otherwise overwrite the rules
@@ -66,23 +104,28 @@ async function _doEnsureActionRules() {
   const stored = await chrome.storage.local.get(RULES_REVISION_KEY);
   if ((stored[RULES_REVISION_KEY] ?? 0) > SITE_CONFIGS_REVISION) return;
 
-  // Clears both the outdated rule and the unnamed rules older versions added
+  const newRules = [
+    {
+      id: ACTION_RULE_ID,
+      conditions: toConditions(granted),
+      actions: [new chrome.declarativeContent.ShowAction()],
+    },
+  ];
+
+  if (ungranted.length > 0) {
+    const actions = [new chrome.declarativeContent.ShowAction()];
+    try {
+      actions.push(new chrome.declarativeContent.SetIcon({ imageData: await loadIconImageData("icon/disabled.png") }));
+    } catch (error) {
+      // Showing the action still beats hiding the site entirely
+    }
+    newRules.push({ id: UNGRANTED_RULE_ID, conditions: toConditions(ungranted), actions });
+  }
+
+  // Clears both the outdated rules and the unnamed rules older versions added
   await callWithLastError((done) => chrome.declarativeContent.onPageChanged.removeRules(undefined, done));
   try {
-    await callWithLastError((done) =>
-      chrome.declarativeContent.onPageChanged.addRules(
-        [
-          {
-            id: ACTION_RULE_ID,
-            conditions: ACTION_RULE_REGEXES.map(
-              (regex) => new chrome.declarativeContent.PageStateMatcher({ pageUrl: { urlMatches: regex } })
-            ),
-            actions: [new chrome.declarativeContent.ShowAction()],
-          },
-        ],
-        done
-      )
-    );
+    await callWithLastError((done) => chrome.declarativeContent.onPageChanged.addRules(newRules, done));
   } catch (error) {
     // Tolerate another context winning the race with the same rule id
     const rulesNow = await getActionRules();

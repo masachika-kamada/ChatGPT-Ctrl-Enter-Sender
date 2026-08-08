@@ -28,13 +28,15 @@ test.describe("Optional Sites", () => {
       const rules = await serviceWorker.evaluate(
         () => new Promise((resolve) => chrome.declarativeContent.onPageChanged.getRules(resolve))
       );
-      expect(rules.length).toBe(1);
+      // Granted and ungranted sites are separate rules so they can carry different icons
+      expect(rules.length).toBeGreaterThan(0);
 
       // one condition per match pattern: static content_scripts + optional hosts
       const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "manifest.json"), "utf-8"));
       const patternCount =
         manifest.content_scripts[0].matches.length + manifest.optional_host_permissions.length;
-      expect(rules[0].conditions.length).toBe(patternCount);
+      const conditionCount = rules.reduce((total, rule) => total + rule.conditions.length, 0);
+      expect(conditionCount).toBe(patternCount);
     }).toPass({ timeout: 5000 });
   });
 

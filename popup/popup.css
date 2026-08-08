@@ -117,6 +117,12 @@ body {
   color: #9A9A9A;
 }
 
+.shortcut-hint {
+  font-size: 11px;
+  color: #9A9A9A;
+  margin-top: -4px;
+}
+
 .note-icon {
   flex: none;
   width: 13px;

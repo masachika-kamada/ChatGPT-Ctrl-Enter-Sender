@@ -45,24 +45,7 @@ function createChrome({ announced, granted = [] } = {}) {
   return { storage, openedTabs };
 }
 
-test("初回はすべての opt-in サイトが未告知になる", async () => {
-  const { getUnannouncedSites, OPTIONAL_SITE_CONFIGS } = await loadNewSites();
-  createChrome();
-
-  assert.deepEqual(
-    await getUnannouncedSites(),
-    OPTIONAL_SITE_CONFIGS.map((config) => config.hostname)
-  );
-});
-
-test("許可済みのサイトは未告知に含めない", async () => {
-  const { getUnannouncedSites, OPTIONAL_SITE_CONFIGS } = await loadNewSites();
-  createChrome({ granted: OPTIONAL_SITE_CONFIGS.flatMap((config) => config.matchPatterns) });
-
-  assert.deepEqual(await getUnannouncedSites(), []);
-});
-
-test("未告知サイトがあればオプションページを開く", async () => {
+test("初回はオプションページを開く", async () => {
   const { announceNewSites } = await loadNewSites();
   const { openedTabs } = createChrome();
 
@@ -70,7 +53,19 @@ test("未告知サイトがあればオプションページを開く", async ()
   assert.deepEqual(openedTabs, ["chrome-extension://test/options/options.html"]);
 });
 
-test("一度告知したら二度と開かない", async () => {
+test("初回に現在の opt-in サイトを記録する", async () => {
+  const { announceNewSites, OPTIONAL_SITE_CONFIGS } = await loadNewSites();
+  const { storage } = createChrome();
+
+  await announceNewSites();
+
+  assert.deepEqual(
+    storage.announcedOptionalSites,
+    OPTIONAL_SITE_CONFIGS.map((config) => config.hostname)
+  );
+});
+
+test("一度開いたら二度と開かない", async () => {
   const { announceNewSites } = await loadNewSites();
   const { openedTabs } = createChrome();
 
@@ -79,12 +74,11 @@ test("一度告知したら二度と開かない", async () => {
   assert.equal(openedTabs.length, 1);
 });
 
-test("告知後に追加されたサイトだけで再度開く", async () => {
-  const { announceNewSites, getUnannouncedSites, OPTIONAL_SITE_CONFIGS } = await loadNewSites();
+test("サイトが追加されても更新時には開かない", async () => {
+  const { announceNewSites, OPTIONAL_SITE_CONFIGS } = await loadNewSites();
   const older = OPTIONAL_SITE_CONFIGS.slice(0, -1).map((config) => config.hostname);
   const { openedTabs } = createChrome({ announced: older });
 
-  assert.deepEqual(await getUnannouncedSites(), [OPTIONAL_SITE_CONFIGS.at(-1).hostname]);
-  assert.equal(await announceNewSites(), true);
-  assert.equal(openedTabs.length, 1);
+  assert.equal(await announceNewSites(), false);
+  assert.equal(openedTabs.length, 0);
 });

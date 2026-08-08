@@ -43,8 +43,8 @@ function isCursorAgentsPath(url) {
 // ── Site behavior definitions ────────────────────────────────────────────────
 // Ordered by tier (see CONTRIBUTING.md):
 //   Tier 1: ChatGPT, Claude, Gemini, Copilot, M365
-//   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub
-//   Tier 3: Poe, v0, Cursor
+//   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub, Kimi
+//   Tier 3: Poe, v0, Cursor, Genspark, duck.ai, Manus
 
 const SITE_BEHAVIORS = {
 
@@ -215,7 +215,7 @@ const SITE_BEHAVIORS = {
     },
   },
 
-  "notebooklm.google.com": {
+  "notebook.google.com": {
     shouldHandle(event) {
       return event.target.tagName === "TEXTAREA" && event.target.classList.contains("query-box-input");
     },
@@ -246,6 +246,27 @@ const SITE_BEHAVIORS = {
       dispatchEnter(event.target, { shiftKey: true });
     },
     onCtrlEnter(event) {
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, {});
+    },
+  },
+
+  "www.kimi.com": {
+    shouldHandle(event) {
+      return event.target.tagName === "DIV" &&
+        event.target.contentEditable === "true" &&
+        event.target.getAttribute("data-lexical-editor") === "true" &&
+        event.target.getAttribute("role") === "textbox";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { shiftKey: true });
+    },
+    onCtrlEnter(event) {
+      // Kimi maps Ctrl+Enter to a line break, so the native handler must be
+      // stopped before dispatching the plain Enter that submits
+      event.preventDefault();
       event.stopImmediatePropagation();
       dispatchEnter(event.target, {});
     },
@@ -375,27 +396,6 @@ const SITE_BEHAVIORS = {
       dispatchEnter(event.target, { shiftKey: true });
     },
     onCtrlEnter(event) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      dispatchEnter(event.target, {});
-    },
-  },
-
-  "www.kimi.com": {
-    shouldHandle(event) {
-      return event.target.tagName === "DIV" &&
-        event.target.contentEditable === "true" &&
-        event.target.getAttribute("data-lexical-editor") === "true" &&
-        event.target.getAttribute("role") === "textbox";
-    },
-    onEnter(event) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      dispatchEnter(event.target, { shiftKey: true });
-    },
-    onCtrlEnter(event) {
-      // Kimi maps Ctrl+Enter to a line break, so the native handler must be
-      // stopped before dispatching the plain Enter that submits
       event.preventDefault();
       event.stopImmediatePropagation();
       dispatchEnter(event.target, {});

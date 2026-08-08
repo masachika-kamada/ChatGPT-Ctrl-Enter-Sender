@@ -28,7 +28,7 @@ SITES = [
     {"hostname": "grok.com", "name": "Grok"},
     {"hostname": "www.perplexity.ai", "name": "Perplexity"},
     {"hostname": "chat.mistral.ai", "name": "Mistral"},
-    {"hostname": "notebooklm.google.com", "name": "NotebookLM"},
+    {"hostname": "notebook.google.com", "name": "NotebookLM"},
     {"hostname": "github.com", "name": "GitHub Copilot"},
     {"hostname": "poe.com", "name": "Poe"},
     {"hostname": "v0.app", "name": "v0"},
@@ -61,10 +61,10 @@ DIRECT_LOGO_URLS = {
         "https://github.githubassets.com/favicons/favicon.png",
         "https://github.com/fluidicon.png",
     ],
-    "notebooklm.google.com": [
+    "notebook.google.com": [
         "https://www.gstatic.com/lamda/images/notebooklm_icon_light_7a2e1535014122e5f74a.png",
-        "https://notebooklm.google.com/favicon.ico",
-        "https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://notebooklm.google.com&size=256",
+        "https://notebook.google.com/favicon.ico",
+        "https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://notebook.google.com&size=256",
     ],
     "m365.cloud.microsoft": [
         "https://res.cdn.office.net/officehub/images/content/images/favicon_copilot-b01e498a56.ico",

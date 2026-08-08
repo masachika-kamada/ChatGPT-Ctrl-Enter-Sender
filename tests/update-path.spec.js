@@ -138,13 +138,16 @@ test("opening the popup after an update re-syncs the action rules", async () => 
 
       await expect(async () => {
         const rules = await readActionRules(page);
-        expect(rules.length, "the action rules must not be duplicated").toBe(1);
-        expect(rules[0].id).toBe(ACTION_RULE_ID);
+        const ids = rules.map((rule) => rule.id);
+        expect(new Set(ids).size, "the action rules must not be duplicated").toBe(ids.length);
+        expect(ids).toContain(ACTION_RULE_ID);
+
+        const regexes = rules.flatMap((rule) => rule.regexes);
         expect(
-          hasRuleFor(rules[0].regexes, removedPatterns),
+          hasRuleFor(regexes, removedPatterns),
           `${removedHostname} was not re-synced after the update`
         ).toBe(true);
-        expect(rules[0].regexes.length).toBe(expectedPatternCount);
+        expect(regexes.length).toBe(expectedPatternCount);
       }).toPass({ timeout: 10000 });
     });
   } finally {
