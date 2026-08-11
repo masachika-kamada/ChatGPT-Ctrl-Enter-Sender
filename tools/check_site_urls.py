@@ -3,6 +3,7 @@ import json
 import re
 import socket
 import sys
+import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -13,7 +14,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SITE_CONFIGS_PATH = REPO_ROOT / "constants" / "site-configs.js"
 USER_AGENT = "Mozilla/5.0 (compatible; ChatGPT-Ctrl-Enter-Sender-Site-Monitor/1.0)"
 TIMEOUT_SECONDS = 20
-ATTEMPTS = 2
+RETRY_DELAYS_SECONDS = (5, 15)
+ATTEMPTS = len(RETRY_DELAYS_SECONDS) + 1
 
 ALLOWED_EXTERNAL_REDIRECTS = {
     "notebook.google.com": {"accounts.google.com"},
@@ -86,6 +88,9 @@ def classify(hostname, result):
         hosts = ", ".join(f"`{host}`" for host in unexpected)
         return CheckResult(hostname, False, f"redirected through unexpected host(s): {hosts}")
 
+    if result.status == 404:
+        return CheckResult(hostname, False, f"HTTP 404 at `{display_url(result.final_url)}`")
+
     return CheckResult(
         hostname,
         True,
@@ -93,13 +98,20 @@ def classify(hostname, result):
     )
 
 
-def check_hostname(hostname, probe_func=probe):
+def describe_error(error):
+    message = str(error).strip()
+    return f"{type(error).__name__}: {message}" if message else type(error).__name__
+
+
+def check_hostname(hostname, probe_func=probe, sleep_func=time.sleep):
     errors = []
-    for _ in range(ATTEMPTS):
+    for attempt in range(ATTEMPTS):
         try:
             return classify(hostname, probe_func(hostname))
         except (OSError, socket.timeout, urllib.error.URLError) as error:
-            errors.append(str(error))
+            errors.append(describe_error(error))
+            if attempt < len(RETRY_DELAYS_SECONDS):
+                sleep_func(RETRY_DELAYS_SECONDS[attempt])
 
     return CheckResult(hostname, False, f"unreachable after {ATTEMPTS} attempts: {errors[-1]}")
 
@@ -115,7 +127,7 @@ def render_report(results):
         "## Supported site URL monitor",
         "",
         summary,
-        "HTTP 401/403/404 responses are treated as reachable; unexpected cross-host redirects are not.",
+        "HTTP 401/403 responses are treated as reachable; HTTP 404 and unexpected cross-host redirects are not.",
         "",
         "| Configured host | Result | Detail |",
         "| --- | --- | --- |",
