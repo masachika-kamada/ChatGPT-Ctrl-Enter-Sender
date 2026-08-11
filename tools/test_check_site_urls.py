@@ -17,6 +17,12 @@ class SiteUrlMonitorTests(unittest.TestCase):
         classified = classify("poe.com", result)
         self.assertTrue(classified.healthy)
 
+    def test_not_found_status_is_unhealthy(self):
+        result = ProbeResult(404, "https://old.example/", [])
+        classified = classify("old.example", result)
+        self.assertFalse(classified.healthy)
+        self.assertIn("HTTP 404", classified.detail)
+
     def test_unexpected_redirect_host_is_reported(self):
         result = ProbeResult(200, "https://new.example/", ["new.example"])
         classified = classify("old.example", result)
@@ -40,16 +46,26 @@ class SiteUrlMonitorTests(unittest.TestCase):
 
     def test_network_failure_is_retried(self):
         attempts = 0
+        delays = []
 
         def failing_probe(_hostname):
             nonlocal attempts
             attempts += 1
             raise urllib.error.URLError("temporary failure")
 
-        result = check_hostname("example.com", failing_probe)
-        self.assertEqual(attempts, 2)
+        result = check_hostname("example.com", failing_probe, delays.append)
+        self.assertEqual(attempts, 3)
+        self.assertEqual(delays, [5, 15])
         self.assertFalse(result.healthy)
-        self.assertIn("after 2 attempts", result.detail)
+        self.assertIn("after 3 attempts", result.detail)
+        self.assertIn("URLError: <urlopen error temporary failure>", result.detail)
+
+    def test_empty_network_error_includes_exception_type(self):
+        def failing_probe(_hostname):
+            raise TimeoutError()
+
+        result = check_hostname("example.com", failing_probe, lambda _delay: None)
+        self.assertTrue(result.detail.endswith(": TimeoutError"))
 
     def test_report_includes_failure_count(self):
         report = render_report([
