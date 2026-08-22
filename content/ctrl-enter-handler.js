@@ -98,7 +98,13 @@ const SITE_BEHAVIORS = {
           dispatchEnter(event.target, {});
         }
       } else {
-        dispatchEnter(event.target, {});
+        // Narrow layouts treat plain Enter as newline; click the send button instead
+        const sendButton = document.querySelector('button[data-testid="chat-input-send"]:not([disabled])');
+        if (sendButton) {
+          sendButton.click();
+        } else {
+          dispatchEnter(event.target, {});
+        }
       }
     },
   },
