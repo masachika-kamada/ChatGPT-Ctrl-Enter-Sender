@@ -9,6 +9,7 @@ const handlerScript = fs.readFileSync(handlerScriptPath, "utf8");
 const submitSelector = 'button[type="submit"]:not([disabled])';
 const notebookSubmitSelector = 'query-box form button[type="submit"]';
 const claudeSaveSelector = 'button:not([disabled]):has(> span.bg-fill-primary)';
+const claudeSendSelector = 'button[data-testid="chat-input-send"]:not([disabled])';
 
 function loadHandler(url, sendButton, documentButtonSelector = submitSelector) {
   const parsedUrl = new URL(url);
@@ -271,7 +272,26 @@ test("Claude の保存ボタンが見つからない場合は通常 Enter にフ
   assert.equal(dispatchedEvents[0].shiftKey, undefined);
 });
 
-test("Claude の入力欄（contenteditable）の Ctrl+Enter は通常 Enter を送る", () => {
+test("Claude の入力欄（contenteditable）の Ctrl+Enter は送信ボタンを一度クリックする", () => {
+  const sendButton = createButton();
+  const dispatchedEvents = [];
+  const target = {
+    tagName: "DIV",
+    contentEditable: "true",
+    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
+  };
+  const context = loadHandler("https://claude.ai/chat/abc", sendButton, claudeSendSelector);
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 1);
+  assert.equal(dispatchedEvents.length, 0);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("Claude の送信ボタンが見つからない場合は通常 Enter にフォールバックする", () => {
   const dispatchedEvents = [];
   const target = {
     tagName: "DIV",
@@ -565,6 +585,40 @@ test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング",
   assert.equal(event.preventDefaultCount, 1);
   assert.equal(dispatchedEvents.length, 1);
   assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("ChatGPT の未ログイン用 textarea で Enter は改行コマンドを実行する", () => {
+  const context = loadHandler("https://chatgpt.com/uc/conversation-id", createButton());
+  const commands = [];
+  context.document.execCommand = (command) => {
+    commands.push(command);
+    return true;
+  };
+  const target = { id: "mobile-composer-prompt", tagName: "TEXTAREA" };
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.deepEqual(commands, ["insertLineBreak"]);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("ChatGPT の未ログイン用 textarea で Shift+Enter はパススルー", () => {
+  const context = loadHandler("https://chatgpt.com/uc/conversation-id", createButton());
+  const commands = [];
+  context.document.execCommand = (command) => {
+    commands.push(command);
+    return true;
+  };
+  const target = { id: "mobile-composer-prompt", tagName: "TEXTAREA" };
+  const event = createKeydownEvent(target, { shiftKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.deepEqual(commands, []);
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(event.stopImmediatePropagationCount, 0);
 });
 
 test("ChatGPT の prompt-textarea で Ctrl+Enter は Meta+Enter にマッピング", () => {

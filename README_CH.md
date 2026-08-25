@@ -62,6 +62,15 @@
 已确认在 Microsoft Edge 中，本扩展在 `copilot.microsoft.com` 和 `m365.cloud.microsoft` 等 Microsoft 域名上无法正常工作（截至2026年7月）。<br>
 如遇到此问题，请尝试使用 Chrome 或其他基于 Chromium 的浏览器。
 
+## 赞助者
+
+感谢所有通过 GitHub Sponsors 支持本项目的赞助者。
+
+<a href="https://github.com/shimo164"><img src="https://github.com/shimo164.png" alt="@shimo164" title="@shimo164" width="40"></a>
+<a href="https://github.com/toiee-kameda"><img src="https://github.com/toiee-kameda.png" alt="@toiee-kameda" title="@toiee-kameda" width="40"></a>
+
+此处不显示赞助金额或日期。如需移除您的信息，请联系维护者。
+
 ## 贡献者
 
 <a href="https://github.com/ry0y4n"><img src="https://github.com/ry0y4n.png" width="40"></a>

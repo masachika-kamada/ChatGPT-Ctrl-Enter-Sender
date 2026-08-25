@@ -55,10 +55,14 @@ const SITE_BEHAVIORS = {
       return event.target.id === "prompt-textarea" || event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
-      // Only handle Enter on the prompt textarea; other TEXTAREAs (edit mode) pass through
+      // Only handle known composer fields; other TEXTAREAs (edit mode) pass through
       if (event.target.id === "prompt-textarea") {
         event.preventDefault();
         dispatchEnter(event.target, { shiftKey: true });
+      } else if (event.target.id === "mobile-composer-prompt" && !event.shiftKey) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        document.execCommand("insertLineBreak");
       }
     },
     onCtrlEnter(event) {
@@ -98,7 +102,13 @@ const SITE_BEHAVIORS = {
           dispatchEnter(event.target, {});
         }
       } else {
-        dispatchEnter(event.target, {});
+        // Narrow layouts treat plain Enter as newline; click the send button instead
+        const sendButton = document.querySelector('button[data-testid="chat-input-send"]:not([disabled])');
+        if (sendButton) {
+          sendButton.click();
+        } else {
+          dispatchEnter(event.target, {});
+        }
       }
     },
   },
