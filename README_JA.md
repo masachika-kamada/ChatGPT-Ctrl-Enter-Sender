@@ -62,6 +62,15 @@
 Microsoft Edge では、`copilot.microsoft.com` や `m365.cloud.microsoft` などの Microsoft ドメインで拡張機能が動作しないことが確認されています (2026年7月時点)。<br>
 これらのサイトで本拡張機能を利用する場合は、Chrome などの他の Chromium ベースのブラウザをお試しください。
 
+## スポンサー
+
+このプロジェクトをご支援いただいた GitHub スポンサーの皆様に感謝いたします。
+
+<a href="https://github.com/shimo164"><img src="https://github.com/shimo164.png" alt="@shimo164" title="@shimo164" width="40"></a>
+<a href="https://github.com/toiee-kameda"><img src="https://github.com/toiee-kameda.png" alt="@toiee-kameda" title="@toiee-kameda" width="40"></a>
+
+支援金額や支援時期を記載せず掲載しています。掲載の削除をご希望の場合は、メンテナまでご連絡ください。
+
 ## コントリビューター
 
 <a href="https://github.com/ry0y4n"><img src="https://github.com/ry0y4n.png" width="40"></a>

@@ -62,6 +62,15 @@ If you encounter any issues, we recommend disabling these extensions temporarily
 This extension has been confirmed not to work on Microsoft domains such as `copilot.microsoft.com` and `m365.cloud.microsoft` when using Microsoft Edge (as of July 2026).<br>
 If you experience this issue, please try using Chrome or another Chromium-based browser.
 
+## Sponsors
+
+Thank you to all the GitHub sponsors who have supported this project.
+
+<a href="https://github.com/shimo164"><img src="https://github.com/shimo164.png" alt="@shimo164" title="@shimo164" width="40"></a>
+<a href="https://github.com/toiee-kameda"><img src="https://github.com/toiee-kameda.png" alt="@toiee-kameda" title="@toiee-kameda" width="40"></a>
+
+Sponsors are listed without sponsorship amounts or dates. Please contact the maintainer if you would like your listing removed.
+
 ## Contributors
 
 <a href="https://github.com/ry0y4n"><img src="https://github.com/ry0y4n.png" width="40"></a>
