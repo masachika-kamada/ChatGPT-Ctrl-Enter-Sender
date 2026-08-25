@@ -587,6 +587,40 @@ test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング",
   assert.equal(dispatchedEvents[0].shiftKey, true);
 });
 
+test("ChatGPT の未ログイン用 textarea で Enter は改行コマンドを実行する", () => {
+  const context = loadHandler("https://chatgpt.com/uc/conversation-id", createButton());
+  const commands = [];
+  context.document.execCommand = (command) => {
+    commands.push(command);
+    return true;
+  };
+  const target = { id: "mobile-composer-prompt", tagName: "TEXTAREA" };
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.deepEqual(commands, ["insertLineBreak"]);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("ChatGPT の未ログイン用 textarea で Shift+Enter はパススルー", () => {
+  const context = loadHandler("https://chatgpt.com/uc/conversation-id", createButton());
+  const commands = [];
+  context.document.execCommand = (command) => {
+    commands.push(command);
+    return true;
+  };
+  const target = { id: "mobile-composer-prompt", tagName: "TEXTAREA" };
+  const event = createKeydownEvent(target, { shiftKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.deepEqual(commands, []);
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(event.stopImmediatePropagationCount, 0);
+});
+
 test("ChatGPT の prompt-textarea で Ctrl+Enter は Meta+Enter にマッピング", () => {
   const dispatchedEvents = [];
   const target = {
