@@ -13,8 +13,9 @@ const MOCK_SITES = [
     name: "ChatGPT markdown composer",
     url: "https://chatgpt.com/",
     route: "https://chatgpt.com/**",
-    markup: '<form data-chatgpt-composer><div class="ProseMirror" contenteditable="true" role="textbox" data-composer-markdown></div></form>',
+    markup: '<form data-chatgpt-composer><div class="ProseMirror" contenteditable="true" role="textbox" data-composer-markdown></div><button type="submit" aria-label="Send"></button></form>',
     inputSelector: "[data-composer-markdown]",
+    submitViaButton: true,
   },
   {
     name: "Claude",
