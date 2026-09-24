@@ -10,6 +10,13 @@ const MOCK_SITES = [
     inputSelector: "#prompt-textarea",
   },
   {
+    name: "ChatGPT markdown composer",
+    url: "https://chatgpt.com/",
+    route: "https://chatgpt.com/**",
+    markup: '<form data-chatgpt-composer><div class="ProseMirror" contenteditable="true" role="textbox" data-composer-markdown></div></form>',
+    inputSelector: "[data-composer-markdown]",
+  },
+  {
     name: "Claude",
     url: "https://claude.ai/new",
     route: "https://claude.ai/**",

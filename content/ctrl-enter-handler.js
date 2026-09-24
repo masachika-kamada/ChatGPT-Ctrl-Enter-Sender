@@ -31,6 +31,11 @@ function insertTextareaNewline(textarea) {
   textarea.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
+// The composer rolled out to some accounts in 2026-09 has no id
+function isChatGPTComposer(target) {
+  return target.id === "prompt-textarea" || !!target.hasAttribute?.("data-composer-markdown");
+}
+
 function isCursorAgentsPath(url) {
   try {
     const { pathname } = new URL(url);
@@ -52,11 +57,11 @@ const SITE_BEHAVIORS = {
 
   "chatgpt.com": {
     shouldHandle(event) {
-      return event.target.id === "prompt-textarea" || event.target.tagName === "TEXTAREA";
+      return isChatGPTComposer(event.target) || event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
       // Only handle known composer fields; other TEXTAREAs (edit mode) pass through
-      if (event.target.id === "prompt-textarea") {
+      if (isChatGPTComposer(event.target)) {
         event.preventDefault();
         dispatchEnter(event.target, { shiftKey: true });
       } else if (event.target.id === "mobile-composer-prompt" && !event.shiftKey) {
