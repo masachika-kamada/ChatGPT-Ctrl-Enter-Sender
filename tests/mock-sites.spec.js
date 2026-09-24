@@ -16,6 +16,7 @@ const MOCK_SITES = [
     markup: '<form data-chatgpt-composer><div class="ProseMirror" contenteditable="true" role="textbox" data-composer-markdown></div><button type="submit" aria-label="Send"></button></form>',
     inputSelector: "[data-composer-markdown]",
     submitViaButton: true,
+    backgroundShortcut: true,
   },
   {
     name: "Claude",
@@ -104,7 +105,18 @@ function createSiteFixture(site) {
   <script>
     const input = document.querySelector(${JSON.stringify(site.inputSelector)});
     const submitViaButton = ${Boolean(site.submitViaButton)};
-    window.fixtureState = { submitCount: 0 };
+    window.fixtureState = { submitCount: 0, backgroundCount: 0 };
+
+    // Like ChatGPT, register a window-level background-send shortcut after the extension is ready
+    if (${Boolean(site.backgroundShortcut)}) {
+      input.addEventListener("focus", () => {
+        window.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" || !event.ctrlKey) return;
+          event.preventDefault();
+          window.fixtureState.backgroundCount += 1;
+        }, true);
+      }, { once: true });
+    }
 
     input.addEventListener("keydown", (event) => {
       if (event.key !== "Enter") return;
@@ -158,5 +170,6 @@ for (const site of MOCK_SITES) {
     await page.keyboard.press("Control+Enter");
 
     await expect.poll(() => page.evaluate(() => window.fixtureState.submitCount)).toBe(1);
+    expect(await page.evaluate(() => window.fixtureState.backgroundCount)).toBe(0);
   });
 }
