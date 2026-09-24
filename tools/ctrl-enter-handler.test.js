@@ -587,12 +587,16 @@ test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング",
   assert.equal(dispatchedEvents[0].shiftKey, true);
 });
 
-function createChatGPTMarkdownComposer() {
+function createChatGPTMarkdownComposer({ formSubmitButton = null } = {}) {
   const dispatchedEvents = [];
+  const form = {
+    querySelector: (selector) => (selector === submitSelector ? formSubmitButton : null)
+  };
   const target = {
     id: "",
     tagName: "DIV",
     hasAttribute: (name) => name === "data-composer-markdown",
+    closest: (selector) => (selector === "form" ? form : null),
     dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
   };
   return { target, dispatchedEvents };
@@ -610,16 +614,45 @@ test("ChatGPT の id なし新入力欄で Enter は Shift+Enter にマッピン
   assert.equal(dispatchedEvents[0].shiftKey, true);
 });
 
-test("ChatGPT の id なし新入力欄で Ctrl+Enter は Meta+Enter にマッピング", () => {
+for (const modifier of ["ctrlKey", "metaKey"]) {
+  test(`ChatGPT の新入力欄で ${modifier} + Enter はフォームの送信ボタンを押す`, () => {
+    const sendButton = createButton();
+    const { target, dispatchedEvents } = createChatGPTMarkdownComposer({ formSubmitButton: sendButton });
+    const context = loadHandler("https://chatgpt.com/", null);
+    const event = createKeydownEvent(target, { [modifier]: true });
+
+    context.handleCtrlEnter(event);
+
+    assert.equal(sendButton.clickCount, 1);
+    assert.equal(dispatchedEvents.length, 0);
+    assert.equal(event.preventDefaultCount, 1);
+    assert.equal(event.stopImmediatePropagationCount, 1);
+  });
+}
+
+test("ChatGPT の新入力欄で送信ボタンがない場合（生成中・入力欄が空）はパススルー", () => {
   const { target, dispatchedEvents } = createChatGPTMarkdownComposer();
-  const context = loadHandler("https://chatgpt.com/", createButton());
+  const context = loadHandler("https://chatgpt.com/", null);
   const event = createKeydownEvent(target, { ctrlKey: true });
 
   context.handleCtrlEnter(event);
 
-  assert.equal(event.preventDefaultCount, 1);
-  assert.equal(dispatchedEvents.length, 1);
-  assert.equal(dispatchedEvents[0].metaKey, true);
+  assert.equal(dispatchedEvents.length, 0);
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(event.stopImmediatePropagationCount, 0);
+});
+
+test("ChatGPT の新入力欄で ChatGPT が処理済みの Ctrl+Enter は送信ボタンを押さない", () => {
+  const sendButton = createButton();
+  const { target } = createChatGPTMarkdownComposer({ formSubmitButton: sendButton });
+  const context = loadHandler("https://chatgpt.com/", null);
+  const event = createKeydownEvent(target, { ctrlKey: true });
+  event.defaultPrevented = true;
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 0);
+  assert.equal(event.preventDefaultCount, 0);
 });
 
 test("ChatGPT の id なし textarea（編集欄など）の Enter はパススルー", () => {

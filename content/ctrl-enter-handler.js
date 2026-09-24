@@ -71,6 +71,17 @@ const SITE_BEHAVIORS = {
       }
     },
     onCtrlEnter(event) {
+      // The new composer's shortcuts are user-configurable, so click instead of remapping keys
+      if (event.target.hasAttribute?.("data-composer-markdown")) {
+        if (event.defaultPrevented) return;
+        // Stop and voice buttons are type="button", so this only matches an available Send
+        const sendButton = findFormButton(event.target, 'button[type="submit"]:not([disabled])');
+        if (!sendButton) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        sendButton.click();
+        return;
+      }
       // Only intercept Ctrl (not Meta); Mac Cmd+Enter works natively on ChatGPT
       if (!event.ctrlKey) return;
       event.preventDefault();
