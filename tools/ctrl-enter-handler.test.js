@@ -587,6 +587,52 @@ test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング",
   assert.equal(dispatchedEvents[0].shiftKey, true);
 });
 
+function createChatGPTMarkdownComposer() {
+  const dispatchedEvents = [];
+  const target = {
+    id: "",
+    tagName: "DIV",
+    hasAttribute: (name) => name === "data-composer-markdown",
+    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
+  };
+  return { target, dispatchedEvents };
+}
+
+test("ChatGPT の id なし新入力欄で Enter は Shift+Enter にマッピング", () => {
+  const { target, dispatchedEvents } = createChatGPTMarkdownComposer();
+  const context = loadHandler("https://chatgpt.com/", createButton());
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("ChatGPT の id なし新入力欄で Ctrl+Enter は Meta+Enter にマッピング", () => {
+  const { target, dispatchedEvents } = createChatGPTMarkdownComposer();
+  const context = loadHandler("https://chatgpt.com/", createButton());
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].metaKey, true);
+});
+
+test("ChatGPT の id なし textarea（編集欄など）の Enter はパススルー", () => {
+  const { target, dispatchedEvents } = createTextareaTarget();
+  const context = loadHandler("https://chatgpt.com/", createButton());
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(dispatchedEvents.length, 0);
+});
+
 test("ChatGPT の未ログイン用 textarea で Enter は改行コマンドを実行する", () => {
   const context = loadHandler("https://chatgpt.com/uc/conversation-id", createButton());
   const commands = [];
