@@ -1,9 +1,14 @@
+// ChatGPT's background-send shortcut listens on window, ahead of a document listener
+function getListenerTarget() {
+  return getHostname() === "chatgpt.com" ? window : document;
+}
+
 function enableSendingWithCtrlEnter() {
-  document.addEventListener("keydown", handleCtrlEnter, { capture: true });
+  getListenerTarget().addEventListener("keydown", handleCtrlEnter, { capture: true });
 }
 
 function disableSendingWithCtrlEnter() {
-  document.removeEventListener("keydown", handleCtrlEnter, { capture: true });
+  getListenerTarget().removeEventListener("keydown", handleCtrlEnter, { capture: true });
 }
 
 function getHostname() {
