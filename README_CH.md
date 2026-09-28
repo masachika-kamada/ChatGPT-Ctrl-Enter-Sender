@@ -13,9 +13,7 @@
 [Chat AI Ctrl+Enter Sender - Chrome 网上应用店](https://chromewebstore.google.com/detail/chat-ai-ctrl+enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
 ### Firefox
-[Firefox 扩展页面](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
-
-> **注意:** 由于维护者无法投入精力维护Firefox版本，目前已停止更新。以上链接为最后的版本。
+已停止支持。[最后一个版本](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)按现状保留，可能会停止工作。详情请参阅 [#137](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/issues/137)。
 
 ## 功能
 
@@ -68,6 +66,7 @@
 
 <a href="https://github.com/shimo164"><img src="https://github.com/shimo164.png" alt="@shimo164" title="@shimo164" width="40"></a>
 <a href="https://github.com/toiee-kameda"><img src="https://github.com/toiee-kameda.png" alt="@toiee-kameda" title="@toiee-kameda" width="40"></a>
+<a href="https://github.com/preacher65"><img src="https://github.com/preacher65.png" alt="@preacher65" title="@preacher65" width="40"></a>
 
 此处不显示赞助金额或日期。如需移除您的信息，请联系维护者。
 

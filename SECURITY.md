@@ -14,10 +14,10 @@ Instead, use GitHub's **Private vulnerability reporting** feature:
 2. Click **Report a vulnerability**
 3. Fill in the form with as much detail as possible (affected version, steps to reproduce, potential impact)
 
-You can expect:
+This project is maintained by one person in their spare time. I aim to:
 
-- An acknowledgement within **7 days**
-- A status update within **30 days**
-- Coordinated disclosure once a fix is released to the Chrome Web Store
+- Acknowledge the report within about **7 days**
+- Share a status update within about **30 days**
+- Coordinate disclosure once a fix is released to the Chrome Web Store
 
 Thank you for helping keep this project and its users safe.

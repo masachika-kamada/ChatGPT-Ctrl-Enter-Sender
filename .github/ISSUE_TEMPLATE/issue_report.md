@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-> **For Firefox users:** The Firefox version is no longer being updated. Issues related to Firefox may not be addressed. See [README](../../README.md) for details.
+> **For Firefox users:** The Firefox version is no longer supported. Firefox-related issues will be closed. See [#137](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/issues/137).
 
 > Please provide us with the following information:
 > ---------------------------------------------------------------

@@ -10,4 +10,4 @@
 > Set the base branch to `development` for regular pull requests.
 > Only release pull requests from `development` may target `main`.
 
-> To enable us to quickly review and accept your pull requests, always create one pull request per issue and link the issue in the pull request. ***Never merge multiple requests in one unless they have the same root cause.*** Be sure to follow our Coding Guidelines and keep code changes as ***small*** as possible. Avoid pure formatting changes to code that has not been modified otherwise. Pull requests should contain tests whenever possible. (https://github.com/microsoft/vscode/wiki/How-to-Contribute#pull-requests)
+> Create one pull request per issue and link the issue. Keep changes ***small***, avoid formatting-only changes to unrelated code, and add tests whenever possible. See [CONTRIBUTING.md](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/blob/main/CONTRIBUTING.md).

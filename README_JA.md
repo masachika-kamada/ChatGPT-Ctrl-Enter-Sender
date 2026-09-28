@@ -13,9 +13,7 @@
 [Chat AI Ctrl+Enter Sender - Chrome ウェブストア](https://chromewebstore.google.com/detail/chat-ai-ctrl+enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
 ### Firefox
-[Firefox アドオンページ](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
-
-> **注意:** メンテナがFirefox版に注力できていないため、現在更新を停止しています。上記リンクは最後のバージョンとなります。
+サポート終了。[最後のビルド](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)をそのまま残していますが、動作しなくなる場合があります。詳細は [#137](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/issues/137)。
 
 ## 機能
 
@@ -68,6 +66,7 @@ Microsoft Edge では、`copilot.microsoft.com` や `m365.cloud.microsoft` な�
 
 <a href="https://github.com/shimo164"><img src="https://github.com/shimo164.png" alt="@shimo164" title="@shimo164" width="40"></a>
 <a href="https://github.com/toiee-kameda"><img src="https://github.com/toiee-kameda.png" alt="@toiee-kameda" title="@toiee-kameda" width="40"></a>
+<a href="https://github.com/preacher65"><img src="https://github.com/preacher65.png" alt="@preacher65" title="@preacher65" width="40"></a>
 
 支援金額や支援時期を記載せず掲載しています。掲載の削除をご希望の場合は、メンテナまでご連絡ください。
 

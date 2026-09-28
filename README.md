@@ -13,9 +13,7 @@ English | [日本語](README_JA.md) | [简体中文](README_CH.md)
 [Chat AI Ctrl+Enter Sender - Chrome Web Store](https://chromewebstore.google.com/detail/chat-ai-ctrl+enter-sender/gbncgdhklmnckojlibfhdadpfbcdbnch)
 
 ### Firefox
-[Firefox Add-on page](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox)
-
-> **Note:** The Firefox version is not currently being updated as the maintainer is unable to dedicate time to it. The link above is the last available version.
+No longer supported. The [last build](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/tree/firefox) is kept as-is and may stop working. See [#137](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/issues/137).
 
 ## Features
 
@@ -68,6 +66,7 @@ Thank you to all the GitHub sponsors who have supported this project.
 
 <a href="https://github.com/shimo164"><img src="https://github.com/shimo164.png" alt="@shimo164" title="@shimo164" width="40"></a>
 <a href="https://github.com/toiee-kameda"><img src="https://github.com/toiee-kameda.png" alt="@toiee-kameda" title="@toiee-kameda" width="40"></a>
+<a href="https://github.com/preacher65"><img src="https://github.com/preacher65.png" alt="@preacher65" title="@preacher65" width="40"></a>
 
 Sponsors are listed without sponsorship amounts or dates. Please contact the maintainer if you would like your listing removed.
 
