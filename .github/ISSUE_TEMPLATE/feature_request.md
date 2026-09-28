@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-> **⚠️ New site support requests:** Please read [CONTRIBUTING.md](../../CONTRIBUTING.md) before submitting. We only consider major AI chat services with tens of millions of monthly visits.
+> **⚠️ New site support requests:** Please read [CONTRIBUTING.md](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/blob/main/CONTRIBUTING.md#new-site-requests) before submitting. We only consider major AI chat services with tens of millions of monthly visits.
 
 **Is your feature request related to a problem? Please describe**.  
 A clear and concise description of what the problem is

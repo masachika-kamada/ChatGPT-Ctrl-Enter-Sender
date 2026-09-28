@@ -124,4 +124,4 @@ Commit that on `development`; a release does not need its own branch. Then:
 
 ## Firefox
 
-**Firefox support has been discontinued.** The maintainer does not use Firefox and the Firefox extension platform has significant differences (MV3 migration, etc.), making continued maintenance difficult. The Firefox branch contains the last available version.
+**Firefox support has ended.** Firefox-related issues and pull requests will be closed. See [#137](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender/issues/137) for the reasons.
