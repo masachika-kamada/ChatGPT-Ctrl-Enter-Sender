@@ -11,7 +11,7 @@ These sites are actively maintained and tested:
 - ChatGPT (chatgpt.com)
 - Claude (claude.ai)
 - Gemini (gemini.google.com)
-- Microsoft Copilot (copilot.microsoft.com, m365.cloud.microsoft)
+- Microsoft Copilot (copilot.microsoft.com, copilot.com, m365.cloud.microsoft)
 
 ### Tier 2 — Community Supported
 These sites are supported but maintained on a best-effort basis:

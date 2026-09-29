@@ -487,6 +487,59 @@ test("Kimi の Ctrl+Enter は通常 Enter にマッピングする", () => {
   assert.equal(dispatchedEvents[0].shiftKey, undefined);
 });
 
+// ── copilot.com tests ───────────────────────────────────────────────────────
+
+function createM365EditorTarget() {
+  const dispatchedEvents = [];
+  const target = {
+    id: "m365-chat-editor-target-element",
+    tagName: "SPAN",
+    contentEditable: "true",
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    }
+  };
+  return { target, dispatchedEvents };
+}
+
+test("copilot.com の Enter は Shift+Enter にマッピングする", () => {
+  const context = loadHandler("https://copilot.com/chat?redirfrom=cosmicRingCookie", createButton());
+  const { target, dispatchedEvents } = createM365EditorTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("copilot.com の Ctrl+Enter は通常 Enter にマッピングする", () => {
+  const context = loadHandler("https://copilot.com/chat", createButton());
+  const { target, dispatchedEvents } = createM365EditorTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+  assert.equal(dispatchedEvents[0].keyCode, 13);
+});
+
+test("copilot.com の /chat 以外は対象外にする", () => {
+  const context = loadHandler("https://copilot.com/", createButton());
+  const { target, dispatchedEvents } = createM365EditorTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(dispatchedEvents.length, 0);
+});
+
 // ── General behavior tests ───────────────────────────────────────────────────
 
 test("isComposing な場合はハンドリングしない", () => {

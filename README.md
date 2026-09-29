@@ -27,6 +27,7 @@ You can use this extension on the following pages:
 * <https://claude.ai>
 * <https://gemini.google.com>
 * <https://copilot.microsoft.com>
+* <https://copilot.com/chat> (opt-in)
 * <https://m365.cloud.microsoft/chat>
 * <https://chat.deepseek.com>
 * <https://grok.com>
