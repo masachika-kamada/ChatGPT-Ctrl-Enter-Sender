@@ -36,6 +36,25 @@ function isChatGPTComposer(target) {
   return target.id === "prompt-textarea" || !!target.hasAttribute?.("data-composer-markdown");
 }
 
+// copilot.com serves the same chat editor as Microsoft 365 Copilot
+function m365ChatBehavior(chatUrl) {
+  return {
+    shouldHandle(event) {
+      return window.location.href.startsWith(chatUrl) &&
+        event.target.id === "m365-chat-editor-target-element";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { shiftKey: true });
+    },
+    onCtrlEnter(event) {
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { keyCode: 13 });
+    },
+  };
+}
+
 function isCursorAgentsPath(url) {
   try {
     const { pathname } = new URL(url);
@@ -158,22 +177,9 @@ const SITE_BEHAVIORS = {
     },
   },
 
-  "m365.cloud.microsoft": {
-    shouldHandle(event) {
-      const url = window.location.href;
-      return url.startsWith("https://m365.cloud.microsoft/chat") &&
-        event.target.id === "m365-chat-editor-target-element";
-    },
-    onEnter(event) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      dispatchEnter(event.target, { shiftKey: true });
-    },
-    onCtrlEnter(event) {
-      event.stopImmediatePropagation();
-      dispatchEnter(event.target, { keyCode: 13 });
-    },
-  },
+  "copilot.com": m365ChatBehavior("https://copilot.com/chat"),
+
+  "m365.cloud.microsoft": m365ChatBehavior("https://m365.cloud.microsoft/chat"),
 
   // ── Tier 2 — Community Supported ───────────────────────────────────────────
 

@@ -60,6 +60,7 @@
     "https://m365.cloud.microsoft/*"
   ],
   "optional_host_permissions": [
+    "https://copilot.com/*",
     "https://notebook.google.com/*",
     "https://www.kimi.com/*",
     "https://cursor.com/agents*",
