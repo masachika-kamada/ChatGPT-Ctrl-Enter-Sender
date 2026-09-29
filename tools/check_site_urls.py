@@ -18,6 +18,8 @@ RETRY_DELAYS_SECONDS = (5, 15)
 ATTEMPTS = len(RETRY_DELAYS_SECONDS) + 1
 
 ALLOWED_EXTERNAL_REDIRECTS = {
+    "copilot.microsoft.com": {"copilot.com", "login.microsoftonline.com"},
+    "copilot.com": {"login.microsoftonline.com"},
     "notebook.google.com": {"accounts.google.com"},
 }
 

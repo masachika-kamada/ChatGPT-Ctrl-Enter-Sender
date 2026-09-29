@@ -3,11 +3,10 @@
  *
  * Sites come in two kinds:
  *   - Required sites: listed in manifest.json content_scripts / host_permissions.
- *     Chrome only disables an extension on update when the permission WARNING
- *     changes, and this extension already sits at the "many websites" warning,
- *     so adding one more host does not trigger re-approval. Adding <all_urls>
- *     or similar would, and must not happen. tests/permission-warnings.spec.js
- *     guards this.
+ *     Limited to hosts already in the published manifest: adding a required
+ *     host disables the extension on update until the user re-approves it,
+ *     even when the permission warning text stays the same.
+ *     tests/permission-warnings.spec.js guards this.
  *   - Optional sites (`optional: true`): covered by optional_host_permissions.
  *     The user grants access per-site from the popup; content scripts are
  *     registered dynamically by shared/site-sync.js.
@@ -30,13 +29,14 @@
 // Generation marker for the site list. shared/site-sync.js records the highest
 // revision that wrote the action rules, so a service worker left running
 // pre-update code cannot overwrite a newer sync with its outdated list.
-export const SITE_CONFIGS_REVISION = 3;
+export const SITE_CONFIGS_REVISION = 4;
 
 export const SITE_CONFIGS = [
   { hostname: "chatgpt.com", matchPatterns: ["https://chatgpt.com/*"] },
   { hostname: "claude.ai", matchPatterns: ["https://claude.ai/*"] },
   { hostname: "gemini.google.com", matchPatterns: ["https://gemini.google.com/*"] },
   { hostname: "copilot.microsoft.com", matchPatterns: ["https://copilot.microsoft.com/*"] },
+  { hostname: "copilot.com", matchPatterns: ["https://copilot.com/*"], optional: true },
   { hostname: "m365.cloud.microsoft", matchPatterns: ["https://m365.cloud.microsoft/*"] },
   { hostname: "chat.deepseek.com", matchPatterns: ["https://chat.deepseek.com/*"] },
   { hostname: "grok.com", matchPatterns: ["https://grok.com/*"] },
