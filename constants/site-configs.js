@@ -29,7 +29,7 @@
 // Generation marker for the site list. shared/site-sync.js records the highest
 // revision that wrote the action rules, so a service worker left running
 // pre-update code cannot overwrite a newer sync with its outdated list.
-export const SITE_CONFIGS_REVISION = 4;
+export const SITE_CONFIGS_REVISION = 5;
 
 export const SITE_CONFIGS = [
   { hostname: "chatgpt.com", matchPatterns: ["https://chatgpt.com/*"] },
@@ -51,6 +51,7 @@ export const SITE_CONFIGS = [
   { hostname: "www.genspark.ai", matchPatterns: ["https://www.genspark.ai/*"], optional: true },
   { hostname: "duck.ai", matchPatterns: ["https://duck.ai/*"], optional: true },
   { hostname: "manus.im", matchPatterns: ["https://manus.im/*"], optional: true },
+  { hostname: "consensus.app", matchPatterns: ["https://consensus.app/*"], optional: true },
 ];
 
 export const OPTIONAL_SITE_CONFIGS = SITE_CONFIGS.filter((c) => c.optional);

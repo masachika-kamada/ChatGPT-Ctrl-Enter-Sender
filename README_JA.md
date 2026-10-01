@@ -42,6 +42,7 @@
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
+* <https://consensus.app> (opt-in)
 
 *オプトイン サイトは、利用者が有効化を選んだ場合にのみアクセス権限を求めます。新しいホスト名への対応を追加した更新で拡張機能が無効化されるのを防ぐためです。サイトを開いて拡張機能のアイコンをクリックし、「Enable on this site」を一度押してください。初回インストール時には、これらを案内する設定ページが一度だけ開きます。*
 
