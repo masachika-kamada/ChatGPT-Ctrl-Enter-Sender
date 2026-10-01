@@ -67,7 +67,8 @@
     "https://cursor.com/*/agents*",
     "https://www.genspark.ai/*",
     "https://duck.ai/*",
-    "https://manus.im/*"
+    "https://manus.im/*",
+    "https://consensus.app/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",

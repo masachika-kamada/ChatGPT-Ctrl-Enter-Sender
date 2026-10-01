@@ -408,6 +408,36 @@ test("Manus の Ctrl+Enter は通常 Enter にマッピングする", () => {
   assert.equal(event.preventDefaultCount, 1);
 });
 
+// ── Consensus tests ─────────────────────────────────────────────────────────
+
+test("Consensus の TEXTAREA で Enter はカーソル位置に改行を挿入する", () => {
+  const context = loadHandler("https://consensus.app/search", createButton());
+  const { target, dispatchedEvents } = createTextareaTarget({ value: "ab" });
+  target.selectionStart = target.selectionEnd = 1;
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(target.value, "a\nb");
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].type, "input");
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("Consensus の Ctrl+Enter は form 内送信ボタンを一度クリックする", () => {
+  const sendButton = createButton();
+  const context = loadHandler("https://consensus.app/search", createButton());
+  const { target } = createTextareaTarget({ formSendButton: sendButton });
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 1);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
 // ── NotebookLM tests ────────────────────────────────────────────────────────
 
 test("NotebookLM の Enter は Shift+Enter にマッピングする", () => {

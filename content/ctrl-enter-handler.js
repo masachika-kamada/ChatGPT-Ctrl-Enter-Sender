@@ -68,7 +68,7 @@ function isCursorAgentsPath(url) {
 // Ordered by tier (see CONTRIBUTING.md):
 //   Tier 1: ChatGPT, Claude, Gemini, Copilot, M365
 //   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub, Kimi
-//   Tier 3: Poe, v0, Cursor, Genspark, duck.ai, Manus
+//   Tier 3: Poe, v0, Cursor, Genspark, duck.ai, Manus, Consensus
 
 const SITE_BEHAVIORS = {
 
@@ -431,6 +431,24 @@ const SITE_BEHAVIORS = {
       event.preventDefault();
       event.stopImmediatePropagation();
       dispatchEnter(event.target, {});
+    },
+  },
+
+  "consensus.app": {
+    shouldHandle(event) {
+      return event.target.tagName === "TEXTAREA";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      insertTextareaNewline(event.target);
+    },
+    onCtrlEnter(event) {
+      const button = findFormButton(event.target, 'button[type="submit"]:not([disabled])');
+      if (!button) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      button.click();
     },
   },
 };
