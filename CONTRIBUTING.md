@@ -15,7 +15,7 @@ These sites are actively maintained and tested:
 
 ### Tier 2 — Community Supported
 These sites are supported but maintained on a best-effort basis:
-- DeepSeek, Grok, Perplexity, Mistral (Le Chat), NotebookLM, GitHub Copilot Chat, Kimi
+- DeepSeek, Grok, Perplexity, Mistral (Le Chat), NotebookLM, GitHub Copilot Chat, Kimi, Muse
 
 ### Tier 3 — Minimal Support
 These sites may be removed if they become unmaintainable:

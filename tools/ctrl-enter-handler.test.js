@@ -540,6 +540,48 @@ test("copilot.com の /chat 以外は対象外にする", () => {
   assert.equal(dispatchedEvents.length, 0);
 });
 
+// ── Muse tests ───────────────────────────────────────────────────────
+
+function createMuseTextareaTarget({ value = "text" } = {}) {
+  const { target, dispatchedEvents } = createTextareaTarget({ value });
+
+  return {
+    target: {
+      ...target,
+      closest: (selector) => (selector === "[data-hatch-composer-root]" ? true : null),
+    },
+    dispatchedEvents
+  }
+}
+
+test("Muse の Enter はカーソル位置に改行を挿入する", () => {
+  const context = loadHandler("https://muse.ai/", createButton());
+  const { target, dispatchedEvents } = createMuseTextareaTarget({ value: "ab" });
+  target.selectionStart = target.selectionEnd = 1;
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(target.value, "a\nb");
+  assert.equal(target.selectionStart, 2);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].type, "input");
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+})
+test("Muse の Ctrl+Enter は通常 Enter にマッピングする", () => {
+  const context = loadHandler("https://muse.ai/", createButton());
+  const { target, dispatchedEvents } = createMuseTextareaTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+})
+
 // ── General behavior tests ───────────────────────────────────────────────────
 
 test("isComposing な場合はハンドリングしない", () => {
