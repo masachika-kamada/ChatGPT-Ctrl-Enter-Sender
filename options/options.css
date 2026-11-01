@@ -7,6 +7,36 @@ h2 {
   margin-bottom: 16px;
 }
 
+.intro {
+  display: flex;
+  gap: 8px;
+  max-width: 46em;
+  margin: -8px 0 16px;
+  padding: 10px 12px;
+  border: 1px solid #4CAF50;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.intro-text {
+  white-space: pre-line;
+}
+
+.intro-icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  border: 1px solid #4CAF50;
+  border-radius: 50%;
+  font-size: 11px;
+  line-height: 16px;
+  text-align: center;
+  font-style: italic;
+  color: #4CAF50;
+}
+
 label {
   display: block;
   font-size: 15px;
@@ -28,6 +58,23 @@ label {
   border-radius: 4px;
 }
 
+.grant-button {
+  font-size: 12px;
+  font-family: inherit;
+  margin-left: 8px;
+  padding: 2px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.grant-button:hover {
+  opacity: 0.85;
+}
+
 #saveButton {
   min-width: 100px;
   padding: 10px 20px;
@@ -46,6 +93,35 @@ label {
   cursor: not-allowed;
 }
 
+.sponsor-section {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid #ddd;
+}
+
+.sponsor-note {
+  max-width: 46em;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.7;
+  opacity: 0.75;
+  white-space: pre-line;
+}
+
+.sponsor-link {
+  display: inline-block;
+  font-size: 14px;
+  color: #db61a2;
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid #db61a2;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+.sponsor-link:hover {
+  background-color: rgba(219, 97, 162, 0.12);
+}
 
 @media (prefers-color-scheme: dark) {
   body {
@@ -58,6 +134,11 @@ label {
   }
 
   #saveButton {
+    background-color: #4BD865;
+    color: #202123;
+  }
+
+  .grant-button {
     background-color: #4BD865;
     color: #202123;
   }

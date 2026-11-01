@@ -1,25 +1,29 @@
 {
   "name": "chatgpt-ctrl-enter-sender-firefox",
-  "version": "2.2.0.1",
-  "description": "Send ChatGPT messages with Ctrl+Enter (Firefox version)",
-  "main": "background.js",
+  "version": "2.5.8",
+  "private": true,
+  "description": "Firefox extension that assigns Ctrl+Enter to send messages in ChatGPT and other AI chat sites",
+  "main": "service-worker.js",
   "scripts": {
-    "test": "npx playwright test",
-    "test:loading": "npx playwright test extension-loading",
-    "test:sites": "npx playwright test site-accessibility",
-    "test:behavior": "npx playwright test ctrl-enter-behavior",
-    "test:public": "npx playwright test --grep 'Public Sites'",
+    "bump": "node tools/bump-version.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "node --test tools/*.test.js",
+    "test:integration": "playwright test",
+    "test:loading": "playwright test extension-loading",
+    "test:live": "playwright test --config=playwright.live.config.js",
+    "test:sites": "playwright test --config=playwright.live.config.js site-accessibility",
+    "test:behavior": "playwright test --config=playwright.live.config.js ctrl-enter-behavior",
+    "test:public": "playwright test --config=playwright.live.config.js --grep 'Public Sites'",
     "login": "node tests/login-helper.js",
-    "login:all": "node tests/login-helper.js",
-    "copy-session": "node tests/copy-chrome-session.js"
+    "login:all": "node tests/login-helper.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xolli/ChatGPT-Ctrl-Enter-Sender-Firefox.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Kamada Masachika, Xolli",
+  "license": "MIT",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/xolli/ChatGPT-Ctrl-Enter-Sender-Firefox/issues"

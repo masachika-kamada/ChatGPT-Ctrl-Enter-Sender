@@ -1,37 +1,73 @@
-name: Build and Release
+name: Firefox Build and Release
 
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
+
+permissions:
+  contents: read
 
 jobs:
-  build-and-release:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium for extension tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Check supported-site consistency
+        run: python3 tools/check_supported_sites.py
+
+      - name: Test site URL monitor
+        run: python3 -m unittest tools/test_check_site_urls.py
+
+      - name: Run unit and integration tests
+        run: xvfb-run --auto-servernum npm test
+
+  release:
+    needs: verify
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Build XPI
-        run: |
-          zip -r "chatgpt-ctrl-enter-sender-${{ github.ref_name }}.xpi" . -x \
-            "*.git*" \
-            "*.github*" \
-            "*.md" \
-            ".gitignore" \
-            "build.sh" \
-            "package*.json" \
-            "playwright.config.js" \
-            "tests/*" \
-            "tools/*" \
-            "*.xpi" \
-            "*.zip"
-
-      - name: Create Release and Upload Asset
-        uses: softprops/action-gh-release@v2
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
-          files: chatgpt-ctrl-enter-sender-${{ github.ref_name }}.xpi
-          generate_release_notes: true
+          persist-credentials: false
+
+      - name: Verify tag matches manifest version
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          MANIFEST_VERSION=$(python3 -c "import json; print(json.load(open('manifest.json'))['version'])")
+          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match manifest version $MANIFEST_VERSION"
+            exit 1
+          fi
+
+      - name: Build Firefox XPI
+        run: |
+          mkdir -p _build
+          zip -r "_build/chatgpt-ctrl-enter-sender-${GITHUB_REF_NAME}.xpi" \
+            _locales/ constants/ content/ icon/ options/ popup/ shared/ \
+            service-worker.js manifest.json
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "_build/chatgpt-ctrl-enter-sender-${GITHUB_REF_NAME}.xpi" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

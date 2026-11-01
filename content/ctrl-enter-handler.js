@@ -31,6 +31,30 @@ function insertTextareaNewline(textarea) {
   textarea.dispatchEvent(new Event("input", { bubbles: true }));
 }
 
+// The composer rolled out to some accounts in 2026-09 has no id
+function isChatGPTComposer(target) {
+  return target.id === "prompt-textarea" || !!target.hasAttribute?.("data-composer-markdown");
+}
+
+// copilot.com serves the same chat editor as Microsoft 365 Copilot
+function m365ChatBehavior(chatUrl) {
+  return {
+    shouldHandle(event) {
+      return window.location.href.startsWith(chatUrl) &&
+        event.target.id === "m365-chat-editor-target-element";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { shiftKey: true });
+    },
+    onCtrlEnter(event) {
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { keyCode: 13 });
+    },
+  };
+}
+
 function isCursorAgentsPath(url) {
   try {
     const { pathname } = new URL(url);
@@ -43,8 +67,8 @@ function isCursorAgentsPath(url) {
 // ── Site behavior definitions ────────────────────────────────────────────────
 // Ordered by tier (see CONTRIBUTING.md):
 //   Tier 1: ChatGPT, Claude, Gemini, Copilot, M365
-//   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub
-//   Tier 3: Poe, v0, Cursor
+//   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub, Kimi
+//   Tier 3: Poe, v0, Cursor, Genspark, duck.ai, Manus
 
 const SITE_BEHAVIORS = {
 
@@ -52,16 +76,31 @@ const SITE_BEHAVIORS = {
 
   "chatgpt.com": {
     shouldHandle(event) {
-      return event.target.id === "prompt-textarea" || event.target.tagName === "TEXTAREA";
+      return isChatGPTComposer(event.target) || event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
-      // Only handle Enter on the prompt textarea; other TEXTAREAs (edit mode) pass through
-      if (event.target.id === "prompt-textarea") {
+      // Only handle known composer fields; other TEXTAREAs (edit mode) pass through
+      if (isChatGPTComposer(event.target)) {
         event.preventDefault();
         dispatchEnter(event.target, { shiftKey: true });
+      } else if (event.target.id === "mobile-composer-prompt" && !event.shiftKey) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        document.execCommand("insertLineBreak");
       }
     },
     onCtrlEnter(event) {
+      // The new composer's shortcuts are user-configurable, so click instead of remapping keys
+      if (event.target.hasAttribute?.("data-composer-markdown")) {
+        if (event.defaultPrevented) return;
+        // Stop and voice buttons are type="button", so this only matches an available Send
+        const sendButton = findFormButton(event.target, 'button[type="submit"]:not([disabled])');
+        if (!sendButton) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        sendButton.click();
+        return;
+      }
       // Only intercept Ctrl (not Meta); Mac Cmd+Enter works natively on ChatGPT
       if (!event.ctrlKey) return;
       event.preventDefault();
@@ -72,7 +111,7 @@ const SITE_BEHAVIORS = {
   "claude.ai": {
     shouldHandle(event) {
       return (event.target.tagName === "DIV" && event.target.contentEditable === "true") ||
-             event.target.tagName === "TEXTAREA";
+        event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
       event.preventDefault();
@@ -86,11 +125,25 @@ const SITE_BEHAVIORS = {
     onCtrlEnter(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
-      dispatchEnter(event.target, {});
-      // Claude edit mode: TEXTAREA needs button click to submit
       if (event.target.tagName === "TEXTAREA") {
-        const saveButton = document.querySelector('button[type="submit"]');
-        if (saveButton) saveButton.click();
+        // Edit mode: no form, and the save button label is localized, so it is
+        // matched by the design system's primary fill
+        const message = event.target.closest('[data-cds="UserMessage"]');
+        const saveButton = message &&
+          message.querySelector('button:not([disabled]):has(> span.bg-fill-primary)');
+        if (saveButton) {
+          saveButton.click();
+        } else {
+          dispatchEnter(event.target, {});
+        }
+      } else {
+        // Narrow layouts treat plain Enter as newline; click the send button instead
+        const sendButton = document.querySelector('button[data-testid="chat-input-send"]:not([disabled])');
+        if (sendButton) {
+          sendButton.click();
+        } else {
+          dispatchEnter(event.target, {});
+        }
       }
     },
   },
@@ -120,25 +173,13 @@ const SITE_BEHAVIORS = {
       return event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
-      event.stopPropagation();
+      event.stopImmediatePropagation();
     },
   },
 
-  "m365.cloud.microsoft": {
-    shouldHandle(event) {
-      const url = window.location.href;
-      return url.startsWith("https://m365.cloud.microsoft/chat") &&
-             event.target.id === "m365-chat-editor-target-element";
-    },
-    onEnter(event) {
-      event.stopImmediatePropagation();
-      dispatchEnter(event.target, { shiftKey: true });
-    },
-    onCtrlEnter(event) {
-      event.stopImmediatePropagation();
-      dispatchEnter(event.target, { keyCode: 13 });
-    },
-  },
+  "copilot.com": m365ChatBehavior("https://copilot.com/chat"),
+
+  "m365.cloud.microsoft": m365ChatBehavior("https://m365.cloud.microsoft/chat"),
 
   // ── Tier 2 — Community Supported ───────────────────────────────────────────
 
@@ -159,7 +200,7 @@ const SITE_BEHAVIORS = {
   "grok.com": {
     shouldHandle(event) {
       return event.target.tagName === "TEXTAREA" ||
-             (event.target.tagName === "DIV" && event.target.contentEditable === "true");
+        (event.target.tagName === "DIV" && event.target.contentEditable === "true");
     },
     onEnter(event) {
       event.stopImmediatePropagation();
@@ -190,9 +231,9 @@ const SITE_BEHAVIORS = {
   "chat.mistral.ai": {
     shouldHandle(event) {
       return (event.target.tagName === "DIV" &&
-              event.target.classList.contains("ProseMirror") &&
-              event.target.contentEditable === "true") ||
-             event.target.tagName === "TEXTAREA";
+        event.target.classList.contains("ProseMirror") &&
+        event.target.contentEditable === "true") ||
+        event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
       event.preventDefault();
@@ -206,7 +247,7 @@ const SITE_BEHAVIORS = {
     },
   },
 
-  "notebooklm.google.com": {
+  "notebook.google.com": {
     shouldHandle(event) {
       return event.target.tagName === "TEXTAREA" && event.target.classList.contains("query-box-input");
     },
@@ -215,10 +256,14 @@ const SITE_BEHAVIORS = {
       dispatchEnter(event.target, { shiftKey: true });
     },
     onCtrlEnter(event) {
+      event.preventDefault();
       event.stopImmediatePropagation();
-      dispatchEnter(event.target, {});
       const submitButton = document.querySelector('query-box form button[type="submit"]');
-      if (submitButton) submitButton.click();
+      if (submitButton) {
+        submitButton.click();
+      } else {
+        dispatchEnter(event.target, {});
+      }
     },
   },
 
@@ -226,13 +271,34 @@ const SITE_BEHAVIORS = {
     shouldHandle(event) {
       const url = window.location.href;
       return (url.startsWith("https://github.com/copilot") || url.startsWith("https://github.com/spark")) &&
-             event.target.tagName === "TEXTAREA";
+        event.target.tagName === "TEXTAREA";
     },
     onEnter(event) {
       event.stopImmediatePropagation();
       dispatchEnter(event.target, { shiftKey: true });
     },
     onCtrlEnter(event) {
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, {});
+    },
+  },
+
+  "www.kimi.com": {
+    shouldHandle(event) {
+      return event.target.tagName === "DIV" &&
+        event.target.contentEditable === "true" &&
+        event.target.getAttribute("data-lexical-editor") === "true" &&
+        event.target.getAttribute("role") === "textbox";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { shiftKey: true });
+    },
+    onCtrlEnter(event) {
+      // Kimi maps Ctrl+Enter to a line break, so the native handler must be
+      // stopped before dispatching the plain Enter that submits
+      event.preventDefault();
       event.stopImmediatePropagation();
       dispatchEnter(event.target, {});
     },
@@ -252,9 +318,9 @@ const SITE_BEHAVIORS = {
   "v0.app": {
     shouldHandle(event) {
       return event.target.tagName === "TEXTAREA" ||
-             (event.target.tagName === "DIV" &&
-              event.target.classList.contains("ProseMirror") &&
-              event.target.contentEditable === "true");
+        (event.target.tagName === "DIV" &&
+          event.target.classList.contains("ProseMirror") &&
+          event.target.contentEditable === "true");
     },
     onEnter(event) {
       if (event.target.tagName === "TEXTAREA") {
@@ -279,10 +345,10 @@ const SITE_BEHAVIORS = {
     shouldHandle(event) {
       const url = window.location.href;
       return isCursorAgentsPath(url) &&
-             event.target.tagName === "DIV" &&
-             event.target.contentEditable === "true" &&
-             event.target.getAttribute("data-lexical-editor") === "true" &&
-             event.target.getAttribute("role") === "textbox";
+        event.target.tagName === "DIV" &&
+        event.target.contentEditable === "true" &&
+        event.target.getAttribute("data-lexical-editor") === "true" &&
+        event.target.getAttribute("role") === "textbox";
     },
     onEnter(event) {
       event.preventDefault();
@@ -296,6 +362,75 @@ const SITE_BEHAVIORS = {
         event.stopImmediatePropagation();
         button.click();
       }
+    },
+  },
+
+  "www.genspark.ai": {
+    shouldHandle(event) {
+      return event.target.tagName === "TEXTAREA" ||
+        (event.target.tagName === "DIV" && event.target.contentEditable === "true");
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (event.target.tagName === "TEXTAREA") {
+        insertTextareaNewline(event.target);
+      } else {
+        // Edit mode: contentEditable div — insert line break directly
+        document.execCommand("insertLineBreak");
+      }
+    },
+    onCtrlEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (event.target.tagName === "TEXTAREA") {
+        const button = document.querySelector(".enter-icon-wrapper");
+        if (button) button.click();
+      } else {
+        // Edit mode: dispatch plain Enter to save
+        dispatchEnter(event.target, {});
+      }
+    },
+  },
+
+  "duck.ai": {
+    shouldHandle(event) {
+      return event.target.tagName === "TEXTAREA";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      insertTextareaNewline(event.target);
+    },
+    onCtrlEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const button = findFormButton(event.target, 'button[type="submit"]:not([disabled])');
+      if (button) {
+        button.click();
+      } else {
+        // Edit mode: no form/submit button; dispatch plain Enter for duck.ai to handle
+        // (isTrusted will be false, so the extension won't re-intercept it)
+        dispatchEnter(event.target, {});
+      }
+    },
+  },
+
+  "manus.im": {
+    shouldHandle(event) {
+      return event.target.tagName === "DIV" &&
+        event.target.classList.contains("ProseMirror") &&
+        event.target.contentEditable === "true";
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, { shiftKey: true });
+    },
+    onCtrlEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, {});
     },
   },
 };
@@ -321,6 +456,9 @@ function handleCtrlEnter(event) {
 }
 
 // ── Initialization ───────────────────────────────────────────────────────────
+
+// Lets shared/site-sync.js skip tabs that already run the handler
+window.__ctrlEnterSenderLoaded = true;
 
 // Apply the setting based on the current site on initial load
 applySiteSetting();

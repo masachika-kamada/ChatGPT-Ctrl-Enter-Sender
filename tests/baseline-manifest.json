@@ -1,0 +1,65 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_appName__",
+  "version": "2.2.0.1",
+  "description": "__MSG_appDesc__",
+  "default_locale": "en",
+  "author": "Kamada Masachika, Xolli",
+  "permissions": [
+    "storage"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*",
+        "https://copilot.microsoft.com/*",
+        "https://m365.cloud.microsoft/*",
+        "https://chat.deepseek.com/*",
+        "https://grok.com/*",
+        "https://www.perplexity.ai/*",
+        "https://chat.mistral.ai/*",
+        "https://github.com/copilot*",
+        "https://github.com/spark*",
+        "https://poe.com/*",
+        "https://v0.app/*"
+      ],
+      "js": [
+        "content/ctrl-enter-utils.js",
+        "content/ctrl-enter-handler.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://poe.com/*",
+    "https://chat.mistral.ai/*",
+    "https://www.perplexity.ai/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://v0.app/*",
+    "https://chat.deepseek.com/*",
+    "https://github.com/copilot*",
+    "https://github.com/spark*",
+    "https://grok.com/*",
+    "https://copilot.microsoft.com/*",
+    "https://m365.cloud.microsoft/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icon/icon16.png",
+      "48": "icon/icon48.png",
+      "128": "icon/icon128.png"
+    }
+  },
+  "options_page": "options/options.html"
+}

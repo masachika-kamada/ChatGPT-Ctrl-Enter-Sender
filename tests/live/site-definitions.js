@@ -85,7 +85,7 @@ const SITES = [
   },
   {
     name: "NotebookLM",
-    url: "https://notebooklm.google.com/",
+    url: "https://notebook.google.com/",
     inputSelector: "textarea.query-box-input",
     inputType: "textarea",
     requiresAuth: true,

@@ -13,7 +13,7 @@ assignees: ''
 ### This issue is a: (mark with an x)
 - [ ] bug report -> please search issues before submitting
 - [ ] documentation issue or request
-- [ ] regression (a behavior that used to work and stopped in a new release)
+- [ ] regression (something that used to work but stopped working in a new release)
 
 ### Issue description
 A clear and concise description of the observed issue.
@@ -26,8 +26,8 @@ A clear and concise description of the observed issue.
 
 **Actual behavior** [What actually happened.]
 
-**Screenshots**         
+### Screenshots
 If applicable, add screenshots to help explain your problem.
 
 ### Additional context
-Ex. Ex. Your environment (OS and browser, and their versions)
+e.g., your OS and browser, and their versions.

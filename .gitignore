@@ -8,3 +8,4 @@ playwright-report/
 tests/screenshots/*.png
 tools/logos/
 tools/supported_sites.png
+.idea

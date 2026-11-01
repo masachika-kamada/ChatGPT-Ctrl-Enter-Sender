@@ -6,10 +6,6 @@
  *   node tests/login-helper.js                        # All auth-required sites
  *   node tests/login-helper.js ChatGPT                # Specific site only
  *   node tests/login-helper.js Claude Gemini           # Multiple sites
- *   node tests/login-helper.js --use-chrome-profile    # Copy session from your real Chrome
- *
- * The --use-chrome-profile flag launches your real Chrome profile (already logged in),
- * which avoids CAPTCHA/bot-detection issues entirely.
  */
 const { chromium } = require("@playwright/test");
 const path = require("path");
@@ -23,7 +19,7 @@ const AUTH_SITES = [
   { name: "DeepSeek", url: "https://chat.deepseek.com/" },
   { name: "Poe", url: "https://poe.com/" },
   { name: "Mistral", url: "https://chat.mistral.ai/chat" },
-  { name: "NotebookLM", url: "https://notebooklm.google.com/" },
+  { name: "NotebookLM", url: "https://notebook.google.com/" },
 ];
 
 function askUser(question) {
@@ -37,9 +33,7 @@ function askUser(question) {
 }
 
 async function main() {
-  const rawArgs = process.argv.slice(2);
-  const useChromeProfile = rawArgs.includes("--use-chrome-profile");
-  const args = rawArgs.filter((a) => !a.startsWith("--"));
+  const args = process.argv.slice(2);
   const requestedSites = args.length > 0
     ? AUTH_SITES.filter((s) => args.some((a) => s.name.toLowerCase().includes(a.toLowerCase())))
     : AUTH_SITES;
@@ -51,22 +45,11 @@ async function main() {
   }
 
   const extensionPath = path.resolve(__dirname, "..");
-  let userDataDir;
-
-  if (useChromeProfile) {
-    // Use the real Chrome profile — already logged in to most sites
-    userDataDir = path.join(process.env.LOCALAPPDATA, "Google", "Chrome", "User Data");
-    console.log("\n=== Login Helper (Chrome Profile Mode) ===");
-    console.log("⚠️  IMPORTANT: Close all Chrome windows before continuing!");
-    console.log("   Playwright cannot use a profile that Chrome is currently using.\n");
-    await askUser("Press Enter after closing Chrome... ");
-  } else {
-    userDataDir = path.join(__dirname, "..", "test-user-data");
-    if (!fs.existsSync(userDataDir)) {
-      fs.mkdirSync(userDataDir, { recursive: true });
-    }
-    console.log("\n=== Login Helper ===");
+  const userDataDir = path.join(__dirname, "..", "test-user-data");
+  if (!fs.existsSync(userDataDir)) {
+    fs.mkdirSync(userDataDir, { recursive: true });
   }
+  console.log("\n=== Login Helper ===");
 
   console.log(`Profile: ${userDataDir}`);
   console.log(`Sites: ${requestedSites.map((s) => s.name).join(", ")}\n`);

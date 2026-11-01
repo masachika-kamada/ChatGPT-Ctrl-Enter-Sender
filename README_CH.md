@@ -1,0 +1,86 @@
+# ChatGPT Ctrl+Enter Sender (Firefox)
+
+[English](README.md) | [日本語](README_JA.md) | 简体中文
+
+## 概述
+
+* 为 ChatGPT 分配“Ctrl+Enter”（Mac 上为“Cmd+Enter”）以发送消息，防止误发
+* 可直观地通过“Enter”换行
+
+## 浏览器支持
+
+### 基于Chromium的浏览器 (例如：Chrome、Edge、Brave 等等)
+Chromium 版本请参阅[此处](https://github.com/masachika-kamada/ChatGPT-Ctrl-Enter-Sender)。
+
+### Firefox
+可从[最新的 XPI 发布页](https://github.com/xolli/ChatGPT-Ctrl-Enter-Sender-Firefox/releases)下载。
+
+## 功能
+
+**ChatGPT Ctrl+Enter Sender** 可以让您在 ChatGPT 等网站上使用“Ctrl+Enter”（Mac 上为“Cmd+Enter”）发送消息。<br>
+由于本来用于发送的 Enter 现在可以换行，因此您不会意外地按下 Enter 发送消息。<br>
+点击图标即可在切换按钮上轻松切换扩展的开/关状态。
+
+您可以在以下页面上使用此扩展：
+
+* <https://chatgpt.com>
+* <https://claude.ai>
+* <https://gemini.google.com>
+* <https://copilot.microsoft.com>
+* <https://copilot.com/chat> (opt-in)
+* <https://m365.cloud.microsoft/chat>
+* <https://chat.deepseek.com>
+* <https://grok.com>
+* <https://www.perplexity.ai>
+* <https://chat.mistral.ai>
+* <https://notebook.google.com> (opt-in)
+* <https://github.com> (Copilot, Spark)
+* <https://poe.com>
+* <https://v0.app>
+* <https://www.kimi.com> (opt-in)
+* <https://cursor.com/agents> (opt-in)
+* <https://www.genspark.ai> (opt-in)
+* <https://duck.ai> (opt-in)
+* <https://manus.im> (opt-in)
+
+*可选站点仅在您选择启用时请求访问权限。这可防止因支持新主机名而导致扩展在更新后被停用。打开站点，点击扩展图标，然后按一次 "Enable on this site"。首次安装后，设置页面会打开一次以介绍这些站点。*
+
+## 演示视频
+
+<https://user-images.githubusercontent.com/63488322/231231536-0a45f182-eb20-4872-b469-ef0095342011.mp4>
+
+## 使用提示
+
+我们注意到，当同时使用以下扩展时，本扩展可能无法如预期般正常工作。<br>
+如果您遇到任何问题，我们建议您暂时禁用这些扩展，看看问题是否得到解决。
+
+* [WebChatGPT](https://chrome.google.com/webstore/detail/webchatgpt-chatgpt-with-i/lpfemeioodjbpieminkklglpmhlngfcn)
+
+## 赞助者
+
+感谢所有通过 GitHub Sponsors 支持本项目的赞助者。
+
+<a href="https://github.com/shimo164"><img src="https://github.com/shimo164.png" alt="@shimo164" title="@shimo164" width="40"></a>
+<a href="https://github.com/toiee-kameda"><img src="https://github.com/toiee-kameda.png" alt="@toiee-kameda" title="@toiee-kameda" width="40"></a>
+<a href="https://github.com/preacher65"><img src="https://github.com/preacher65.png" alt="@preacher65" title="@preacher65" width="40"></a>
+
+此处不显示赞助金额或日期。如需移除您的信息，请联系维护者。
+
+## 贡献者
+
+<a href="https://github.com/ry0y4n"><img src="https://github.com/ry0y4n.png" width="40"></a>
+<a href="https://github.com/ore88ore"><img src="https://github.com/ore88ore.png" width="40"></a>
+<a href="https://github.com/Aniny21"><img src="https://github.com/Aniny21.png" width="40"></a>
+<a href="https://github.com/Amritanshu1912"><img src="https://github.com/Amritanshu1912.png" width="40"></a>
+<a href="https://github.com/Juris710"><img src="https://github.com/Juris710.png" width="40"></a>
+<a href="https://github.com/sahksas"><img src="https://github.com/sahksas.png" width="40"></a>
+<a href="https://github.com/coni524"><img src="https://github.com/coni524.png" width="40"></a>
+<a href="https://github.com/sakamossan"><img src="https://github.com/sakamossan.png" width="40"></a>
+<a href="https://github.com/susumuota"><img src="https://github.com/susumuota.png" width="40"></a>
+<a href="https://github.com/inadati"><img src="https://github.com/inadati.png" width="40"></a>
+<a href="https://github.com/ankd-k"><img src="https://github.com/ankd-k.png" width="40"></a>
+<a href="https://github.com/doma-itachi"><img src="https://github.com/doma-itachi.png" width="40"></a>
+<a href="https://github.com/syuya2036"><img src="https://github.com/syuya2036.png" width="40"></a>
+<a href="https://github.com/censor-ed"><img src="https://github.com/censor-ed.png" width="40"></a>
+<a href="https://github.com/HappyOnigiri"><img src="https://github.com/HappyOnigiri.png" width="40"></a>
+<a href="https://github.com/njm2360"><img src="https://github.com/njm2360.png" width="40"></a>

@@ -50,8 +50,10 @@ def main():
     for cs in manifest["content_scripts"]:
         matches.extend(cs["matches"])
     host_permissions = manifest["host_permissions"]
+    optional_host_permissions = manifest.get("optional_host_permissions", [])
     domains_matches = [extract_domain(u) for u in matches]
     domains_host_permissions = [extract_domain(u) for u in host_permissions]
+    domains_optional = [extract_domain(u) for u in optional_host_permissions]
 
     # 2. Load all README files and extract domains from the Features/機能/功能 section
     readme_files = [
@@ -69,46 +71,65 @@ def main():
         urls = extract_urls_from_section(section)
         domains_from_readmes.update(urls)
 
-    # 3. Load site-configs.js and extract hostnames
+    # 3. Load site-configs.js and extract hostnames, split by optional flag.
+    # Required sites must appear in manifest matches/host_permissions;
+    # optional sites must appear in optional_host_permissions instead.
     with open(f"{REPO_ROOT}/constants/site-configs.js", encoding="utf-8") as f:
         js = f.read()
-    supported_sites = re.findall(r'hostname:\s*"([^"]+)"', js)
-    domains_supported_sites = [extract_domain(u) for u in supported_sites]
-
-    # Also extract matchPatterns from site-configs.js and verify against manifest
-    config_match_patterns = re.findall(r'"(https://[^"]+)"', js)
-    domains_config_matches = [extract_domain(u) for u in config_match_patterns]
+    domains_supported_sites = []
+    domains_required_sites = []
+    domains_optional_sites = []
+    domains_required_matches = []
+    for entry in re.finditer(r'\{(?P<body>[^{}]*hostname:[^{}]*)\}', js):
+        body = entry.group("body")
+        hostname = re.search(r'hostname:\s*"([^"]+)"', body).group(1)
+        patterns = re.findall(r'"(https://[^"]+)"', body)
+        domain = extract_domain(hostname)
+        domains_supported_sites.append(domain)
+        if re.search(r'optional:\s*true', body):
+            domains_optional_sites.append(domain)
+        else:
+            domains_required_sites.append(domain)
+            domains_required_matches.extend(extract_domain(u) for u in patterns)
 
     # 4. Compare sets
     def diff(a, b):
         return sorted(set(a) - set(b))
 
+    all_manifest_domains = domains_host_permissions + domains_optional
+
     print("--- manifest.json matches vs host_permissions ---")
     print("In matches but not in host_permissions:", diff(domains_matches, domains_host_permissions))
     print("In host_permissions but not in matches:", diff(domains_host_permissions, domains_matches))
 
-    print("\n--- host_permissions vs all README files ---")
-    print("In host_permissions but not in any README:", diff(domains_host_permissions, domains_from_readmes))
-    print("In any README but not in host_permissions:", diff(domains_from_readmes, domains_host_permissions))
+    print("\n--- manifest (host_permissions + optional) vs all README files ---")
+    print("In manifest but not in any README:", diff(all_manifest_domains, domains_from_readmes))
+    print("In any README but not in manifest:", diff(domains_from_readmes, all_manifest_domains))
 
-    print("\n--- host_permissions vs site-configs.js hostnames ---")
-    print("In host_permissions but not in site-configs.js:", diff(domains_host_permissions, domains_supported_sites))
-    print("In site-configs.js but not in host_permissions:", diff(domains_supported_sites, domains_host_permissions))
+    print("\n--- host_permissions vs required sites in site-configs.js ---")
+    print("In host_permissions but not required in site-configs.js:", diff(domains_host_permissions, domains_required_sites))
+    print("Required in site-configs.js but not in host_permissions:", diff(domains_required_sites, domains_host_permissions))
 
-    print("\n--- manifest matches vs site-configs.js matchPatterns ---")
-    print("In manifest matches but not in site-configs.js:", diff(domains_matches, domains_config_matches))
-    print("In site-configs.js but not in manifest matches:", diff(domains_config_matches, domains_matches))
+    print("\n--- optional_host_permissions vs optional sites in site-configs.js ---")
+    print("In optional_host_permissions but not optional in site-configs.js:", diff(domains_optional, domains_optional_sites))
+    print("Optional in site-configs.js but not in optional_host_permissions:", diff(domains_optional_sites, domains_optional))
+
+    print("\n--- manifest matches vs required matchPatterns in site-configs.js ---")
+    print("In manifest matches but not in site-configs.js:", diff(domains_matches, domains_required_matches))
+    print("In site-configs.js but not in manifest matches:", diff(domains_required_matches, domains_matches))
 
     # Exit with error if there are any differences
     if any([
         diff(domains_matches, domains_host_permissions),
         diff(domains_host_permissions, domains_matches),
-        diff(domains_host_permissions, domains_from_readmes),
-        diff(domains_from_readmes, domains_host_permissions),
-        diff(domains_host_permissions, domains_supported_sites),
-        diff(domains_supported_sites, domains_host_permissions),
-        diff(domains_matches, domains_config_matches),
-        diff(domains_config_matches, domains_matches),
+        diff(all_manifest_domains, domains_from_readmes),
+        diff(domains_from_readmes, all_manifest_domains),
+        diff(domains_host_permissions, domains_required_sites),
+        diff(domains_required_sites, domains_host_permissions),
+        diff(domains_optional, domains_optional_sites),
+        diff(domains_optional_sites, domains_optional),
+        diff(domains_matches, domains_required_matches),
+        diff(domains_required_matches, domains_matches),
     ]):
         sys.exit(1)
 

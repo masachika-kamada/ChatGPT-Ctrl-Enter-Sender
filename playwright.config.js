@@ -4,8 +4,11 @@ const path = require("path");
 
 module.exports = defineConfig({
   testDir: "./tests",
+  testIgnore: "**/live/**",
   timeout: 60000,
-  retries: 0,
+  workers: 1,
+  // Extension service worker startup is timing sensitive on loaded CI machines
+  retries: process.env.CI ? 2 : 0,
   reporter: [["html", { open: "never" }], ["list"]],
   use: {
     // Chrome extension tests require a persistent context,

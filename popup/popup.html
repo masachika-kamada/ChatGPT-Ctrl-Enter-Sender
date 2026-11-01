@@ -3,13 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>ChatGPT Ctrl+Enter Sender Options</title>
+  <title data-i18n="appName">Chat AI Ctrl+Enter Sender</title>
   <link rel="stylesheet" href="./popup.css">
 </head>
 
 <body>
   <div class="main-container">
-    <div class="toggle-row">
+    <div class="toggle-row" id="toggleSection" hidden>
       <div class="toggle_button">
         <input id="isEnabled" class="toggle_input" type="checkbox" aria-label="Enable on this site" />
         <label for="isEnabled" class="toggle_label"></label>
@@ -18,6 +18,23 @@
         Enable on this site
       </div>
     </div>
+
+    <div class="shortcut-hint" id="shortcutHint" hidden>Ctrl + Enter to send</div>
+
+    <div class="grant-section" id="grantSection" hidden>
+      <button id="grantButton" class="grant-btn">Enable on this site</button>
+      <div class="grant-note">
+        <span class="note-icon" aria-hidden="true">i</span>
+        <span data-i18n="grantNote">Your browser calls this "read and change your data". It is only used to detect
+          Enter key presses, never to read anything on the page.</span>
+      </div>
+    </div>
+
+    <div class="message" id="unsupportedSection" hidden>
+      This site is not supported.
+    </div>
+
+    <div class="status-message" id="statusMessage" role="status" aria-live="polite" hidden></div>
 
     <a href="../options/options.html" id="settingsLink" target="_blank" class="settings-link">
       All Site Settings

@@ -7,14 +7,17 @@ const vm = require("node:vm");
 const handlerScriptPath = path.join(__dirname, "..", "content", "ctrl-enter-handler.js");
 const handlerScript = fs.readFileSync(handlerScriptPath, "utf8");
 const submitSelector = 'button[type="submit"]:not([disabled])';
+const notebookSubmitSelector = 'query-box form button[type="submit"]';
+const claudeSaveSelector = 'button:not([disabled]):has(> span.bg-fill-primary)';
+const claudeSendSelector = 'button[data-testid="chat-input-send"]:not([disabled])';
 
-function loadHandler(url, sendButton) {
+function loadHandler(url, sendButton, documentButtonSelector = submitSelector) {
   const parsedUrl = new URL(url);
   const context = {
     window: { location: { href: url, hostname: parsedUrl.hostname } },
     URL,
     document: {
-      querySelector: (selector) => (selector === submitSelector ? sendButton : null)
+      querySelector: (selector) => (selector === documentButtonSelector ? sendButton : null)
     },
     chrome: {
       storage: {
@@ -65,6 +68,48 @@ function createLexicalTarget({ formSendButton = null, attributes = {} } = {}) {
         querySelector: (query) => (query === submitSelector ? formSendButton : null)
       };
     }
+  };
+
+  return { target, dispatchedEvents };
+}
+
+function createTextareaTarget({ value = "text", formSendButton = null } = {}) {
+  const dispatchedEvents = [];
+  const target = {
+    tagName: "TEXTAREA",
+    value,
+    selectionStart: value.length,
+    selectionEnd: value.length,
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    },
+    closest: (selector) => {
+      if (selector !== "form" || !formSendButton) return null;
+      return {
+        querySelector: (query) => (query === submitSelector ? formSendButton : null)
+      };
+    }
+  };
+
+  return { target, dispatchedEvents };
+}
+
+function createClaudeEditTarget({ saveButton = null, value = "text" } = {}) {
+  const dispatchedEvents = [];
+  const message = {
+    querySelector: (query) => (query === claudeSaveSelector ? saveButton : null)
+  };
+  const target = {
+    tagName: "TEXTAREA",
+    value,
+    selectionStart: value.length,
+    selectionEnd: value.length,
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    },
+    closest: (selector) => (selector === '[data-cds="UserMessage"]' ? message : null)
   };
 
   return { target, dispatchedEvents };
@@ -183,6 +228,318 @@ test("Cursor Agents の Meta+Enter は form 内送信ボタンをクリックす
   assert.equal(formSendButton.clickCount, 1);
 });
 
+// ── Claude tests ────────────────────────────────────────────────────────────
+
+test("Claude の編集 TEXTAREA で Enter はカーソル位置に改行を挿入する", () => {
+  const saveButton = createButton();
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const { target, dispatchedEvents } = createClaudeEditTarget({ saveButton, value: "ab" });
+  target.selectionStart = target.selectionEnd = 1;
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(target.value, "a\nb");
+  assert.equal(target.selectionStart, 2);
+  assert.equal(saveButton.clickCount, 0);
+  assert.equal(dispatchedEvents.at(-1).type, "input");
+  assert.equal(event.preventDefaultCount, 1);
+});
+
+test("Claude の編集 TEXTAREA で Ctrl+Enter は保存ボタンを一度クリックする", () => {
+  const saveButton = createButton();
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const { target, dispatchedEvents } = createClaudeEditTarget({ saveButton });
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(saveButton.clickCount, 1);
+  assert.equal(dispatchedEvents.length, 0);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("Claude の保存ボタンが見つからない場合は通常 Enter にフォールバックする", () => {
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const { target, dispatchedEvents } = createClaudeEditTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].type, "keydown");
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+});
+
+test("Claude の入力欄（contenteditable）の Ctrl+Enter は送信ボタンを一度クリックする", () => {
+  const sendButton = createButton();
+  const dispatchedEvents = [];
+  const target = {
+    tagName: "DIV",
+    contentEditable: "true",
+    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
+  };
+  const context = loadHandler("https://claude.ai/chat/abc", sendButton, claudeSendSelector);
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 1);
+  assert.equal(dispatchedEvents.length, 0);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("Claude の送信ボタンが見つからない場合は通常 Enter にフォールバックする", () => {
+  const dispatchedEvents = [];
+  const target = {
+    tagName: "DIV",
+    contentEditable: "true",
+    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
+  };
+  const context = loadHandler("https://claude.ai/chat/abc", createButton());
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+  assert.equal(event.preventDefaultCount, 1);
+});
+
+// ── Other optional-site tests ───────────────────────────────────────────────
+
+test("Genspark の TEXTAREA で Enter はカーソル位置に改行を挿入する", () => {
+  const context = loadHandler("https://www.genspark.ai/", createButton());
+  const { target, dispatchedEvents } = createTextareaTarget({ value: "ab" });
+  target.selectionStart = target.selectionEnd = 1;
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(target.value, "a\nb");
+  assert.equal(target.selectionStart, 2);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].type, "input");
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("Genspark の TEXTAREA で Ctrl+Enter は送信ボタンを一度クリックする", () => {
+  const sendButton = createButton();
+  const context = loadHandler("https://www.genspark.ai/", sendButton, ".enter-icon-wrapper");
+  const { target } = createTextareaTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 1);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("duck.ai の TEXTAREA で Enter はカーソル位置に改行を挿入する", () => {
+  const context = loadHandler("https://duck.ai/", createButton());
+  const { target, dispatchedEvents } = createTextareaTarget({ value: "ab" });
+  target.selectionStart = target.selectionEnd = 1;
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(target.value, "a\nb");
+  assert.equal(target.selectionStart, 2);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].type, "input");
+});
+
+test("duck.ai の TEXTAREA で Ctrl+Enter は form 内送信ボタンを一度クリックする", () => {
+  const sendButton = createButton();
+  const context = loadHandler("https://duck.ai/", createButton());
+  const { target } = createTextareaTarget({ formSendButton: sendButton });
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 1);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("Manus の Enter は Shift+Enter にマッピングする", () => {
+  const dispatchedEvents = [];
+  const target = {
+    tagName: "DIV",
+    contentEditable: "true",
+    classList: { contains: (name) => name === "ProseMirror" },
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    }
+  };
+  const context = loadHandler("https://manus.im/", createButton());
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+  assert.equal(event.preventDefaultCount, 1);
+});
+
+test("Manus の Ctrl+Enter は通常 Enter にマッピングする", () => {
+  const dispatchedEvents = [];
+  const target = {
+    tagName: "DIV",
+    contentEditable: "true",
+    classList: { contains: (name) => name === "ProseMirror" },
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    }
+  };
+  const context = loadHandler("https://manus.im/", createButton());
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+  assert.equal(event.preventDefaultCount, 1);
+});
+
+// ── NotebookLM tests ────────────────────────────────────────────────────────
+
+test("NotebookLM の Enter は Shift+Enter にマッピングする", () => {
+  const context = loadHandler("https://notebook.google.com/", createButton(), notebookSubmitSelector);
+  const { target, dispatchedEvents } = createTextareaTarget();
+  target.classList = { contains: (name) => name === "query-box-input" };
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("NotebookLM の Ctrl+Enter は送信ボタンだけを一度クリックする", () => {
+  const sendButton = createButton();
+  const context = loadHandler(
+    "https://notebook.google.com/",
+    sendButton,
+    notebookSubmitSelector
+  );
+  const { target, dispatchedEvents } = createTextareaTarget();
+  target.classList = { contains: (name) => name === "query-box-input" };
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 1);
+  assert.equal(dispatchedEvents.length, 0);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("NotebookLM の送信ボタンがない場合は通常 Enter にフォールバックする", () => {
+  const context = loadHandler(
+    "https://notebook.google.com/",
+    null,
+    notebookSubmitSelector
+  );
+  const { target, dispatchedEvents } = createTextareaTarget();
+  target.classList = { contains: (name) => name === "query-box-input" };
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+// ── Kimi tests ──────────────────────────────────────────────────────────────
+
+test("Kimi の Enter は Shift+Enter にマッピングする", () => {
+  const context = loadHandler("https://www.kimi.com/", createButton());
+  const { target, dispatchedEvents } = createLexicalTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("Kimi の Ctrl+Enter は通常 Enter にマッピングする", () => {
+  const context = loadHandler("https://www.kimi.com/", createButton());
+  const { target, dispatchedEvents } = createLexicalTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+});
+
+// ── copilot.com tests ───────────────────────────────────────────────────────
+
+function createM365EditorTarget() {
+  const dispatchedEvents = [];
+  const target = {
+    id: "m365-chat-editor-target-element",
+    tagName: "SPAN",
+    contentEditable: "true",
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    }
+  };
+  return { target, dispatchedEvents };
+}
+
+test("copilot.com の Enter は Shift+Enter にマッピングする", () => {
+  const context = loadHandler("https://copilot.com/chat?redirfrom=cosmicRingCookie", createButton());
+  const { target, dispatchedEvents } = createM365EditorTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("copilot.com の Ctrl+Enter は通常 Enter にマッピングする", () => {
+  const context = loadHandler("https://copilot.com/chat", createButton());
+  const { target, dispatchedEvents } = createM365EditorTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+  assert.equal(dispatchedEvents[0].keyCode, 13);
+});
+
+test("copilot.com の /chat 以外は対象外にする", () => {
+  const context = loadHandler("https://copilot.com/", createButton());
+  const { target, dispatchedEvents } = createM365EditorTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(dispatchedEvents.length, 0);
+});
+
 // ── General behavior tests ───────────────────────────────────────────────────
 
 test("isComposing な場合はハンドリングしない", () => {
@@ -242,6 +599,28 @@ test("Poe の TEXTAREA で Ctrl+Enter はパススルー", () => {
   assert.equal(event.preventDefaultCount, 0);
 });
 
+test("Copilot の TEXTAREA で Enter は stopImmediatePropagation のみ", () => {
+  const context = loadHandler("https://copilot.microsoft.com/", createButton());
+  const event = createKeydownEvent({ tagName: "TEXTAREA" });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.stopImmediatePropagationCount, 1);
+  assert.equal(event.stopPropagationCount, 0);
+  assert.equal(event.preventDefaultCount, 0);
+});
+
+test("Copilot の TEXTAREA で Ctrl+Enter はパススルー", () => {
+  const context = loadHandler("https://copilot.microsoft.com/", createButton());
+  const event = createKeydownEvent({ tagName: "TEXTAREA" }, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.stopImmediatePropagationCount, 0);
+  assert.equal(event.stopPropagationCount, 0);
+  assert.equal(event.preventDefaultCount, 0);
+});
+
 // ── ChatGPT tests ────────────────────────────────────────────────────────────
 
 test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング", () => {
@@ -259,6 +638,119 @@ test("ChatGPT の prompt-textarea で Enter は Shift+Enter にマッピング",
   assert.equal(event.preventDefaultCount, 1);
   assert.equal(dispatchedEvents.length, 1);
   assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+function createChatGPTMarkdownComposer({ formSubmitButton = null } = {}) {
+  const dispatchedEvents = [];
+  const form = {
+    querySelector: (selector) => (selector === submitSelector ? formSubmitButton : null)
+  };
+  const target = {
+    id: "",
+    tagName: "DIV",
+    hasAttribute: (name) => name === "data-composer-markdown",
+    closest: (selector) => (selector === "form" ? form : null),
+    dispatchEvent: (e) => { dispatchedEvents.push(e); return true; }
+  };
+  return { target, dispatchedEvents };
+}
+
+test("ChatGPT の id なし新入力欄で Enter は Shift+Enter にマッピング", () => {
+  const { target, dispatchedEvents } = createChatGPTMarkdownComposer();
+  const context = loadHandler("https://chatgpt.com/", createButton());
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+for (const modifier of ["ctrlKey", "metaKey"]) {
+  test(`ChatGPT の新入力欄で ${modifier} + Enter はフォームの送信ボタンを押す`, () => {
+    const sendButton = createButton();
+    const { target, dispatchedEvents } = createChatGPTMarkdownComposer({ formSubmitButton: sendButton });
+    const context = loadHandler("https://chatgpt.com/", null);
+    const event = createKeydownEvent(target, { [modifier]: true });
+
+    context.handleCtrlEnter(event);
+
+    assert.equal(sendButton.clickCount, 1);
+    assert.equal(dispatchedEvents.length, 0);
+    assert.equal(event.preventDefaultCount, 1);
+    assert.equal(event.stopImmediatePropagationCount, 1);
+  });
+}
+
+test("ChatGPT の新入力欄で送信ボタンがない場合（生成中・入力欄が空）はパススルー", () => {
+  const { target, dispatchedEvents } = createChatGPTMarkdownComposer();
+  const context = loadHandler("https://chatgpt.com/", null);
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 0);
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(event.stopImmediatePropagationCount, 0);
+});
+
+test("ChatGPT の新入力欄で ChatGPT が処理済みの Ctrl+Enter は送信ボタンを押さない", () => {
+  const sendButton = createButton();
+  const { target } = createChatGPTMarkdownComposer({ formSubmitButton: sendButton });
+  const context = loadHandler("https://chatgpt.com/", null);
+  const event = createKeydownEvent(target, { ctrlKey: true });
+  event.defaultPrevented = true;
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(sendButton.clickCount, 0);
+  assert.equal(event.preventDefaultCount, 0);
+});
+
+test("ChatGPT の id なし textarea（編集欄など）の Enter はパススルー", () => {
+  const { target, dispatchedEvents } = createTextareaTarget();
+  const context = loadHandler("https://chatgpt.com/", createButton());
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(dispatchedEvents.length, 0);
+});
+
+test("ChatGPT の未ログイン用 textarea で Enter は改行コマンドを実行する", () => {
+  const context = loadHandler("https://chatgpt.com/uc/conversation-id", createButton());
+  const commands = [];
+  context.document.execCommand = (command) => {
+    commands.push(command);
+    return true;
+  };
+  const target = { id: "mobile-composer-prompt", tagName: "TEXTAREA" };
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.deepEqual(commands, ["insertLineBreak"]);
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(event.stopImmediatePropagationCount, 1);
+});
+
+test("ChatGPT の未ログイン用 textarea で Shift+Enter はパススルー", () => {
+  const context = loadHandler("https://chatgpt.com/uc/conversation-id", createButton());
+  const commands = [];
+  context.document.execCommand = (command) => {
+    commands.push(command);
+    return true;
+  };
+  const target = { id: "mobile-composer-prompt", tagName: "TEXTAREA" };
+  const event = createKeydownEvent(target, { shiftKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.deepEqual(commands, []);
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(event.stopImmediatePropagationCount, 0);
 });
 
 test("ChatGPT の prompt-textarea で Ctrl+Enter は Meta+Enter にマッピング", () => {
