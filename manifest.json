@@ -61,6 +61,7 @@
   ],
   "optional_host_permissions": [
     "https://copilot.com/*",
+    "https://copilot.cloud.microsoft/*",
     "https://notebook.google.com/*",
     "https://www.kimi.com/*",
     "https://cursor.com/agents*",

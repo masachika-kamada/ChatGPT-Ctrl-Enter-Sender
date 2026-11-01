@@ -36,12 +36,21 @@ function isChatGPTComposer(target) {
   return target.id === "prompt-textarea" || !!target.hasAttribute?.("data-composer-markdown");
 }
 
-// copilot.com serves the same chat editor as Microsoft 365 Copilot
+// copilot.com and copilot.cloud.microsoft serve the same chat editor as Microsoft 365 Copilot.
+// The editor is either the one with a fixed id or a Lexical editor without it.
+function isM365ChatEditor(target) {
+  return target.id === "m365-chat-editor-target-element" ||
+    (target.getAttribute?.("role") === "textbox" &&
+      target.getAttribute("contenteditable") === "true" &&
+      target.hasAttribute("data-lexical-editor"));
+}
+
+// Without chatUrl, every page on the host is handled (home, chat and code share the editor)
 function m365ChatBehavior(chatUrl) {
   return {
     shouldHandle(event) {
-      return window.location.href.startsWith(chatUrl) &&
-        event.target.id === "m365-chat-editor-target-element";
+      return (!chatUrl || window.location.href.startsWith(chatUrl)) &&
+        isM365ChatEditor(event.target);
     },
     onEnter(event) {
       event.preventDefault();
@@ -180,6 +189,8 @@ const SITE_BEHAVIORS = {
   "copilot.com": m365ChatBehavior("https://copilot.com/chat"),
 
   "m365.cloud.microsoft": m365ChatBehavior("https://m365.cloud.microsoft/chat"),
+
+  "copilot.cloud.microsoft": m365ChatBehavior(),
 
   // ── Tier 2 — Community Supported ───────────────────────────────────────────
 

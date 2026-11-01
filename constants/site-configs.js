@@ -29,7 +29,7 @@
 // Generation marker for the site list. shared/site-sync.js records the highest
 // revision that wrote the action rules, so a service worker left running
 // pre-update code cannot overwrite a newer sync with its outdated list.
-export const SITE_CONFIGS_REVISION = 4;
+export const SITE_CONFIGS_REVISION = 5;
 
 export const SITE_CONFIGS = [
   { hostname: "chatgpt.com", matchPatterns: ["https://chatgpt.com/*"] },
@@ -38,6 +38,7 @@ export const SITE_CONFIGS = [
   { hostname: "copilot.microsoft.com", matchPatterns: ["https://copilot.microsoft.com/*"] },
   { hostname: "copilot.com", matchPatterns: ["https://copilot.com/*"], optional: true },
   { hostname: "m365.cloud.microsoft", matchPatterns: ["https://m365.cloud.microsoft/*"] },
+  { hostname: "copilot.cloud.microsoft", matchPatterns: ["https://copilot.cloud.microsoft/*"], optional: true },
   { hostname: "chat.deepseek.com", matchPatterns: ["https://chat.deepseek.com/*"] },
   { hostname: "grok.com", matchPatterns: ["https://grok.com/*"] },
   { hostname: "www.perplexity.ai", matchPatterns: ["https://www.perplexity.ai/*"] },
