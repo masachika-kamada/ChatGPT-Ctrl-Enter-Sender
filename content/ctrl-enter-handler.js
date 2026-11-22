@@ -332,6 +332,7 @@ const SITE_BEHAVIORS = {
       dispatchEnter(event.target, {});
     },
   },
+
   // ── Tier 3 — Minimal Support ───────────────────────────────────────────────
 
   "poe.com": {
