@@ -540,6 +540,90 @@ test("copilot.com の /chat 以外は対象外にする", () => {
   assert.equal(dispatchedEvents.length, 0);
 });
 
+// ── copilot.cloud.microsoft tests ───────────────────────────────────────────
+
+test("copilot.cloud.microsoft はどのパスでも Enter を Shift+Enter にマッピングする", () => {
+  const urls = [
+    "https://copilot.cloud.microsoft/home",
+    "https://copilot.cloud.microsoft/code",
+    "https://copilot.cloud.microsoft/chat?fromcode=cmmu8qodiz1&es=Click&redirfrom=userTypeCookie&redirfrom=cosmicRingCookie",
+  ];
+  for (const url of urls) {
+    const context = loadHandler(url, createButton());
+    const { target, dispatchedEvents } = createM365EditorTarget();
+    const event = createKeydownEvent(target);
+
+    context.handleCtrlEnter(event);
+
+    assert.equal(dispatchedEvents.length, 1, url);
+    assert.equal(dispatchedEvents[0].shiftKey, true, url);
+  }
+});
+
+function createLexicalEditorTarget() {
+  const dispatchedEvents = [];
+  const attributes = { role: "textbox", contenteditable: "true", "data-lexical-editor": "true" };
+  const target = {
+    id: "",
+    tagName: "SPAN",
+    contentEditable: "true",
+    getAttribute: (name) => attributes[name] ?? null,
+    hasAttribute: (name) => name in attributes,
+    dispatchEvent: (event) => {
+      dispatchedEvents.push(event);
+      return true;
+    }
+  };
+  return { target, dispatchedEvents };
+}
+
+test("copilot.cloud.microsoft の Lexical エディタでも Enter を Shift+Enter にマッピングする", () => {
+  const context = loadHandler("https://copilot.cloud.microsoft/home", createButton());
+  const { target, dispatchedEvents } = createLexicalEditorTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 1);
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, true);
+});
+
+test("copilot.cloud.microsoft の Lexical エディタでも Ctrl+Enter を通常 Enter にマッピングする", () => {
+  const context = loadHandler("https://copilot.cloud.microsoft/chat/conversation/abc", createButton());
+  const { target, dispatchedEvents } = createLexicalEditorTarget();
+  const event = createKeydownEvent(target, { ctrlKey: true });
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(dispatchedEvents.length, 1);
+  assert.equal(dispatchedEvents[0].shiftKey, undefined);
+  assert.equal(dispatchedEvents[0].keyCode, 13);
+});
+
+test("m365.cloud.microsoft の /chat 以外では Lexical エディタを対象外にする", () => {
+  const context = loadHandler("https://m365.cloud.microsoft/word", createButton());
+  const { target, dispatchedEvents } = createLexicalEditorTarget();
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(dispatchedEvents.length, 0);
+});
+
+test("copilot.cloud.microsoft はエディタ以外の要素を対象外にする", () => {
+  const context = loadHandler("https://copilot.cloud.microsoft/home", createButton());
+  const { target, dispatchedEvents } = createM365EditorTarget();
+  target.id = "other";
+  const event = createKeydownEvent(target);
+
+  context.handleCtrlEnter(event);
+
+  assert.equal(event.preventDefaultCount, 0);
+  assert.equal(dispatchedEvents.length, 0);
+});
+
 // ── General behavior tests ───────────────────────────────────────────────────
 
 test("isComposing な場合はハンドリングしない", () => {

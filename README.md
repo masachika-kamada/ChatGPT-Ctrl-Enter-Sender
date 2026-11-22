@@ -29,6 +29,7 @@ You can use this extension on the following pages:
 * <https://copilot.microsoft.com>
 * <https://copilot.com/chat> (opt-in)
 * <https://m365.cloud.microsoft/chat>
+* <https://copilot.cloud.microsoft> (opt-in)
 * <https://chat.deepseek.com>
 * <https://grok.com>
 * <https://www.perplexity.ai>
