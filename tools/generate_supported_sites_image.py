@@ -33,6 +33,7 @@ SITES = [
     {"hostname": "poe.com", "name": "Poe"},
     {"hostname": "v0.app", "name": "v0"},
     {"hostname": "cursor.com", "name": "Cursor"},
+    {"hostname": "muse.ai", "name": "Muse"},
 ]
 
 # ── 設定 ──────────────────────────────────────────────────────────

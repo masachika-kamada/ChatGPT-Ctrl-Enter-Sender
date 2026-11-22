@@ -76,7 +76,7 @@ function isCursorAgentsPath(url) {
 // ── Site behavior definitions ────────────────────────────────────────────────
 // Ordered by tier (see CONTRIBUTING.md):
 //   Tier 1: ChatGPT, Claude, Gemini, Copilot, M365
-//   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub, Kimi
+//   Tier 2: DeepSeek, Grok, Perplexity, Mistral, NotebookLM, GitHub, Kimi, Muse
 //   Tier 3: Poe, v0, Cursor, Genspark, duck.ai, Manus
 
 const SITE_BEHAVIORS = {
@@ -309,6 +309,24 @@ const SITE_BEHAVIORS = {
     onCtrlEnter(event) {
       // Kimi maps Ctrl+Enter to a line break, so the native handler must be
       // stopped before dispatching the plain Enter that submits
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      dispatchEnter(event.target, {});
+    },
+  },
+
+  "muse.ai": {
+    shouldHandle(event) {
+      const target = event.target;
+      return target.tagName === "TEXTAREA" &&
+        !!target.closest?.("[data-hatch-composer-root]");
+    },
+    onEnter(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      insertTextareaNewline(event.target);
+    },
+    onCtrlEnter(event) {
       event.preventDefault();
       event.stopImmediatePropagation();
       dispatchEnter(event.target, {});
