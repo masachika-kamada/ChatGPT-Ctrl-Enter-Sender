@@ -15,6 +15,7 @@ Supported Sites プロモーション画像を自動生成するスクリプト�
 import os
 import io
 import math
+import sys
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -26,14 +27,14 @@ SITES = [
     {"hostname": "copilot.microsoft.com", "name": "Copilot"},
     {"hostname": "chat.deepseek.com", "name": "DeepSeek"},
     {"hostname": "grok.com", "name": "Grok"},
-    {"hostname": "www.perplexity.ai", "name": "Perplexity"},
+    {"hostname": "muse.ai", "name": "Muse"},
     {"hostname": "chat.mistral.ai", "name": "Mistral"},
     {"hostname": "notebook.google.com", "name": "NotebookLM"},
     {"hostname": "github.com", "name": "GitHub Copilot"},
     {"hostname": "poe.com", "name": "Poe"},
     {"hostname": "v0.app", "name": "v0"},
     {"hostname": "cursor.com", "name": "Cursor"},
-    {"hostname": "muse.ai", "name": "Muse"},
+    {"hostname": "www.perplexity.ai", "name": "Perplexity"},
 ]
 
 # ── 設定 ──────────────────────────────────────────────────────────
@@ -233,4 +234,6 @@ def generate_image():
 
 
 if __name__ == "__main__":
+    # Piped output on Windows uses cp932, which cannot encode ✓ / ✗
+    sys.stdout.reconfigure(errors="replace")
     generate_image()
