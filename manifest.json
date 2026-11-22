@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "2.5.8",
+  "version": "2.6.0",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "author": "Kamada Masachika",
@@ -61,13 +61,15 @@
   ],
   "optional_host_permissions": [
     "https://copilot.com/*",
+    "https://copilot.cloud.microsoft/*",
     "https://notebook.google.com/*",
     "https://www.kimi.com/*",
     "https://cursor.com/agents*",
     "https://cursor.com/*/agents*",
     "https://www.genspark.ai/*",
     "https://duck.ai/*",
-    "https://manus.im/*"
+    "https://manus.im/*",
+    "https://muse.ai/*"
   ],
   "action": {
     "default_popup": "popup/popup.html",

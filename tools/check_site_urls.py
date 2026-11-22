@@ -20,7 +20,9 @@ ATTEMPTS = len(RETRY_DELAYS_SECONDS) + 1
 ALLOWED_EXTERNAL_REDIRECTS = {
     "copilot.microsoft.com": {"copilot.com", "login.microsoftonline.com"},
     "copilot.com": {"login.microsoftonline.com"},
+    "copilot.cloud.microsoft": {"login.microsoftonline.com"},
     "notebook.google.com": {"accounts.google.com"},
+    "muse.ai": {"auth.muse.ai"},
 }
 
 

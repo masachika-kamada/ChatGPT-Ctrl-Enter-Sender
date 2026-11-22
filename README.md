@@ -29,6 +29,7 @@ You can use this extension on the following pages:
 * <https://copilot.microsoft.com>
 * <https://copilot.com/chat> (opt-in)
 * <https://m365.cloud.microsoft/chat>
+* <https://copilot.cloud.microsoft> (opt-in)
 * <https://chat.deepseek.com>
 * <https://grok.com>
 * <https://www.perplexity.ai>
@@ -42,6 +43,7 @@ You can use this extension on the following pages:
 * <https://www.genspark.ai> (opt-in)
 * <https://duck.ai> (opt-in)
 * <https://manus.im> (opt-in)
+* <https://muse.ai> (opt-in)
 
 *Opt-in sites request access only when you choose to enable them. This prevents an update from disabling the extension when support needs a new hostname. Open the site, click the extension icon, and press "Enable on this site" once. After the first installation, the settings page opens once to introduce these sites.*
 
