@@ -38,6 +38,7 @@ export const SITE_CONFIGS = [
   { hostname: "copilot.microsoft.com", matchPatterns: ["https://copilot.microsoft.com/*"] },
   { hostname: "copilot.com", matchPatterns: ["https://copilot.com/*"], optional: true },
   { hostname: "m365.cloud.microsoft", matchPatterns: ["https://m365.cloud.microsoft/*"] },
+  { hostname: "copilot.cloud.microsoft", matchPatterns: ["https://copilot.cloud.microsoft/*"], optional: true },
   { hostname: "chat.deepseek.com", matchPatterns: ["https://chat.deepseek.com/*"] },
   { hostname: "grok.com", matchPatterns: ["https://grok.com/*"] },
   { hostname: "www.perplexity.ai", matchPatterns: ["https://www.perplexity.ai/*"] },
